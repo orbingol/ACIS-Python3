@@ -1,6 +1,6 @@
 # Python 3 wrapper module for 3D ACIS Modeler
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.830150.svg)](https://doi.org/10.5281/zenodo.830150)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.830149.svg)](https://doi.org/10.5281/zenodo.830149)
 
 ACIS-Python3 is a Python 3 module which provides a direct interface to Spatial Corporation's _3D ACIS Modeler_ solid modeling kernel.
 
