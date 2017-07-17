@@ -1,0 +1,6 @@
+# Jetbrains IDEs
+.idea/
+
+# Ignore everything in the build directory except .gitkeep
+build/*
+!build/.gitkeep
