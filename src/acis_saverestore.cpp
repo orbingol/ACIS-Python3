@@ -470,7 +470,7 @@ static PyMethodDef
   };
 
 // Module documentation can be accessible via __doc__
-const char *module_documentation = "A placeholder for accessing save & restore related ACIS classes";
+const char *module_documentation = "Contains 3D ACIS Modeler save & restore related classes and functions";
 
 static PyModuleDef
   ACIS_SaveRestore_module =
