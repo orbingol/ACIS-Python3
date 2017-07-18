@@ -311,7 +311,7 @@ static PyTypeObject
  */
 
 // Module documentation can be accessible via __doc__
-const char *module_documentation = "A placeholder for accessing all 3D ACIS Modeler lists and containers, such as ENTITY_LIST";
+const char *module_documentation = "Contains 3D ACIS Modeler lists and containers, such as ENTITY_LIST";
 
 static PyModuleDef
   ACIS_Lists_module =

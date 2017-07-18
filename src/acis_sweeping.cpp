@@ -463,7 +463,7 @@ static PyMethodDef
   };
 
 // Module documentation can be accessible via __doc__
-const char *module_documentation = "ACIS Sweeping API";
+const char *module_documentation = "Contains 3D ACIS Modeler sweeping API related classes and functions";
 
 static struct PyModuleDef
   ACIS_Sweeping_module =

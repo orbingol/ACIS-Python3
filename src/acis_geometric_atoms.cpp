@@ -1558,7 +1558,7 @@ static PyTypeObject
  */
 
 // Module documentation can be accessible via __doc__
-const char *module_documentation = "Contains geometric atoms, e.g. SPAposition, SPApar_pos, etc.";
+const char *module_documentation = "Contains 3D ACIS Modeler geometric atoms, e.g. SPAposition, SPApar_pos, etc.";
 
 static PyModuleDef
   ACIS_GeometricAtoms_module =

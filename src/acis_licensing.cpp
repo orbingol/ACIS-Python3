@@ -36,7 +36,7 @@ static PyMethodDef
   };
 
 // Module documentation can be accessible via __doc__
-const char *module_documentation = "Spatial Corporation Products Licensing Subsystem";
+const char *module_documentation = "Contains 3D ACIS Modeler licensing API related functions and classes";
 
 static struct PyModuleDef
   ACIS_Licensing_module =

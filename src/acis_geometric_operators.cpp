@@ -46,7 +46,7 @@ static PyMethodDef
   };
 
 // Module documentation can be accessible via __doc__
-const char *module_documentation = "Contains geometric operators";
+const char *module_documentation = "Contains 3D ACIS Modeler geometric operators";
 
 static struct PyModuleDef
   ACIS_GeometricOperators_module =

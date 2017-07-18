@@ -155,7 +155,7 @@ static PyMethodDef
   };
 
 // Module documentation can be accessible via __doc__
-const char *module_documentation = "ACIS queries to get information about entities, etc.";
+const char *module_documentation = "Contains 3D Modeler ACIS geometric and topological queries";
 
 static struct PyModuleDef
   ACIS_Query_module =
