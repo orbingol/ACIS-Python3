@@ -38,7 +38,7 @@ ACIS_Query_method_get_owner_transf(PyObject *self, PyObject *args, PyObject *kwa
 }
 
 static PyObject *
-ACIS_Query_method_api_get_faces(PyObject *self, PyObject *args, PyObject *kwargs)
+ACIS_api_get_faces(PyObject *self, PyObject *args, PyObject *kwargs)
 {
   PyObject *input_ent = NULL, *input_ent_list = NULL;
 
@@ -92,7 +92,7 @@ ACIS_Query_method_api_get_faces(PyObject *self, PyObject *args, PyObject *kwargs
 }
 
 static PyObject *
-ACIS_Query_method_api_get_edges(PyObject *self, PyObject *args, PyObject *kwargs)
+ACIS_api_get_edges(PyObject *self, PyObject *args, PyObject *kwargs)
 {
   PyObject *input_ent = NULL, *input_ent_list = NULL;
 
@@ -149,8 +149,8 @@ static PyMethodDef
   ACIS_Query_methods[] =
   {
     { "get_owner_transf", (PyCFunction) ACIS_Query_method_get_owner_transf, METH_VARARGS | METH_KEYWORDS, "Gets a copy of the SPAtransf from the owner of an ENTITY" },
-    { "api_get_faces", (PyCFunction) ACIS_Query_method_api_get_faces, METH_VARARGS | METH_KEYWORDS, "Gets all faces related to an entity" },
-    { "api_get_edges", (PyCFunction) ACIS_Query_method_api_get_edges, METH_VARARGS | METH_KEYWORDS, "Gets all the edges related to an entity" },
+    { "api_get_faces", (PyCFunction) ACIS_api_get_faces, METH_VARARGS | METH_KEYWORDS, "Gets all faces related to an entity" },
+    { "api_get_edges", (PyCFunction) ACIS_api_get_edges, METH_VARARGS | METH_KEYWORDS, "Gets all the edges related to an entity" },
     { NULL, NULL, 0, NULL }
   };
 
