@@ -262,17 +262,14 @@ ACIS_api_make_sweep_path(PyObject *self, PyObject *args, PyObject *kwargs)
     return NULL;
   }
 
-  // The first object must be a python tuple containing SPAposition objects
-  if (PyTuple_Check(input_pts))
-  {
-    PyErr_SetString(PyExc_TypeError, "First argument (pts) must be a tuple containing SPAposition objects");
-    return NULL;
-  }
+  // The first object must be a python sequence containing SPAposition objects
+  PyObject *seq = PySequence_Fast(input_pts, "First argument (pts) must be a sequence of SPAposition objects, such as a list or a tuple");
 
-  Py_ssize_t position_vector_size = PyTuple_Size(input_pts);
+  Py_ssize_t position_vector_size = PySequence_Fast_GET_SIZE(seq);
   if (position_vector_size <= 0)
   {
-    PyErr_SetString(PyExc_ValueError, "Tuple cannot be empty");
+    PyErr_SetString(PyExc_ValueError, "Sequence cannot be empty");
+    Py_DECREF(seq);
     return NULL;
   }
 
@@ -282,10 +279,11 @@ ACIS_api_make_sweep_path(PyObject *self, PyObject *args, PyObject *kwargs)
   for (Py_ssize_t i = 0; i < position_vector_size; i++)
   {
     PyObject *pt_temp;
-    pt_temp = PyTuple_GetItem(input_pts, i);
+    pt_temp = PySequence_Fast_GET_ITEM(seq, i);
     if (!_ACIS_check_SPAposition(pt_temp))
     {
-      PyErr_SetString(PyExc_TypeError, "Tuple must contain SPAposition objects");
+      PyErr_SetString(PyExc_TypeError, "Sequence must contain SPAposition objects");
+      Py_DECREF(seq);
       return NULL;
     }
     _pts.push_back(*((ACIS_GeometricAtoms_SPAposition *) pt_temp)->_acis_obj);
@@ -299,6 +297,9 @@ ACIS_api_make_sweep_path(PyObject *self, PyObject *args, PyObject *kwargs)
             result = api_make_sweep_path(_pts, _path);
 
   API_END
+
+  // PySequence_Fast returns a new reference
+  Py_DECREF(seq);
 
   // Check outcome
   if (!check_outcome(result))

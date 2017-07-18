@@ -830,17 +830,14 @@ ACIS_api_sheet_from_ff(PyObject *self, PyObject *args, PyObject *kwargs)
     return NULL;
 
   // First argument must be a tuple of faces
-  if (!PyTuple_Check(input_faces))
-  {
-    PyErr_SetString(PyExc_TypeError, "First argument must be a tuple of FACE objects");
-    return NULL;
-  }
+  PyObject *seq = PySequence_Fast(input_faces, "First argument must be a sequence of FACE objects");
 
   // ACIS API has a limitation in api_sheet_from_ff function: As of version R2017, it can handle only 1 face
-  Py_ssize_t face_array_size = PyTuple_Size(input_faces);
+  Py_ssize_t face_array_size = PySequence_Fast_GET_SIZE(seq);
   if (face_array_size <= 0)
   {
-    PyErr_SetString(PyExc_ValueError, "Tuple cannot be empty");
+    PyErr_SetString(PyExc_ValueError, "Sequence cannot be empty");
+    Py_DECREF(seq);
     return NULL;
   }
   else if (face_array_size > 1)
@@ -848,7 +845,7 @@ ACIS_api_sheet_from_ff(PyObject *self, PyObject *args, PyObject *kwargs)
     PyErr_WarnEx(PyExc_Warning, "ACIS API does not support generation of sheet bodies from multiple faces.", 0);
   }
 
-  PyObject *faceobj = PyTuple_GetItem(input_faces, 0);
+  PyObject *faceobj = PySequence_Fast_GET_ITEM(seq, 0);
 
   API_BEGIN
 
@@ -862,6 +859,9 @@ ACIS_api_sheet_from_ff(PyObject *self, PyObject *args, PyObject *kwargs)
             result = api_sheet_from_ff(1, _faces, _body);
 
   API_END
+
+  // PySequence_Fast generates a new reference
+  Py_DECREF(seq);
 
   // Check outcome
   if (!check_outcome(result))
