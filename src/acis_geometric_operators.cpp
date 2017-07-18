@@ -39,23 +39,24 @@ ACIS_GeometricOperators_method_translate_transf(PyObject *self, PyObject *args, 
 }
 
 static PyMethodDef
-  ACIS_GeometricOperators_methods[] =
+  module_methods[] =
   {
     { "translate_transf", (PyCFunction) ACIS_GeometricOperators_method_translate_transf, METH_VARARGS | METH_KEYWORDS, "Constructs a transformation corresponding to a translation by a given vector" },
     { NULL, NULL, 0, NULL }
   };
 
 // Module documentation can be accessible via __doc__
+const char *module_name = "GeometricOperators";
 const char *module_documentation = "Contains 3D ACIS Modeler geometric operators";
 
 static struct PyModuleDef
   ACIS_GeometricOperators_module =
   {
     PyModuleDef_HEAD_INIT,
-    "GeometricOperators", // name of the module
+    module_name, // name of the module
     module_documentation, // module documentation, may be NULL
     -1, // size of per-interpreter state of the module, or -1 if the module keeps state in global variables.
-    ACIS_GeometricOperators_methods
+    module_methods
   };
 
 PyMODINIT_FUNC

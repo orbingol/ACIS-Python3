@@ -456,7 +456,7 @@ ACIS_api_sweep_with_options(PyObject *self, PyObject *args, PyObject *kwargs)
 }
 
 static PyMethodDef
-  ACIS_Sweeping_methods[] =
+  module_methods[] =
   {
     { "api_make_sweep_path", (PyCFunction) ACIS_api_make_sweep_path, METH_VARARGS | METH_KEYWORDS, "Constructs a path useful for creating a swept surface" },
     { "api_sweep_with_options", (PyCFunction) ACIS_api_sweep_with_options, METH_VARARGS | METH_KEYWORDS, "Sweeps the given profile along an edge, a distance, a vector or an axis" },
@@ -464,16 +464,17 @@ static PyMethodDef
   };
 
 // Module documentation can be accessible via __doc__
+const char *module_name = "Sweeping";
 const char *module_documentation = "Contains 3D ACIS Modeler sweeping API related classes and functions";
 
 static struct PyModuleDef
   ACIS_Sweeping_module =
   {
     PyModuleDef_HEAD_INIT,
-    "Sweeping", // name of the module
+    module_name, // name of the module
     module_documentation, // module documentation, may be NULL
     -1, // size of per-interpreter state of the module, or -1 if the module keeps state in global variables.
-    ACIS_Sweeping_methods
+    module_methods
   };
 
 PyMODINIT_FUNC

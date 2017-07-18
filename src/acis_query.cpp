@@ -146,7 +146,7 @@ ACIS_api_get_edges(PyObject *self, PyObject *args, PyObject *kwargs)
 }
 
 static PyMethodDef
-  ACIS_Query_methods[] =
+  module_methods[] =
   {
     { "get_owner_transf", (PyCFunction) ACIS_Query_method_get_owner_transf, METH_VARARGS | METH_KEYWORDS, "Gets a copy of the SPAtransf from the owner of an ENTITY" },
     { "api_get_faces", (PyCFunction) ACIS_api_get_faces, METH_VARARGS | METH_KEYWORDS, "Gets all faces related to an entity" },
@@ -155,16 +155,17 @@ static PyMethodDef
   };
 
 // Module documentation can be accessible via __doc__
+const char *module_name = "Query";
 const char *module_documentation = "Contains 3D Modeler ACIS geometric and topological queries";
 
 static struct PyModuleDef
   ACIS_Query_module =
   {
     PyModuleDef_HEAD_INIT,
-    "Query", // name of the module
+    module_name, // name of the module
     module_documentation, // module documentation, may be NULL
     -1, // size of per-interpreter state of the module, or -1 if the module keeps state in global variables.
-    ACIS_Query_methods
+    module_methods
   };
 
 PyMODINIT_FUNC

@@ -582,13 +582,14 @@ static PyTypeObject
  */
 
 // Module documentation can be accessible via __doc__
+const char *module_name = "Geometry";
 const char *module_documentation = "Contains  3D ACIS Modeler geometry objects, such as SURFACE, CONE, TORUS, etc.";
 
 static PyModuleDef
   ACIS_Geometry_module =
   {
     PyModuleDef_HEAD_INIT,
-    "Geometry",
+    module_name,
     module_documentation,
     -1,
     NULL, NULL, NULL, NULL, NULL

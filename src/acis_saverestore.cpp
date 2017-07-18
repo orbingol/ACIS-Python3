@@ -460,7 +460,7 @@ ACIS_api_save_version(PyObject *self, PyObject *args, PyObject *kwargs)
 
 
 static PyMethodDef
-  ACIS_SaveRestore_methods[] =
+  module_methods[] =
   {
     { "api_save_entity_list", (PyCFunction) ACIS_api_save_entity_list, METH_VARARGS | METH_KEYWORDS, "Writes entities to a file in text or binary format" },
     { "api_set_file_info", (PyCFunction) ACIS_api_set_file_info, METH_VARARGS | METH_KEYWORDS, "Sets required header info to be written to ACIS save files" },
@@ -470,16 +470,17 @@ static PyMethodDef
   };
 
 // Module documentation can be accessible via __doc__
+const char *module_name = "SaveRestore";
 const char *module_documentation = "Contains 3D ACIS Modeler save & restore related classes and functions";
 
 static PyModuleDef
   ACIS_SaveRestore_module =
   {
     PyModuleDef_HEAD_INIT,
-    "SaveRestore",
+    module_name,
     module_documentation,
     -1,
-    ACIS_SaveRestore_methods
+    module_methods
   };
 
 PyMODINIT_FUNC

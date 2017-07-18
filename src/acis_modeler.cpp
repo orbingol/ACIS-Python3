@@ -884,7 +884,7 @@ ACIS_api_boolean_chop_body(PyObject *self, PyObject *args, PyObject *kwargs)
 }
 
 static PyMethodDef
-  ACIS_Modeler_methods[] =
+  module_methods[] =
   {
     { "api_start_modeller", (PyCFunction) ACIS_api_start_modeller, METH_VARARGS | METH_KEYWORDS, "Starts the 3D ACIS Modeler" },
     { "api_stop_modeller", (PyCFunction) ACIS_api_stop_modeller, METH_NOARGS, "Stops the 3D ACIS Modeler" },
@@ -913,16 +913,17 @@ static PyMethodDef
   };
 
 // Module documentation can be accessible via __doc__
+const char *module_name = "Modeler";
 const char *module_documentation = "3D ACIS Modeler main modeling component";
 
 static struct PyModuleDef
   ACIS_Modeler_module =
   {
     PyModuleDef_HEAD_INIT,
-    "Modeler", // name of the module
+    module_name, // name of the module
     module_documentation, // module documentation, may be NULL
     -1, // size of per-interpreter state of the module, or -1 if the module keeps state in global variables.
-    ACIS_Modeler_methods
+    module_methods
   };
 
 PyMODINIT_FUNC

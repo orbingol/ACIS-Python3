@@ -1196,13 +1196,14 @@ static PyTypeObject
  */
 
 // Module documentation can be accessible via __doc__
+const char *module_name = "Topology";
 const char *module_documentation = "Contains 3D ACIS Modeler topology objects, such as BODY, FACE, WIRE, etc.";
 
 static PyModuleDef
   ACIS_Topology_module =
   {
     PyModuleDef_HEAD_INIT,
-    "Topology",
+    module_name,
     module_documentation,
     -1,
     NULL, NULL, NULL, NULL, NULL

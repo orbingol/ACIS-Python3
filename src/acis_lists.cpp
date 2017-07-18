@@ -311,13 +311,14 @@ static PyTypeObject
  */
 
 // Module documentation can be accessible via __doc__
+const char *module_name = "Lists";
 const char *module_documentation = "Contains 3D ACIS Modeler lists and containers, such as ENTITY_LIST";
 
 static PyModuleDef
   ACIS_Lists_module =
   {
     PyModuleDef_HEAD_INIT,
-    "Lists",
+    module_name,
     module_documentation,
     -1,
     NULL, NULL, NULL, NULL, NULL
