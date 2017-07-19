@@ -79,7 +79,7 @@ ACIS_Lists_method_ENTITY_LIST_add(ACIS_Lists_ENTITY_LIST *self, PyObject *arg)
   else
   {
     // This function returns the added ENTITY's index number
-    index = self->_acis_obj->add(((ACIS_Topology_ENTITY *) arg)->_acis_obj);
+    index = self->_acis_obj->add(((ACIS_Entity_ENTITY *) arg)->_acis_obj);
   }
 
   // Treat arg as a borrowed reference
@@ -128,7 +128,7 @@ ACIS_Lists_method_ENTITY_LIST_remove(ACIS_Lists_ENTITY_LIST *self, PyObject *arg
   else
   {
     // This function returns the removed ENTITY's index number
-    index = self->_acis_obj->remove(((ACIS_Topology_ENTITY *) arg)->_acis_obj);
+    index = self->_acis_obj->remove(((ACIS_Entity_ENTITY *) arg)->_acis_obj);
   }
 
   // Treat arg as a borrowed reference
@@ -176,7 +176,7 @@ ACIS_Lists_method_ENTITY_LIST_lookup(ACIS_Lists_ENTITY_LIST *self, PyObject *arg
     return NULL;
   }
 
-  int index = self->_acis_obj->lookup(((ACIS_Topology_ENTITY *) arg)->_acis_obj);
+  int index = self->_acis_obj->lookup(((ACIS_Entity_ENTITY *) arg)->_acis_obj);
 
   // Treat arg as a borrowed reference
   Py_DECREF(arg);
@@ -196,7 +196,7 @@ ACIS_Lists_method_ENTITY_LIST_first(ACIS_Lists_ENTITY_LIST *self)
 {
   PyObject *retobj = _ACIS_new_ENTITY();
   ENTITY *_elem = self->_acis_obj->first();
-  ((ACIS_Topology_ENTITY *) retobj)->_acis_obj = _elem;
+  ((ACIS_Entity_ENTITY *) retobj)->_acis_obj = _elem;
   return retobj;
 }
 
@@ -205,7 +205,7 @@ ACIS_Lists_method_ENTITY_LIST_next(ACIS_Lists_ENTITY_LIST *self)
 {
   PyObject *retobj = _ACIS_new_ENTITY();
   ENTITY *_elem = self->_acis_obj->next();
-  ((ACIS_Topology_ENTITY *) retobj)->_acis_obj = _elem;
+  ((ACIS_Entity_ENTITY *) retobj)->_acis_obj = _elem;
   return retobj;
 }
 
@@ -223,7 +223,7 @@ ACIS_Lists_method_ENTITY_LIST_next_from(ACIS_Lists_ENTITY_LIST *self, PyObject *
 
   PyObject *retobj = _ACIS_new_ENTITY();
   ENTITY *_elem = self->_acis_obj->next_from(_from_index);
-  ((ACIS_Topology_ENTITY *) retobj)->_acis_obj = _elem;
+  ((ACIS_Entity_ENTITY *) retobj)->_acis_obj = _elem;
 
   Py_DECREF(arg);
 
@@ -311,13 +311,14 @@ static PyTypeObject
  */
 
 // Module documentation can be accessible via __doc__
-const char *module_documentation = "A placeholder for accessing all 3D ACIS Modeler lists and containers, such as ENTITY_LIST";
+const char *module_name = "Lists";
+const char *module_documentation = "Contains 3D ACIS Modeler lists and containers, such as ENTITY_LIST";
 
 static PyModuleDef
   ACIS_Lists_module =
   {
     PyModuleDef_HEAD_INIT,
-    "Lists",
+    module_name,
     module_documentation,
     -1,
     NULL, NULL, NULL, NULL, NULL

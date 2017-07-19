@@ -16,7 +16,7 @@
 
 #include <getowner.hxx>
 
-#include "acis_topology.h"
+#include "acis_entity.h"
 #include "acis_geometric_atoms.h"
 #include "acis_lists.h"
 #include "utilities.h"

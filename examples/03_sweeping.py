@@ -7,9 +7,7 @@
     Please see the LICENSE file for details.
 """
 
-# This example is taken from the book "Rapid Prototyping and Engineering Applications" by Frank W. Liou (Example 5.1)
-
-from ACIS import Modeler, Licensing, SaveRestore, Entity, Lists, GeometricAtoms
+from ACIS import Modeler, Licensing, SaveRestore, Entity, Lists, GeometricAtoms, Sweeping, Query
 
 # Start ACIS Modeler
 Modeler.api_start_modeller(0)
@@ -22,33 +20,39 @@ Licensing.spa_unlock_products(unlock_key)
 block = Entity.BODY()
 Modeler.api_make_cuboid(150, 75, 25, block)
 
-# Generate and apply transformation to the cuboid
-block_vector = GeometricAtoms.SPAvector(0.0, 0.0, 12.7)
-block_transf = GeometricAtoms.translate_transf(block_vector)
-Modeler.api_apply_transf(block, block_transf)
+# Get faces of the cuboid
+face_list = Lists.ENTITY_LIST()
+Query.api_get_faces(block, face_list)
 
-# Make a frustum
-cylinder = Entity.BODY()
-Modeler.api_make_frustum(19.05, 12.7, 12.7, 12.7, cylinder)
+# Choose any face from the cuboid's face list
+block_face = face_list.first()
 
-# Generate and apply transformation to the frustum
-cylinder_vector = GeometricAtoms.SPAvector(0.0, 0.0, 6.35)
-cylinder_transf = GeometricAtoms.translate_transf(cylinder_vector)
-Modeler.api_apply_transf(cylinder, cylinder_transf)
+# Convert the chosen face into a sheet body
+sheet_body = Entity.BODY()
+Modeler.api_sheet_from_ff([block_face], sheet_body)
 
-# Subtract frustum from cuboid
-Modeler.api_subtract(cylinder, block)
+# Make a sweep path
+pt1 = GeometricAtoms.SPAposition(0.0, 0.0, 0.0)
+pt2 = GeometricAtoms.SPAposition(10.0, 55.0, 23.0)
+sweep_path = Entity.EDGE()
+Sweeping.api_make_sweep_path([pt1, pt2], sweep_path)
+
+# Sweep the chosen face using the sweep path
+opts = Sweeping.sweep_options()
+swept_body = Entity.BODY()
+Sweeping.api_sweep_with_options(sheet_body, sweep_path, opts, swept_body)
 
 # Assign attributes after generation
-block.name = "Drilled Cuboid"
-block.id = 1
+sheet_body.name = "Swept FACE"
+sheet_body.id = 1
 
 # Prepare for saving
 save_list = Lists.ENTITY_LIST()
-save_list.add(block)
+# api_sweep_with_options will modify sheet_body object as defined in its documentation
+save_list.add(sheet_body)
 
 # Set file name
-filename = "ACIS_Ex02.SAT"
+filename = "ACIS_Ex03.SAT"
 
 # ACIS requires FileInfo object to be set before saving SAT files
 file_info = SaveRestore.FileInfo()
@@ -56,9 +60,6 @@ file_info.set_product_id(filename)
 file_info.set_units(1.0)  # milimeters
 
 SaveRestore.api_set_file_info(file_info, product_id=True, units=True)
-
-## Enable sequence numbers (i.e., pointers) in the SAT file for debugging (optional step)
-#Modeler.api_set_int_option("sequence_save_files", 1)
 
 # Save the model as a SAT file
 SaveRestore.api_save_entity_list(filename, True, save_list)

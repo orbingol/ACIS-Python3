@@ -7,7 +7,7 @@
     Please see the LICENSE file for details.
 """
 
-from ACIS import Modeler, Licensing, SaveRestore, Topology, Lists, GeometricAtoms
+from ACIS import Modeler, Licensing, SaveRestore, Entity, Lists, GeometricAtoms
 
 # Start ACIS Modeler
 Modeler.api_start_modeller(0)
@@ -19,7 +19,7 @@ Licensing.spa_unlock_products(unlock_key)
 # Generate a simple solid block
 pt1 = GeometricAtoms.SPAposition(0.0, 0.0, 0.0)
 pt2 = GeometricAtoms.SPAposition(50.0, 50.0, 25.0)
-block = Topology.BODY()
+block = Entity.BODY()
 
 Modeler.api_solid_block(pt1, pt2, block)
 

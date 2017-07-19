@@ -262,17 +262,14 @@ ACIS_api_make_sweep_path(PyObject *self, PyObject *args, PyObject *kwargs)
     return NULL;
   }
 
-  // The first object must be a python tuple containing SPAposition objects
-  if (PyTuple_Check(input_pts))
-  {
-    PyErr_SetString(PyExc_TypeError, "First argument (pts) must be a tuple containing SPAposition objects");
-    return NULL;
-  }
+  // The first object must be a python sequence containing SPAposition objects
+  PyObject *seq = PySequence_Fast(input_pts, "First argument (pts) must be a sequence of SPAposition objects, such as a list or a tuple");
 
-  Py_ssize_t position_vector_size = PyTuple_Size(input_pts);
+  Py_ssize_t position_vector_size = PySequence_Fast_GET_SIZE(seq);
   if (position_vector_size <= 0)
   {
-    PyErr_SetString(PyExc_ValueError, "Tuple cannot be empty");
+    PyErr_SetString(PyExc_ValueError, "Sequence cannot be empty");
+    Py_DECREF(seq);
     return NULL;
   }
 
@@ -282,10 +279,11 @@ ACIS_api_make_sweep_path(PyObject *self, PyObject *args, PyObject *kwargs)
   for (Py_ssize_t i = 0; i < position_vector_size; i++)
   {
     PyObject *pt_temp;
-    pt_temp = PyTuple_GetItem(input_pts, i);
+    pt_temp = PySequence_Fast_GET_ITEM(seq, i);
     if (!_ACIS_check_SPAposition(pt_temp))
     {
-      PyErr_SetString(PyExc_TypeError, "Tuple must contain SPAposition objects");
+      PyErr_SetString(PyExc_TypeError, "Sequence must contain SPAposition objects");
+      Py_DECREF(seq);
       return NULL;
     }
     _pts.push_back(*((ACIS_GeometricAtoms_SPAposition *) pt_temp)->_acis_obj);
@@ -293,12 +291,15 @@ ACIS_api_make_sweep_path(PyObject *self, PyObject *args, PyObject *kwargs)
 
   API_BEGIN
 
-            EDGE *&_path = (EDGE *&) ((ACIS_Topology_EDGE *) input_path)->base_obj._acis_obj;
+            EDGE *&_path = (EDGE *&) ((ACIS_Entity_EDGE *) input_path)->base_obj._acis_obj;
 
             // Don't use make_sweep_path_options for now
             result = api_make_sweep_path(_pts, _path);
 
   API_END
+
+  // PySequence_Fast returns a new reference
+  Py_DECREF(seq);
 
   // Check outcome
   if (!check_outcome(result))
@@ -349,7 +350,7 @@ ACIS_api_sweep_with_options(PyObject *self, PyObject *args, PyObject *kwargs)
 
   API_BEGIN
 
-            ENTITY *&_ent = (ENTITY *&) ((ACIS_Topology_ENTITY *) input_arg1)->_acis_obj;
+            ENTITY *&_ent = (ENTITY *&) ((ACIS_Entity_ENTITY *) input_arg1)->_acis_obj;
 
             // Check if we are using the sweep along the axis overload
             if (input_arg5 != NULL)
@@ -381,7 +382,7 @@ ACIS_api_sweep_with_options(PyObject *self, PyObject *args, PyObject *kwargs)
               SPAposition *&_root = (SPAposition *&) ((ACIS_GeometricAtoms_SPAposition *) input_arg2)->_acis_obj;
               SPAvector *&_axis = (SPAvector *&) ((ACIS_GeometricAtoms_SPAvector *) input_arg3)->_acis_obj;
               sweep_options *&_opts = (sweep_options *&) ((ACIS_Sweeping_SweepOptions *) input_arg4)->_acis_obj;
-              BODY *&_new_body = (BODY *&) ((ACIS_Topology_BODY *) input_arg5)->base_obj._acis_obj;
+              BODY *&_new_body = (BODY *&) ((ACIS_Entity_BODY *) input_arg5)->base_obj._acis_obj;
 
               // Call ACIS Sweeping API
               result = api_sweep_with_options(_ent, *_root, *_axis, _opts, _new_body);
@@ -405,12 +406,12 @@ ACIS_api_sweep_with_options(PyObject *self, PyObject *args, PyObject *kwargs)
                 return NULL;
               }
 
-              BODY *&_new_body = (BODY *&) ((ACIS_Topology_BODY *) input_arg4)->base_obj._acis_obj;
+              BODY *&_new_body = (BODY *&) ((ACIS_Entity_BODY *) input_arg4)->base_obj._acis_obj;
 
               // Check for sweeping along a given edge or a wire overload
               if (_ACIS_check_ENTITY(input_arg2))
               {
-                ENTITY *&_path = (ENTITY *&) ((ACIS_Topology_ENTITY *) input_arg2)->_acis_obj;
+                ENTITY *&_path = (ENTITY *&) ((ACIS_Entity_ENTITY *) input_arg2)->_acis_obj;
 
                 // Call ACIS Sweeping API
                 result = api_sweep_with_options(_ent, _path, _opts, _new_body);
@@ -455,7 +456,7 @@ ACIS_api_sweep_with_options(PyObject *self, PyObject *args, PyObject *kwargs)
 }
 
 static PyMethodDef
-  ACIS_Sweeping_methods[] =
+  module_methods[] =
   {
     { "api_make_sweep_path", (PyCFunction) ACIS_api_make_sweep_path, METH_VARARGS | METH_KEYWORDS, "Constructs a path useful for creating a swept surface" },
     { "api_sweep_with_options", (PyCFunction) ACIS_api_sweep_with_options, METH_VARARGS | METH_KEYWORDS, "Sweeps the given profile along an edge, a distance, a vector or an axis" },
@@ -463,16 +464,17 @@ static PyMethodDef
   };
 
 // Module documentation can be accessible via __doc__
-const char *module_documentation = "ACIS Sweeping API";
+const char *module_name = "Sweeping";
+const char *module_documentation = "Contains 3D ACIS Modeler sweeping API related classes and functions";
 
 static struct PyModuleDef
   ACIS_Sweeping_module =
   {
     PyModuleDef_HEAD_INIT,
-    "Sweeping", // name of the module
+    module_name, // name of the module
     module_documentation, // module documentation, may be NULL
     -1, // size of per-interpreter state of the module, or -1 if the module keeps state in global variables.
-    ACIS_Sweeping_methods
+    module_methods
   };
 
 PyMODINIT_FUNC

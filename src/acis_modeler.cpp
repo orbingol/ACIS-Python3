@@ -219,7 +219,7 @@ ACIS_api_solid_block(PyObject *self, PyObject *args, PyObject *kwargs)
             // Convert PyObject to ACIS objects
             SPAposition *_pt1 = ((ACIS_GeometricAtoms_SPAposition *) input_pt1)->_acis_obj;
             SPAposition *_pt2 = ((ACIS_GeometricAtoms_SPAposition *) input_pt2)->_acis_obj;
-            BODY *&_block = (BODY *&) ((ACIS_Topology_BODY *) input_block)->base_obj._acis_obj;
+            BODY *&_block = (BODY *&) ((ACIS_Entity_BODY *) input_block)->base_obj._acis_obj;
 
             // Call ACIS API
             result = api_solid_block(*_pt1, *_pt2, _block);
@@ -263,7 +263,7 @@ ACIS_api_make_cuboid(PyObject *self, PyObject *args, PyObject *kwargs)
   API_BEGIN
 
             // Convert PyObject to ACIS objects
-            BODY *&_body = (BODY *&) ((ACIS_Topology_BODY *) input_body)->base_obj._acis_obj;
+            BODY *&_body = (BODY *&) ((ACIS_Entity_BODY *) input_body)->base_obj._acis_obj;
 
             // Call ACIS API
             result = api_make_cuboid(input_x, input_y, input_z, _body);
@@ -308,7 +308,7 @@ ACIS_api_make_frustum(PyObject *self, PyObject *args, PyObject *kwargs)
   API_BEGIN
 
             // Convert PyObject to ACIS objects
-            BODY *&_frust = (BODY *&) ((ACIS_Topology_BODY *) input_frust)->base_obj._acis_obj;
+            BODY *&_frust = (BODY *&) ((ACIS_Entity_BODY *) input_frust)->base_obj._acis_obj;
 
             // Call ACIS API
             result = api_make_frustum(input_height, input_radius1, input_radius2, input_top, _frust);
@@ -354,7 +354,7 @@ ACIS_api_make_prism(PyObject *self, PyObject *args, PyObject *kwargs)
   API_BEGIN
 
             // Convert PyObject to ACIS objects
-            BODY *&_prism = (BODY *&) ((ACIS_Topology_BODY *) input_prism)->base_obj._acis_obj;
+            BODY *&_prism = (BODY *&) ((ACIS_Entity_BODY *) input_prism)->base_obj._acis_obj;
 
             // Call ACIS API
             result = api_make_prism(input_height, input_radius1, input_radius2, input_nsides, _prism);
@@ -401,7 +401,7 @@ ACIS_api_make_pyramid(PyObject *self, PyObject *args, PyObject *kwargs)
   API_BEGIN
 
             // Convert PyObject to ACIS objects
-            BODY *&_pyramid = (BODY *&) ((ACIS_Topology_BODY *) input_pyramid)->base_obj._acis_obj;
+            BODY *&_pyramid = (BODY *&) ((ACIS_Entity_BODY *) input_pyramid)->base_obj._acis_obj;
 
             // Call ACIS API
             result = api_make_pyramid(input_height, input_radius1, input_radius2, input_top, input_nsides, _pyramid);
@@ -443,7 +443,7 @@ ACIS_api_make_sphere(PyObject *self, PyObject *args, PyObject *kwargs)
   API_BEGIN
 
             // Convert PyObject to ACIS objects
-            BODY *&_sph = (BODY *&) ((ACIS_Topology_BODY *) input_sph)->base_obj._acis_obj;
+            BODY *&_sph = (BODY *&) ((ACIS_Entity_BODY *) input_sph)->base_obj._acis_obj;
 
             // Call ACIS API
             result = api_make_sphere(input_radius, _sph);
@@ -486,7 +486,7 @@ ACIS_api_make_torus(PyObject *self, PyObject *args, PyObject *kwargs)
   API_BEGIN
 
             // Convert PyObject to ACIS objects
-            BODY *&_tor = (BODY *&) ((ACIS_Topology_BODY *) input_tor)->base_obj._acis_obj;
+            BODY *&_tor = (BODY *&) ((ACIS_Entity_BODY *) input_tor)->base_obj._acis_obj;
 
             // Call ACIS API
             result = api_make_torus(input_major_r, input_minor_r, _tor);
@@ -533,7 +533,7 @@ ACIS_api_apply_transf(PyObject *self, PyObject *args, PyObject *kwargs)
   API_BEGIN
 
             // Convert PyObject to ACIS objects
-            ENTITY *&_entity = ((ACIS_Topology_BODY *) input_entity)->base_obj._acis_obj;
+            ENTITY *&_entity = ((ACIS_Entity_BODY *) input_entity)->base_obj._acis_obj;
             SPAtransf *&_trans = ((ACIS_GeometricAtoms_SPAtransf *) input_trans)->_acis_obj;
 
             // Call ACIS API
@@ -574,7 +574,7 @@ ACIS_api_remove_transf(PyObject *self, PyObject *args, PyObject *kwargs)
   API_BEGIN
 
             // Convert PyObject to ACIS objects
-            ENTITY *&_entity = ((ACIS_Topology_BODY *) input_entity)->base_obj._acis_obj;
+            ENTITY *&_entity = ((ACIS_Entity_BODY *) input_entity)->base_obj._acis_obj;
 
             // Call ACIS API
             result = api_remove_transf(_entity);
@@ -621,8 +621,8 @@ ACIS_api_unite(PyObject *self, PyObject *args, PyObject *kwargs)
   API_BEGIN
 
             // Convert PyObject to ACIS objects
-            BODY *&_tool = (BODY *&) ((ACIS_Topology_BODY *) input_tool)->base_obj._acis_obj;
-            BODY *&_blank = (BODY *&) ((ACIS_Topology_BODY *) input_blank)->base_obj._acis_obj;
+            BODY *&_tool = (BODY *&) ((ACIS_Entity_BODY *) input_tool)->base_obj._acis_obj;
+            BODY *&_blank = (BODY *&) ((ACIS_Entity_BODY *) input_blank)->base_obj._acis_obj;
 
             // Call ACIS API
             result = api_unite(_tool, _blank);
@@ -677,8 +677,8 @@ ACIS_api_intersect(PyObject *self, PyObject *args, PyObject *kwargs)
   API_BEGIN
 
             // Convert PyObject to ACIS objects
-            BODY *&_tool = (BODY *&) ((ACIS_Topology_BODY *) input_tool)->base_obj._acis_obj;
-            BODY *&_blank = (BODY *&) ((ACIS_Topology_BODY *) input_blank)->base_obj._acis_obj;
+            BODY *&_tool = (BODY *&) ((ACIS_Entity_BODY *) input_tool)->base_obj._acis_obj;
+            BODY *&_blank = (BODY *&) ((ACIS_Entity_BODY *) input_blank)->base_obj._acis_obj;
 
             // Call ACIS API
             result = api_intersect(_tool, _blank);
@@ -733,8 +733,8 @@ ACIS_api_subtract(PyObject *self, PyObject *args, PyObject *kwargs)
   API_BEGIN
 
             // Convert PyObject to ACIS objects
-            BODY *&_tool = (BODY *&) ((ACIS_Topology_BODY *) input_tool)->base_obj._acis_obj;
-            BODY *&_blank = (BODY *&) ((ACIS_Topology_BODY *) input_blank)->base_obj._acis_obj;
+            BODY *&_tool = (BODY *&) ((ACIS_Entity_BODY *) input_tool)->base_obj._acis_obj;
+            BODY *&_blank = (BODY *&) ((ACIS_Entity_BODY *) input_blank)->base_obj._acis_obj;
 
             // Call ACIS API
             result = api_subtract(_tool, _blank);
@@ -789,8 +789,8 @@ ACIS_api_imprint(PyObject *self, PyObject *args, PyObject *kwargs)
   API_BEGIN
 
             // Convert PyObject to ACIS objects
-            BODY *&_tool = (BODY *&) ((ACIS_Topology_BODY *) input_tool)->base_obj._acis_obj;
-            BODY *&_blank = (BODY *&) ((ACIS_Topology_BODY *) input_blank)->base_obj._acis_obj;
+            BODY *&_tool = (BODY *&) ((ACIS_Entity_BODY *) input_tool)->base_obj._acis_obj;
+            BODY *&_blank = (BODY *&) ((ACIS_Entity_BODY *) input_blank)->base_obj._acis_obj;
 
             // Call ACIS API
             result = api_imprint(_tool, _blank);
@@ -830,17 +830,14 @@ ACIS_api_sheet_from_ff(PyObject *self, PyObject *args, PyObject *kwargs)
     return NULL;
 
   // First argument must be a tuple of faces
-  if (!PyTuple_Check(input_faces))
-  {
-    PyErr_SetString(PyExc_TypeError, "First argument must be a tuple of FACE objects");
-    return NULL;
-  }
+  PyObject *seq = PySequence_Fast(input_faces, "First argument must be a sequence of FACE objects");
 
   // ACIS API has a limitation in api_sheet_from_ff function: As of version R2017, it can handle only 1 face
-  Py_ssize_t face_array_size = PyTuple_Size(input_faces);
+  Py_ssize_t face_array_size = PySequence_Fast_GET_SIZE(seq);
   if (face_array_size <= 0)
   {
-    PyErr_SetString(PyExc_ValueError, "Tuple cannot be empty");
+    PyErr_SetString(PyExc_ValueError, "Sequence cannot be empty");
+    Py_DECREF(seq);
     return NULL;
   }
   else if (face_array_size > 1)
@@ -848,20 +845,23 @@ ACIS_api_sheet_from_ff(PyObject *self, PyObject *args, PyObject *kwargs)
     PyErr_WarnEx(PyExc_Warning, "ACIS API does not support generation of sheet bodies from multiple faces.", 0);
   }
 
-  PyObject *faceobj = PyTuple_GetItem(input_faces, 0);
+  PyObject *faceobj = PySequence_Fast_GET_ITEM(seq, 0);
 
   API_BEGIN
 
-            FACE *&_face = (FACE *&) ((ACIS_Topology_FACE *) faceobj)->base_obj._acis_obj;
+            FACE *&_face = (FACE *&) ((ACIS_Entity_FACE *) faceobj)->base_obj._acis_obj;
 
             FACE *_faces[1];
             _faces[0] = _face;
 
-            BODY *&_body = (BODY *&) ((ACIS_Topology_BODY *) input_body)->base_obj._acis_obj;
+            BODY *&_body = (BODY *&) ((ACIS_Entity_BODY *) input_body)->base_obj._acis_obj;
 
             result = api_sheet_from_ff(1, _faces, _body);
 
   API_END
+
+  // PySequence_Fast generates a new reference
+  Py_DECREF(seq);
 
   // Check outcome
   if (!check_outcome(result))
@@ -884,7 +884,7 @@ ACIS_api_boolean_chop_body(PyObject *self, PyObject *args, PyObject *kwargs)
 }
 
 static PyMethodDef
-  ACIS_Modeler_methods[] =
+  module_methods[] =
   {
     { "api_start_modeller", (PyCFunction) ACIS_api_start_modeller, METH_VARARGS | METH_KEYWORDS, "Starts the 3D ACIS Modeler" },
     { "api_stop_modeller", (PyCFunction) ACIS_api_stop_modeller, METH_NOARGS, "Stops the 3D ACIS Modeler" },
@@ -913,16 +913,17 @@ static PyMethodDef
   };
 
 // Module documentation can be accessible via __doc__
+const char *module_name = "Modeler";
 const char *module_documentation = "3D ACIS Modeler main modeling component";
 
 static struct PyModuleDef
   ACIS_Modeler_module =
   {
     PyModuleDef_HEAD_INIT,
-    "Modeler", // name of the module
+    module_name, // name of the module
     module_documentation, // module documentation, may be NULL
     -1, // size of per-interpreter state of the module, or -1 if the module keeps state in global variables.
-    ACIS_Modeler_methods
+    module_methods
   };
 
 PyMODINIT_FUNC

@@ -28,7 +28,7 @@
 * api_sheet_from_ff
 * api_boolean_chop_body
 
-## Topology
+## Entity
 
 ### Classes
 
@@ -42,11 +42,6 @@
 * COEDGE
 * VERTEX
 * WIRE
-
-## Geometry
-
-### Classes
-
 * SURFACE
 * CONE
 * PLANE
@@ -63,8 +58,6 @@
 * SPAmatrix
 * SPAvector
 * SPAunit_vector
-
-## Geometric Operators
 
 ### Functions
 
@@ -99,16 +92,16 @@
 
 ## Sweeping
 
-### Functions
-
-* api_make_sweep_path
-* api_sweep_with_options
-
 ### Classes / Enums
 
 * sweep_bool_type
 * sweep_options
 * make_sweep_path_options
+
+### Functions
+
+* api_make_sweep_path
+* api_sweep_with_options
 
 ## Licensing
 
