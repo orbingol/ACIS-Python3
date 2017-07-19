@@ -24,7 +24,7 @@ ACIS_Query_method_get_owner_transf(PyObject *self, PyObject *args, PyObject *kwa
   }
 
   // Get the ACIS object from the user input
-  ENTITY *&_ent = ((ACIS_Topology_ENTITY *) input_ent)->_acis_obj;
+  ENTITY *&_ent = ((ACIS_Entity_ENTITY *) input_ent)->_acis_obj;
 
   // Execute ACIS function
   SPAtransf retval = get_owner_transf(_ent);
@@ -69,7 +69,7 @@ ACIS_api_get_faces(PyObject *self, PyObject *args, PyObject *kwargs)
   API_BEGIN
 
             // Get the ACIS objects from the user input
-            ENTITY *&_ent = ((ACIS_Topology_ENTITY *) input_ent)->_acis_obj;
+            ENTITY *&_ent = ((ACIS_Entity_ENTITY *) input_ent)->_acis_obj;
             ENTITY_LIST *&_face_list = ((ACIS_Lists_ENTITY_LIST *) input_ent_list)->_acis_obj;
 
             // Call ACIS function
@@ -123,7 +123,7 @@ ACIS_api_get_edges(PyObject *self, PyObject *args, PyObject *kwargs)
   API_BEGIN
 
             // Get the ACIS objects from the user input
-            ENTITY *&_ent = ((ACIS_Topology_ENTITY *) input_ent)->_acis_obj;
+            ENTITY *&_ent = ((ACIS_Entity_ENTITY *) input_ent)->_acis_obj;
             ENTITY_LIST *&_edge_list = ((ACIS_Lists_ENTITY_LIST *) input_ent_list)->_acis_obj;
 
             // Call ACIS function

@@ -17,7 +17,7 @@
 
 #include <lists.hxx>
 
-#include "acis_topology.h"
+#include "acis_entity.h"
 
 #include "acis_lists_export.h"
 

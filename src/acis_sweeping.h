@@ -20,7 +20,7 @@
 #include <swp_enum.hxx>
 #include <container_utils.hxx>
 
-#include "acis_topology.h"
+#include "acis_entity.h"
 #include "acis_geometric_atoms.h"
 #include "utilities.h"
 

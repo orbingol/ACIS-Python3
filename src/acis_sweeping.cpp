@@ -291,7 +291,7 @@ ACIS_api_make_sweep_path(PyObject *self, PyObject *args, PyObject *kwargs)
 
   API_BEGIN
 
-            EDGE *&_path = (EDGE *&) ((ACIS_Topology_EDGE *) input_path)->base_obj._acis_obj;
+            EDGE *&_path = (EDGE *&) ((ACIS_Entity_EDGE *) input_path)->base_obj._acis_obj;
 
             // Don't use make_sweep_path_options for now
             result = api_make_sweep_path(_pts, _path);
@@ -350,7 +350,7 @@ ACIS_api_sweep_with_options(PyObject *self, PyObject *args, PyObject *kwargs)
 
   API_BEGIN
 
-            ENTITY *&_ent = (ENTITY *&) ((ACIS_Topology_ENTITY *) input_arg1)->_acis_obj;
+            ENTITY *&_ent = (ENTITY *&) ((ACIS_Entity_ENTITY *) input_arg1)->_acis_obj;
 
             // Check if we are using the sweep along the axis overload
             if (input_arg5 != NULL)
@@ -382,7 +382,7 @@ ACIS_api_sweep_with_options(PyObject *self, PyObject *args, PyObject *kwargs)
               SPAposition *&_root = (SPAposition *&) ((ACIS_GeometricAtoms_SPAposition *) input_arg2)->_acis_obj;
               SPAvector *&_axis = (SPAvector *&) ((ACIS_GeometricAtoms_SPAvector *) input_arg3)->_acis_obj;
               sweep_options *&_opts = (sweep_options *&) ((ACIS_Sweeping_SweepOptions *) input_arg4)->_acis_obj;
-              BODY *&_new_body = (BODY *&) ((ACIS_Topology_BODY *) input_arg5)->base_obj._acis_obj;
+              BODY *&_new_body = (BODY *&) ((ACIS_Entity_BODY *) input_arg5)->base_obj._acis_obj;
 
               // Call ACIS Sweeping API
               result = api_sweep_with_options(_ent, *_root, *_axis, _opts, _new_body);
@@ -406,12 +406,12 @@ ACIS_api_sweep_with_options(PyObject *self, PyObject *args, PyObject *kwargs)
                 return NULL;
               }
 
-              BODY *&_new_body = (BODY *&) ((ACIS_Topology_BODY *) input_arg4)->base_obj._acis_obj;
+              BODY *&_new_body = (BODY *&) ((ACIS_Entity_BODY *) input_arg4)->base_obj._acis_obj;
 
               // Check for sweeping along a given edge or a wire overload
               if (_ACIS_check_ENTITY(input_arg2))
               {
-                ENTITY *&_path = (ENTITY *&) ((ACIS_Topology_ENTITY *) input_arg2)->_acis_obj;
+                ENTITY *&_path = (ENTITY *&) ((ACIS_Entity_ENTITY *) input_arg2)->_acis_obj;
 
                 // Call ACIS Sweeping API
                 result = api_sweep_with_options(_ent, _path, _opts, _new_body);
