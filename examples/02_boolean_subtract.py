@@ -9,7 +9,7 @@
 
 # This example is taken from the book "Rapid Prototyping and Engineering Applications" by Frank W. Liou (Example 5.1)
 
-from ACIS import Modeler, Licensing, SaveRestore, Topology, Lists, GeometricAtoms, GeometricOperators
+from ACIS import Modeler, Licensing, SaveRestore, Entity, Lists, GeometricAtoms
 
 # Start ACIS Modeler
 Modeler.api_start_modeller(0)
@@ -19,21 +19,21 @@ unlock_key = "Your ACIS Unlock Key here"
 Licensing.spa_unlock_products(unlock_key)
 
 # Make a cuboid
-block = Topology.BODY()
+block = Entity.BODY()
 Modeler.api_make_cuboid(150, 75, 25, block)
 
 # Generate and apply transformation to the cuboid
 block_vector = GeometricAtoms.SPAvector(0.0, 0.0, 12.7)
-block_transf = GeometricOperators.translate_transf(block_vector)
+block_transf = GeometricAtoms.translate_transf(block_vector)
 Modeler.api_apply_transf(block, block_transf)
 
 # Make a frustum
-cylinder = Topology.BODY()
+cylinder = Entity.BODY()
 Modeler.api_make_frustum(19.05, 12.7, 12.7, 12.7, cylinder)
 
 # Generate and apply transformation to the frustum
 cylinder_vector = GeometricAtoms.SPAvector(0.0, 0.0, 6.35)
-cylinder_transf = GeometricOperators.translate_transf(cylinder_vector)
+cylinder_transf = GeometricAtoms.translate_transf(cylinder_vector)
 Modeler.api_apply_transf(cylinder, cylinder_transf)
 
 # Subtract frustum from cuboid
