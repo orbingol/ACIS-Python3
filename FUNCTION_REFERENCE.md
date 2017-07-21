@@ -61,7 +61,26 @@
 
 ### Functions
 
+* coordinate_transf
+* make_transf
+* reflect_transf
+* rotate_transf
+* scale_transf
+* shear_transf
 * translate_transf
+* angle_between
+* antiparallel
+* are_parallel
+* are_perpendicular
+* biparallel
+* degrees_to_radians
+* radians_to_degrees
+* get_resabs
+* get_resfit
+* get_resmch
+* get_resnor
+* distance_to_point
+* distance_to_point_squared
 
 ## Lists
 
