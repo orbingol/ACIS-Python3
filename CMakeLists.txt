@@ -140,90 +140,46 @@ set_target_properties( Licensing PROPERTIES PREFIX "" )
 
 
 #
-# ACIS Python Module - Topology (ENTITY, BODY, FACE, etc.)
+# ACIS Python Module - Entity (ENTITY, BODY, FACE, etc.)
 #
 
 # Set source files
-set( ACIS_SOURCES_Topology
-    src/acis_topology.h
-    src/acis_topology.cpp
-    ${PROJECT_BINARY_DIR}/acis_topology_export.h
+set( ACIS_SOURCES_Entity
+    src/acis_entity.h
+    src/acis_entity.cpp
+    ${PROJECT_BINARY_DIR}/acis_entity_export.h
     )
 
 # Generate Python module
-add_library( Topology SHARED ${ACIS_SOURCES_Topology} )
+add_library( Entity SHARED ${ACIS_SOURCES_Entity} )
 
 # Generate export header file
-generate_export_header( Topology
-    BASE_NAME acis_topology
+generate_export_header( Entity
+    BASE_NAME acis_entity
     )
 
 # Set link targets
-target_link_libraries( Topology ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} )
+target_link_libraries( Entity ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} )
 
 # Add the build location to the include directories
-target_include_directories( Topology PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
+target_include_directories( Entity PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
 
 # Set required C++ standard
-set_property( TARGET Topology PROPERTY CXX_STANDARD 11 )
-set_property( TARGET Topology PROPERTY CXX_STANDARD_REQUIRED ON )
+set_property( TARGET Entity PROPERTY CXX_STANDARD 11 )
+set_property( TARGET Entity PROPERTY CXX_STANDARD_REQUIRED ON )
 
 # Add suffix to debug builds
 if( WIN32 )
-  set_target_properties( Topology PROPERTIES DEBUG_POSTFIX "_d" )
+  set_target_properties( Entity PROPERTIES DEBUG_POSTFIX "_d" )
 endif()
 
 # On Windows, Python modules have .pyd filename extension
 if( WIN32 AND NOT CYGWIN )
-  set_target_properties( Topology PROPERTIES SUFFIX ".pyd" )
+  set_target_properties( Entity PROPERTIES SUFFIX ".pyd" )
 endif()
 
 # This is only needed for the python case where a modulename.so is generated
-set_target_properties( Topology PROPERTIES PREFIX "" )
-
-
-#
-# ACIS Python Module - Geometry (SURFACE and its subclasses & surface and its subclasses)
-#
-
-# Set source files
-set( ACIS_SOURCES_Geometry
-    src/acis_geometry.h
-    src/acis_geometry.cpp
-    ${PROJECT_BINARY_DIR}/acis_geometry_export.h
-    )
-
-# Generate Python module
-add_library( Geometry SHARED ${ACIS_SOURCES_Geometry} )
-
-# Generate export header file
-generate_export_header(
-    Geometry
-    BASE_NAME acis_geometry
-    )
-
-# Set link targets
-target_link_libraries( Geometry ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Topology )
-
-# Add the build location to the include directories
-target_include_directories( Geometry PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
-
-# Set required C++ standard
-set_property( TARGET Geometry PROPERTY CXX_STANDARD 11 )
-set_property( TARGET Geometry PROPERTY CXX_STANDARD_REQUIRED ON )
-
-# Add suffix to debug builds
-if( WIN32 )
-  set_target_properties( Geometry PROPERTIES DEBUG_POSTFIX "_d" )
-endif()
-
-# On Windows, Python modules have .pyd filename extension
-if( WIN32 AND NOT CYGWIN )
-  set_target_properties( Geometry PROPERTIES SUFFIX ".pyd" )
-endif()
-
-# This is only needed for the python case where a modulename.so is generated
-set_target_properties( Geometry PROPERTIES PREFIX "" )
+set_target_properties( Entity PROPERTIES PREFIX "" )
 
 
 #
@@ -267,49 +223,6 @@ endif()
 
 # This is only needed for the python case where a modulename.so is generated
 set_target_properties( GeometricAtoms PROPERTIES PREFIX "" )
-
-
-#
-# ACIS Python Module - Geometric Operators (translate_transf, parallel, antiparallel, etc.)
-#
-
-# Set source files
-set( ACIS_SOURCES_GeometricOperators
-    src/acis_geometric_operators.h
-    src/acis_geometric_operators.cpp
-    ${PROJECT_BINARY_DIR}/acis_geometric_operators_export.h
-    )
-
-# Generate Python module
-add_library( GeometricOperators SHARED ${ACIS_SOURCES_GeometricOperators} )
-
-# Generate export header file
-generate_export_header( GeometricOperators
-    BASE_NAME acis_geometric_operators
-    )
-
-# Set link targets
-target_link_libraries( GeometricOperators ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} GeometricAtoms )
-
-# Add the build location to the include directories
-target_include_directories( GeometricOperators PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
-
-# Set required C++ standard
-set_property( TARGET GeometricOperators PROPERTY CXX_STANDARD 11 )
-set_property( TARGET GeometricOperators PROPERTY CXX_STANDARD_REQUIRED ON )
-
-# Add suffix to debug builds
-if( WIN32 )
-  set_target_properties( GeometricOperators PROPERTIES DEBUG_POSTFIX "_d" )
-endif()
-
-# On Windows, Python modules have .pyd filename extension
-if( WIN32 AND NOT CYGWIN )
-  set_target_properties( GeometricOperators PROPERTIES SUFFIX ".pyd" )
-endif()
-
-# This is only needed for the python case where a modulename.so is generated
-set_target_properties( GeometricOperators PROPERTIES PREFIX "" )
 
 
 #
@@ -377,7 +290,7 @@ generate_export_header( Lists
     )
 
 # Set link targets
-target_link_libraries( Lists ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Topology )
+target_link_libraries( Lists ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Entity )
 
 # Add the build location to the include directories
 target_include_directories( Lists PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
@@ -422,7 +335,7 @@ generate_export_header( Sweeping
     )
 
 # Set link targets. Note that Modeler has dependencies towards most helper modules.
-target_link_libraries( Sweeping ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Topology GeometricAtoms )
+target_link_libraries( Sweeping ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Entity GeometricAtoms )
 
 # Add the build location to the include directories
 target_include_directories( Sweeping PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
@@ -467,7 +380,7 @@ generate_export_header( Query
     )
 
 # Set link targets. Note that Modeler has dependencies towards most helper modules.
-target_link_libraries( Query ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Topology GeometricAtoms Lists )
+target_link_libraries( Query ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Entity GeometricAtoms Lists )
 
 # Add the build location to the include directories
 target_include_directories( Query PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
@@ -506,7 +419,7 @@ set( ACIS_SOURCES_Modeler
 add_library( Modeler SHARED ${ACIS_SOURCES_Modeler} )
 
 # Set link targets. Note that Modeler has dependencies towards most helper modules.
-target_link_libraries( Modeler ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Topology Lists SaveRestore GeometricAtoms )
+target_link_libraries( Modeler ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Entity Lists SaveRestore GeometricAtoms )
 
 # Add the build location to the include directories
 target_include_directories( Modeler PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
@@ -535,7 +448,7 @@ set_target_properties( Modeler PROPERTIES PREFIX "" )
 
 # Install Python modules to APP_INSTALL_DIR
 install(
-    TARGETS Modeler Licensing Topology Lists SaveRestore GeometricAtoms GeometricOperators Sweeping Geometry Query
+    TARGETS Modeler Licensing Entity Lists SaveRestore GeometricAtoms Sweeping Query
     DESTINATION ${APP_INSTALL_DIR}/${APP_MODULE_NAME}
 )
 

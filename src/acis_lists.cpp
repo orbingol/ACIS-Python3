@@ -205,7 +205,17 @@ ACIS_Lists_method_ENTITY_LIST_next(ACIS_Lists_ENTITY_LIST *self)
 {
   PyObject *retobj = _ACIS_new_ENTITY();
   ENTITY *_elem = self->_acis_obj->next();
-  ((ACIS_Entity_ENTITY *) retobj)->_acis_obj = _elem;
+  if (_elem)
+  {
+    ((ACIS_Entity_ENTITY *) retobj)->_acis_obj = _elem;
+  }
+  else
+  {
+    // This is a requirement for iterator/generator to stop. Otherwise, you will observe an infinite loop.
+    PyErr_SetNone(PyExc_StopIteration);
+    return NULL;
+  }
+
   return retobj;
 }
 
@@ -220,17 +230,60 @@ ACIS_Lists_method_ENTITY_LIST_next_from(ACIS_Lists_ENTITY_LIST *self, PyObject *
 
   Py_INCREF(arg);
   int _from_index = (int) PyLong_AsLong(arg);
+  Py_DECREF(arg);
 
   PyObject *retobj = _ACIS_new_ENTITY();
   ENTITY *_elem = self->_acis_obj->next_from(_from_index);
-  ((ACIS_Entity_ENTITY *) retobj)->_acis_obj = _elem;
 
-  Py_DECREF(arg);
+  if (_elem)
+  {
+    ((ACIS_Entity_ENTITY *) retobj)->_acis_obj = _elem;
+  }
+  else
+  {
+    // This is a requirement for iterator/generator to stop. Otherwise, you will observe an infinite loop.
+    PyErr_SetNone(PyExc_StopIteration);
+    return NULL;
+  }
 
   return retobj;
 }
 
-/* TO-DO: Implement ENTITY_LIST::array as a Python iterator */
+static PyObject *
+ACIS_Lists_method_ENTITY_LIST_array(ACIS_Lists_ENTITY_LIST *self)
+{
+  /* This function will create a Python generator/iterator */
+
+  // Reference increment is necessary, otherwise this ENTITY_LIST will be garbage collected
+  Py_INCREF(self);
+
+  // Iterator/Generator creation functions always return self!
+  return (PyObject *) self;
+}
+
+static PyObject *
+ACIS_Lists_iter_ENTITY_LIST(PyObject *self)
+{
+  /* Must have the same signature as PyObject_GetIter() */
+
+  // Move the ENTITY_LIST pointer to the beginning
+  ACIS_Lists_method_ENTITY_LIST_init((ACIS_Lists_ENTITY_LIST *) self);
+
+  Py_INCREF(self);
+  return self;
+}
+
+static PyObject *
+ACIS_Lists_iter_next_ENTITY_LIST(PyObject *self)
+{
+  /* Must have the same signature as PyIter_Next() */
+
+  // Convert the input argument to a ENTITY_LIST object
+  ACIS_Lists_ENTITY_LIST *_ent_list = (ACIS_Lists_ENTITY_LIST *) self;
+
+  // Return the next element
+  return ACIS_Lists_method_ENTITY_LIST_next(_ent_list);
+}
 
 static PyGetSetDef
   ACIS_Lists_getseters_ENTITY_LIST[] =
@@ -258,7 +311,7 @@ static PyMethodDef
     { "first", (PyCFunction) ACIS_Lists_method_ENTITY_LIST_first, METH_NOARGS, "Initializes the iterator, which is used by the next method, to the beginning of the list" },
     { "next", (PyCFunction) ACIS_Lists_method_ENTITY_LIST_next, METH_NOARGS, "Returns the next undeleted (live) entry" },
     { "next_from", (PyCFunction) ACIS_Lists_method_ENTITY_LIST_next_from, METH_O, "Returns the next non deleted entry after the index given without affecting the member variables used by init and next" },
-    //{ "array", (PyCFunction)ACIS_Lists_method_ENTITY_LIST_array, METH_VARARGS | METH_KEYWORDS, "Gets an array of the entities in the list" },
+    { "array", (PyCFunction) ACIS_Lists_method_ENTITY_LIST_array, METH_NOARGS, "Gets an array of the entities in the list (creates a Python generator)" },
     { NULL }  /* Sentinel */
   };
 
@@ -290,8 +343,8 @@ static PyTypeObject
     0,                         /* tp_clear */
     0,                         /* tp_richcompare */
     0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
+    (getiterfunc) ACIS_Lists_iter_ENTITY_LIST,                         /* tp_iter */
+    (iternextfunc) ACIS_Lists_iter_next_ENTITY_LIST,                         /* tp_iternext */
     ACIS_Lists_methods_ENTITY_LIST,             /* tp_methods */
     ACIS_Lists_members_ENTITY_LIST,             /* tp_members */
     ACIS_Lists_getseters_ENTITY_LIST,                         /* tp_getset */

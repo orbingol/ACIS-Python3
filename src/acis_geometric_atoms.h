@@ -21,6 +21,8 @@
 #include <vector.hxx>
 #include <unitvec.hxx>
 #include <param.hxx>
+#include <geom_utl.hxx>
+#include <acistol.hxx>
 
 #include "acis_geometric_atoms_export.h"
 
