@@ -2,6 +2,13 @@ cmake_minimum_required( VERSION 2.8 )
 project( ACIS_Py3Module CXX )
 
 #
+# Application Configuration
+#
+
+# Set Python version
+set( APP_PYTHON_VERSION 3.5 )
+
+#
 # CMake setup and quick fixes
 #
 
@@ -80,7 +87,7 @@ endif()
 #
 
 # Find Python libs
-find_package( PythonLibs 3.5 REQUIRED )
+find_package( PythonLibs ${APP_PYTHON_VERSION} REQUIRED )
 if( PythonLibs_FOUND )
   include_directories( ${PYTHON_INCLUDE_DIRS} )
 else()
