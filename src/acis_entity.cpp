@@ -39,7 +39,7 @@ PyObject *
 ACIS_Entity_new_ENTITY(PyTypeObject *type, PyObject *args, PyObject *kwargs)
 {
   // First check if the modeler has been started
-  if(!is_modeler_started())
+  if (!is_modeler_started())
   {
     PyErr_SetString(PyExc_RuntimeError, "ACIS is not running!");
     return NULL;
@@ -131,8 +131,8 @@ PyObject *
 ACIS_Entity_repr_ENTITY(ACIS_Entity_ENTITY *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->attrib_name);
-  int _id = (int)PyLong_AsLong(self->attrib_object_id);
-  return PyUnicode_FromFormat("ACIS ENTITY object with name '%s' and ID '%i'", _name, _id);
+  int _id = (int) PyLong_AsLong(self->attrib_object_id);
+  return PyUnicode_FromFormat("ENTITY object with name '%s' and ID '%i'", _name, _id);
 }
 
 PyObject *
@@ -144,7 +144,7 @@ ACIS_Entity_str_ENTITY(ACIS_Entity_ENTITY *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS ENTITY object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("ENTITY object (%s)", acis_obj_status);
 }
 
 PyObject *
@@ -239,7 +239,7 @@ static int
 ACIS_Entity_init_BODY(ACIS_Entity_BODY *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *)self, args, kwargs) < 0)
+  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
@@ -249,8 +249,8 @@ static PyObject *
 ACIS_Entity_repr_BODY(ACIS_Entity_BODY *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
-  int _id = (int)PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS BODY object with name '%s' and ID '%i'", _name, _id);
+  int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
+  return PyUnicode_FromFormat("BODY object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -262,7 +262,7 @@ ACIS_Entity_str_BODY(ACIS_Entity_BODY *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS BODY object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("BODY object (%s)", acis_obj_status);
 }
 
 static PyGetSetDef
@@ -335,7 +335,7 @@ static int
 ACIS_Entity_init_FACE(ACIS_Entity_FACE *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *)self, args, kwargs) < 0)
+  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
@@ -345,8 +345,8 @@ static PyObject *
 ACIS_Entity_repr_FACE(ACIS_Entity_FACE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
-  int _id = (int)PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS FACE object with name '%s' and ID '%i'", _name, _id);
+  int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
+  return PyUnicode_FromFormat("FACE object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -358,7 +358,8 @@ ACIS_Entity_str_FACE(ACIS_Entity_FACE *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS FACE object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("FACE object (%s)", acis_obj_status);
+}
 
 static PyObject *
 ACIS_Entity_method_FACE_sense(ACIS_Entity_FACE *self)
@@ -454,7 +455,7 @@ static int
 ACIS_Entity_init_EDGE(ACIS_Entity_EDGE *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *)self, args, kwargs) < 0)
+  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
@@ -464,8 +465,8 @@ static PyObject *
 ACIS_Entity_repr_EDGE(ACIS_Entity_EDGE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
-  int _id = (int)PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS EDGE object with name '%s' and ID '%i'", _name, _id);
+  int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
+  return PyUnicode_FromFormat("EDGE object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -477,7 +478,7 @@ ACIS_Entity_str_EDGE(ACIS_Entity_EDGE *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS EDGE object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("EDGE object (%s)", acis_obj_status);
 }
 
 static PyGetSetDef
@@ -550,7 +551,7 @@ static int
 ACIS_Entity_init_WIRE(ACIS_Entity_WIRE *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *)self, args, kwargs) < 0)
+  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
@@ -560,8 +561,8 @@ static PyObject *
 ACIS_Entity_repr_WIRE(ACIS_Entity_WIRE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
-  int _id = (int)PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS WIRE object with name '%s' and ID '%i'", _name, _id);
+  int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
+  return PyUnicode_FromFormat("WIRE object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -573,7 +574,7 @@ ACIS_Entity_str_WIRE(ACIS_Entity_WIRE *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS WIRE object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("WIRE object (%s)", acis_obj_status);
 }
 
 static PyGetSetDef
@@ -646,7 +647,7 @@ static int
 ACIS_Entity_init_LUMP(ACIS_Entity_LUMP *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *)self, args, kwargs) < 0)
+  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
@@ -656,8 +657,8 @@ static PyObject *
 ACIS_Entity_repr_LUMP(ACIS_Entity_LUMP *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
-  int _id = (int)PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS LUMP object with name '%s' and ID '%i'", _name, _id);
+  int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
+  return PyUnicode_FromFormat("LUMP object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -669,7 +670,7 @@ ACIS_Entity_str_LUMP(ACIS_Entity_LUMP *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS LUMP object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("LUMP object (%s)", acis_obj_status);
 }
 
 static PyGetSetDef
@@ -742,7 +743,7 @@ static int
 ACIS_Entity_init_SHELL(ACIS_Entity_SHELL *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *)self, args, kwargs) < 0)
+  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
@@ -752,8 +753,8 @@ static PyObject *
 ACIS_Entity_repr_SHELL(ACIS_Entity_SHELL *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
-  int _id = (int)PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS SHELL object with name '%s' and ID '%i'", _name, _id);
+  int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
+  return PyUnicode_FromFormat("SHELL object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -765,7 +766,7 @@ ACIS_Entity_str_SHELL(ACIS_Entity_SHELL *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS SHELL object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("SHELL object (%s)", acis_obj_status);
 }
 
 static PyGetSetDef
@@ -838,7 +839,7 @@ static int
 ACIS_Entity_init_SUBSHELL(ACIS_Entity_SUBSHELL *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *)self, args, kwargs) < 0)
+  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
@@ -848,8 +849,8 @@ static PyObject *
 ACIS_Entity_repr_SUBSHELL(ACIS_Entity_SUBSHELL *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
-  int _id = (int)PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS SUBSHELL object with name '%s' and ID '%i'", _name, _id);
+  int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
+  return PyUnicode_FromFormat("SUBSHELL object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -861,7 +862,7 @@ ACIS_Entity_str_SUBSHELL(ACIS_Entity_SUBSHELL *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS SUBSHELL object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("SUBSHELL object (%s)", acis_obj_status);
 }
 
 static PyGetSetDef
@@ -934,7 +935,7 @@ static int
 ACIS_Entity_init_COEDGE(ACIS_Entity_COEDGE *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *)self, args, kwargs) < 0)
+  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
@@ -944,8 +945,8 @@ static PyObject *
 ACIS_Entity_repr_COEDGE(ACIS_Entity_COEDGE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
-  int _id = (int)PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS COEDGE object with name '%s' and ID '%i'", _name, _id);
+  int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
+  return PyUnicode_FromFormat("COEDGE object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -957,7 +958,7 @@ ACIS_Entity_str_COEDGE(ACIS_Entity_COEDGE *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS COEDGE object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("COEDGE object (%s)", acis_obj_status);
 }
 
 static PyGetSetDef
@@ -1030,7 +1031,7 @@ static int
 ACIS_Entity_init_LOOP(ACIS_Entity_LOOP *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *)self, args, kwargs) < 0)
+  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
@@ -1040,8 +1041,8 @@ static PyObject *
 ACIS_Entity_repr_LOOP(ACIS_Entity_LOOP *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
-  int _id = (int)PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS LOOP object with name '%s' and ID '%i'", _name, _id);
+  int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
+  return PyUnicode_FromFormat("LOOP object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -1053,7 +1054,7 @@ ACIS_Entity_str_LOOP(ACIS_Entity_LOOP *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS LOOP object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("LOOP object (%s)", acis_obj_status);
 }
 
 static PyGetSetDef
@@ -1126,7 +1127,7 @@ static int
 ACIS_Entity_init_VERTEX(ACIS_Entity_VERTEX *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *)self, args, kwargs) < 0)
+  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
@@ -1136,8 +1137,8 @@ static PyObject *
 ACIS_Entity_repr_VERTEX(ACIS_Entity_VERTEX *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
-  int _id = (int)PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS VERTEX object with name '%s' and ID '%i'", _name, _id);
+  int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
+  return PyUnicode_FromFormat("VERTEX object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -1149,7 +1150,7 @@ ACIS_Entity_str_VERTEX(ACIS_Entity_VERTEX *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS VERTEX object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("VERTEX object (%s)", acis_obj_status);
 }
 
 static PyGetSetDef
@@ -1233,7 +1234,7 @@ ACIS_Entity_repr_SURFACE(ACIS_Entity_SURFACE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS SURFACE object with name '%s' and ID '%i'", _name, _id);
+  return PyUnicode_FromFormat("SURFACE object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -1245,7 +1246,8 @@ ACIS_Entity_str_SURFACE(ACIS_Entity_SURFACE *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS SURFACE object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("SURFACE object (%s)", acis_obj_status);
+}
 
 static PyObject *
 ACIS_Entity_method_SURFACE_equation(ACIS_Entity_SURFACE *self)
@@ -1380,7 +1382,7 @@ ACIS_Entity_repr_CONE(ACIS_Entity_CONE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS CONE object with name '%s' and ID '%i'", _name, _id);
+  return PyUnicode_FromFormat("CONE object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -1392,7 +1394,7 @@ ACIS_Entity_str_CONE(ACIS_Entity_CONE *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS CONE object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("CONE object (%s)", acis_obj_status);
 }
 
 static PyGetSetDef
@@ -1476,7 +1478,7 @@ ACIS_Entity_repr_PLANE(ACIS_Entity_PLANE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS PLANE object with name '%s' and ID '%i'", _name, _id);
+  return PyUnicode_FromFormat("PLANE object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -1488,7 +1490,7 @@ ACIS_Entity_str_PLANE(ACIS_Entity_PLANE *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS PLANE object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("PLANE object (%s)", acis_obj_status);
 }
 
 static PyGetSetDef
@@ -1572,7 +1574,7 @@ ACIS_Entity_repr_SPHERE(ACIS_Entity_SPHERE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS SPHERE object with name '%s' and ID '%i'", _name, _id);
+  return PyUnicode_FromFormat("SPHERE object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -1584,7 +1586,7 @@ ACIS_Entity_str_SPHERE(ACIS_Entity_SPHERE *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS SPHERE object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("SPHERE object (%s)", acis_obj_status);
 }
 
 static PyGetSetDef
@@ -1668,7 +1670,7 @@ ACIS_Entity_repr_SPLINE(ACIS_Entity_SPLINE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS SPLINE object with name '%s' and ID '%i'", _name, _id);
+  return PyUnicode_FromFormat("SPLINE object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -1680,7 +1682,7 @@ ACIS_Entity_str_SPLINE(ACIS_Entity_SPLINE *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS SPLINE object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("SPLINE object (%s)", acis_obj_status);
 }
 
 static PyGetSetDef
@@ -1764,7 +1766,7 @@ ACIS_Entity_repr_TORUS(ACIS_Entity_TORUS *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
-  return PyUnicode_FromFormat("ACIS TORUS object with name '%s' and ID '%i'", _name, _id);
+  return PyUnicode_FromFormat("TORUS object with name '%s' and ID '%i'", _name, _id);
 }
 
 static PyObject *
@@ -1776,7 +1778,7 @@ ACIS_Entity_str_TORUS(ACIS_Entity_TORUS *self)
   else
     acis_obj_status = "Valid";
 
-  return PyUnicode_FromFormat("ACIS TORUS object (%s)", acis_obj_status);
+  return PyUnicode_FromFormat("TORUS object (%s)", acis_obj_status);
 }
 
 static PyGetSetDef
@@ -2016,118 +2018,118 @@ PyInit_Entity(void)
   if (m == NULL)
     return NULL;
 
-  // Add ENTITY to the Topology module
+  // Add ENTITY to the module
   if (PyType_Ready(&ACIS_Entity_type_ENTITY) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_ENTITY);
   PyModule_AddObject(m, "ENTITY", (PyObject *) &ACIS_Entity_type_ENTITY);
 
-  // Add BODY to the Topology module
+  // Add BODY to the module
   ACIS_Entity_type_BODY.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_BODY) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_BODY);
   PyModule_AddObject(m, "BODY", (PyObject *) &ACIS_Entity_type_BODY);
 
-  // Add FACE to the Topology module
+  // Add FACE to the module
   ACIS_Entity_type_FACE.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_FACE) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_FACE);
   PyModule_AddObject(m, "FACE", (PyObject *) &ACIS_Entity_type_FACE);
 
-  // Add EDGE to the Topology module
+  // Add EDGE to the module
   ACIS_Entity_type_EDGE.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_EDGE) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_EDGE);
   PyModule_AddObject(m, "EDGE", (PyObject *) &ACIS_Entity_type_EDGE);
 
-  // Add WIRE to the Topology module
+  // Add WIRE to the module
   ACIS_Entity_type_WIRE.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_WIRE) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_WIRE);
   PyModule_AddObject(m, "WIRE", (PyObject *) &ACIS_Entity_type_WIRE);
 
-  // Add LUMP to the Topology module
+  // Add LUMP to the module
   ACIS_Entity_type_LUMP.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_LUMP) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_LUMP);
   PyModule_AddObject(m, "LUMP", (PyObject *) &ACIS_Entity_type_LUMP);
 
-  // Add SHELL to the Topology module
+  // Add SHELL to the module
   ACIS_Entity_type_SHELL.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_SHELL) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_SHELL);
   PyModule_AddObject(m, "SHELL", (PyObject *) &ACIS_Entity_type_SHELL);
 
-  // Add SUBSHELL to the Topology module
+  // Add SUBSHELL to the module
   ACIS_Entity_type_SUBSHELL.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_SUBSHELL) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_SUBSHELL);
   PyModule_AddObject(m, "SUBSHELL", (PyObject *) &ACIS_Entity_type_SUBSHELL);
 
-  // Add COEDGE to the Topology module
+  // Add COEDGE to the module
   ACIS_Entity_type_COEDGE.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_COEDGE) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_COEDGE);
   PyModule_AddObject(m, "COEDGE", (PyObject *) &ACIS_Entity_type_COEDGE);
 
-  // Add LOOP to the Topology module
+  // Add LOOP to the module
   ACIS_Entity_type_LOOP.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_LOOP) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_LOOP);
   PyModule_AddObject(m, "LOOP", (PyObject *) &ACIS_Entity_type_LOOP);
 
-  // Add VERTEX to the Topology module
+  // Add VERTEX to the module
   ACIS_Entity_type_VERTEX.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_VERTEX) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_VERTEX);
   PyModule_AddObject(m, "VERTEX", (PyObject *) &ACIS_Entity_type_VERTEX);
 
-  // Add SURFACE to the Geometry module
+  // Add SURFACE to the module
   ACIS_Entity_type_SURFACE.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_SURFACE) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_SURFACE);
   PyModule_AddObject(m, "SURFACE", (PyObject *) &ACIS_Entity_type_SURFACE);
 
-  // Add CONE to the Geometry module
+  // Add CONE to the module
   ACIS_Entity_type_CONE.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_CONE) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_CONE);
   PyModule_AddObject(m, "CONE", (PyObject *) &ACIS_Entity_type_CONE);
 
-  // Add PLANE to the Geometry module
+  // Add PLANE to the module
   ACIS_Entity_type_PLANE.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_PLANE) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_PLANE);
   PyModule_AddObject(m, "PLANE", (PyObject *) &ACIS_Entity_type_PLANE);
 
-  // Add SPHERE to the Geometry module
+  // Add SPHERE to the module
   ACIS_Entity_type_SPHERE.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_SPHERE) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_SPHERE);
   PyModule_AddObject(m, "SPHERE", (PyObject *) &ACIS_Entity_type_SPHERE);
 
-  // Add SPLINE to the Geometry module
+  // Add SPLINE to the module
   ACIS_Entity_type_SPLINE.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_SPLINE) < 0)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_SPLINE);
   PyModule_AddObject(m, "SPLINE", (PyObject *) &ACIS_Entity_type_SPLINE);
 
-  // Add TORUS to the Geometry module
+  // Add TORUS to the module
   ACIS_Entity_type_TORUS.tp_base = &ACIS_Entity_type_ENTITY;
   if (PyType_Ready(&ACIS_Entity_type_TORUS) < 0)
     return NULL;
@@ -2151,7 +2153,7 @@ PyObject *_ACIS_new_ENTITY()
 
 bool _ACIS_check_ENTITY(PyObject *ob)
 {
-  int retval = PyObject_IsInstance(ob, (PyObject *)&ACIS_Entity_type_ENTITY);
+  int retval = PyObject_IsInstance(ob, (PyObject *) &ACIS_Entity_type_ENTITY);
   if (retval < 0)
   {
     PyErr_SetString(PyExc_TypeError, "Problem with ENTITY type cheking");
