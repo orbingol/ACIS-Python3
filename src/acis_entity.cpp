@@ -1767,6 +1767,154 @@ static PyTypeObject
   };
 
 
+/**
+ * 3D ACIS Modeler - surface wrapper
+ */
+
+static void
+ACIS_Entity_dealloc_surface(ACIS_Entity_surface *self)
+{
+  Py_TYPE(self)->tp_free((PyObject *) self);
+}
+
+static PyObject *
+ACIS_Entity_new_surface(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+{
+  // First check if the modeler has been started
+  if (!is_modeler_started())
+  {
+    PyErr_SetString(PyExc_RuntimeError, "ACIS is not running!");
+    return NULL;
+  }
+
+  ACIS_Entity_surface *self;
+
+  self = (ACIS_Entity_surface *) type->tp_alloc(type, 0);
+  if (self != NULL)
+  {
+    // Just getting rid of the dangling pointer
+    self->_acis_obj = NULL;
+  }
+
+  return (PyObject *) self;
+}
+
+static int
+ACIS_Entity_init_surface(ACIS_Entity_surface *self, PyObject *args, PyObject *kwargs)
+{
+  return 0;
+}
+
+static PyObject *
+ACIS_Entity_method_surface_eval_normal(ACIS_Entity_surface *self, PyObject *arg)
+{
+  if (!_ACIS_check_SPApar_pos(arg))
+  {
+    PyErr_SetString(PyExc_TypeError, "Expecting a SPApar_pos object");
+    return NULL;
+  }
+
+  Py_INCREF(arg);
+
+  SPApar_pos *&_pos = ((ACIS_GeometricAtoms_SPApar_pos *) arg)->_acis_obj;
+
+  SPAunit_vector _retval = self->_acis_obj->eval_normal(*_pos);
+
+  PyObject *_retobj = _ACIS_new_SPAunit_vector();
+  *((ACIS_GeometricAtoms_SPAunit_vector *) _retobj)->_acis_obj = _retval;
+
+  Py_DECREF(arg);
+
+  return _retobj;
+}
+
+static PyObject *
+ACIS_Entity_method_surface_eval_position(ACIS_Entity_surface *self, PyObject *arg)
+{
+  if (!_ACIS_check_SPApar_pos(arg))
+  {
+    PyErr_SetString(PyExc_TypeError, "Expecting a SPApar_pos object");
+    return NULL;
+  }
+
+  Py_INCREF(arg);
+
+  SPApar_pos *&_pos = ((ACIS_GeometricAtoms_SPApar_pos *) arg)->_acis_obj;
+
+  SPAposition _retval = self->_acis_obj->eval_position(*_pos);
+
+  PyObject *_retobj = _ACIS_new_SPAposition();
+  *((ACIS_GeometricAtoms_SPAposition *) _retobj)->_acis_obj = _retval;
+
+  Py_DECREF(arg);
+
+  return _retobj;
+}
+
+static PyGetSetDef
+  ACIS_Entity_getseters_surface[] =
+  {
+    { NULL }  /* Sentinel */
+  };
+
+static PyMemberDef
+  ACIS_Entity_members_surface[] =
+  {
+    { NULL }  /* Sentinel */
+  };
+
+static PyMethodDef
+  ACIS_Entity_methods_surface[] =
+  {
+    { "eval_normal", (PyCFunction) ACIS_Entity_method_surface_eval_normal, METH_O, "Finds the normal to a parametric surface at the point with the given parameter position" },
+    { "eval_position", (PyCFunction) ACIS_Entity_method_surface_eval_position, METH_O, "Finds the point on a parametric surface with the given parameter position" },
+    { NULL }  /* Sentinel */
+  };
+
+static PyTypeObject
+  ACIS_Entity_type_surface =
+  {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    "ACIS.surface",        /* tp_name */
+    sizeof(ACIS_Entity_surface),    /* tp_basicsize */
+    0,                         /* tp_itemsize */
+    (destructor) ACIS_Entity_dealloc_surface,                         /* tp_dealloc */
+    0,                         /* tp_print */
+    0,                         /* tp_getattr */
+    0,                         /* tp_setattr */
+    0,                         /* tp_reserved */
+    0,                         /* tp_repr */
+    0,                         /* tp_as_number */
+    0,                         /* tp_as_sequence */
+    0,                         /* tp_as_mapping */
+    0,                         /* tp_hash  */
+    0,                         /* tp_call */
+    0,                         /* tp_str */
+    0,                         /* tp_getattro */
+    0,                         /* tp_setattro */
+    0,                         /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT,        /* tp_flags */
+    "ACIS surface class",           /* tp_doc */
+    0,                         /* tp_traverse */
+    0,                         /* tp_clear */
+    0,                         /* tp_richcompare */
+    0,                         /* tp_weaklistoffset */
+    0,                         /* tp_iter */
+    0,                         /* tp_iternext */
+    ACIS_Entity_methods_surface,             /* tp_methods */
+    ACIS_Entity_members_surface,             /* tp_members */
+    ACIS_Entity_getseters_surface,                         /* tp_getset */
+    0,                         /* tp_base */
+    0,                         /* tp_dict */
+    0,                         /* tp_descr_get */
+    0,                         /* tp_descr_set */
+    0,                         /* tp_dictoffset */
+    (initproc) ACIS_Entity_init_surface,      /* tp_init */
+    0,                         /* tp_alloc */
+    ACIS_Entity_new_surface,                 /* tp_new */
+  };
+
+
 /*
  * Python Module Definitions
  */
@@ -1911,6 +2059,12 @@ PyInit_Entity(void)
     return NULL;
   Py_INCREF(&ACIS_Entity_type_TORUS);
   PyModule_AddObject(m, "TORUS", (PyObject *) &ACIS_Entity_type_TORUS);
+
+  // Add surface to the module
+  if (PyType_Ready(&ACIS_Entity_type_surface) < 0)
+    return NULL;
+  Py_INCREF(&ACIS_Entity_type_surface);
+  PyModule_AddObject(m, "surface", (PyObject *) &ACIS_Entity_type_surface);
 
   // Return the module and all included objects
   return m;
@@ -2090,6 +2244,16 @@ PyObject *_ACIS_new_TORUS()
 bool _ACIS_check_TORUS(PyObject *ob)
 {
   return Py_TYPE(ob) == &ACIS_Entity_type_TORUS;
+}
+
+PyObject *_ACIS_new_surface()
+{
+  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_surface, NULL);
+}
+
+bool _ACIS_check_surface(PyObject *ob)
+{
+  return Py_TYPE(ob) == &ACIS_Entity_type_surface;
 }
 
 void _ACIS_make_null(PyObject *ob)

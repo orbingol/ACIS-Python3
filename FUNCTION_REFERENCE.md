@@ -48,6 +48,7 @@
 * SPHERE
 * SPLINE
 * TORUS
+* surface
 
 ## Geometric Atoms
 

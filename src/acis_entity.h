@@ -21,6 +21,9 @@
 #include <face.hxx>
 #include <at_name.hxx>
 #include <at_int.hxx>
+#include <surdef.hxx>
+
+#include "acis_geometric_atoms.h"
 
 #include "acis_entity_export.h"
 
@@ -290,6 +293,16 @@ typedef struct
 PyObject ACIS_ENTITY_EXPORT *_ACIS_new_TORUS();
 
 bool ACIS_ENTITY_EXPORT _ACIS_check_TORUS(PyObject *ob);
+
+// Define surface
+typedef struct
+{
+  surface* _acis_obj;
+} ACIS_Entity_surface;
+
+PyObject ACIS_ENTITY_EXPORT *_ACIS_new_surface();
+
+bool ACIS_ENTITY_EXPORT _ACIS_check_surface(PyObject *ob);
 
 
 // Additional functions
