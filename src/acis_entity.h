@@ -21,6 +21,7 @@
 #include <face.hxx>
 #include <at_name.hxx>
 #include <at_int.hxx>
+#include <surface.hxx>
 #include <surdef.hxx>
 
 #include "acis_geometric_atoms.h"

@@ -359,6 +359,27 @@ ACIS_Entity_str_FACE(ACIS_Entity_FACE *self)
     acis_obj_status = "Valid";
 
   return PyUnicode_FromFormat("ACIS FACE object (%s)", acis_obj_status);
+
+static PyObject *
+ACIS_Entity_method_FACE_sense(ACIS_Entity_FACE *self)
+{
+  logical _revbit;
+  _revbit = ((FACE *) self->base_obj._acis_obj)->sense();
+
+  // If REVBIT is true or reversed, the directions are opposite (reversed)
+  if (_revbit)
+    Py_RETURN_TRUE;
+  // If REVBIT is false or forward, the directions are the same
+  Py_RETURN_FALSE;
+}
+
+static PyObject *
+ACIS_Entity_method_FACE_geometry(ACIS_Entity_FACE *self)
+{
+  PyObject *_retobj = _ACIS_new_SURFACE();
+  // Store everything as ENTITY
+  ((ACIS_Entity_SURFACE *) _retobj)->base_obj._acis_obj = (ENTITY *) ((FACE *) self->base_obj._acis_obj)->geometry();
+  return _retobj;
 }
 
 static PyGetSetDef
@@ -376,6 +397,8 @@ static PyMemberDef
 static PyMethodDef
   ACIS_Entity_methods_FACE[] =
   {
+    { "sense", (PyCFunction) ACIS_Entity_method_FACE_sense, METH_NOARGS, "Returns the sense of this FACE relative to its SURFACE" },
+    { "geometry", (PyCFunction) ACIS_Entity_method_FACE_geometry, METH_NOARGS, "Returns a pointer to the underlying SURFACE defining this FACE" },
     { NULL }  /* Sentinel */
   };
 
@@ -1223,6 +1246,55 @@ ACIS_Entity_str_SURFACE(ACIS_Entity_SURFACE *self)
     acis_obj_status = "Valid";
 
   return PyUnicode_FromFormat("ACIS SURFACE object (%s)", acis_obj_status);
+
+static PyObject *
+ACIS_Entity_method_SURFACE_equation(ACIS_Entity_SURFACE *self)
+{
+  PyObject *_retobj = _ACIS_new_surface();
+  *((ACIS_Entity_surface *) _retobj)->_acis_obj = ((SURFACE *)(self->base_obj._acis_obj))->equation();
+  return _retobj;
+}
+
+static PyObject *
+ACIS_Entity_method_SURFACE_trans_surface(ACIS_Entity_SURFACE *self, PyObject *args, PyObject *kwargs)
+{
+  PyObject *input_t = NULL, *input_reverse = NULL;
+
+  // List of keyword arguments that this function can take
+  static char *kwlist[] =
+    {
+      (char *) "t",
+      (char *) "reverse",
+      NULL
+    };
+
+  // Try to parse input arguments and/or keywords
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "|Oi", kwlist, &input_t, &input_reverse))
+    return NULL;
+
+  SPAtransf _t = *(SPAtransf *) NULL_REF;
+  if (input_t != NULL)
+  {
+    // Validate input
+    if (!_ACIS_check_SPAtransf(input_t))
+    {
+      PyErr_SetString(PyExc_TypeError, "The first argument (t) must be a SPAtransf object");
+      return NULL;
+    }
+
+    _t = *((ACIS_GeometricAtoms_SPAtransf *) input_t)->_acis_obj;
+  }
+
+  logical _reverse = FALSE;
+  if (input_reverse != NULL)
+  {
+    long _py_inp_reverse = PyLong_AsLong(input_reverse);
+    _reverse = (_py_inp_reverse == 0) ? FALSE : TRUE;
+  }
+
+  PyObject *_retobj = _ACIS_new_surface();
+  ((ACIS_Entity_surface *) _retobj)->_acis_obj = ((SURFACE *)(self->base_obj._acis_obj))->trans_surface(_t, _reverse);
+  return _retobj;
 }
 
 static PyGetSetDef
@@ -1240,6 +1312,8 @@ static PyMemberDef
 static PyMethodDef
   ACIS_Entity_methods_SURFACE[] =
   {
+    { "equation", (PyCFunction) ACIS_Entity_method_SURFACE_equation, METH_NOARGS, "Returns the equation of this SURFACE" },
+    { "trans_surface", (PyCFunction) ACIS_Entity_method_SURFACE_trans_surface, METH_VARARGS | METH_KEYWORDS, "Returns the transformed surface" },
     { NULL }  /* Sentinel */
   };
 
