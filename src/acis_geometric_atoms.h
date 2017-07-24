@@ -74,17 +74,6 @@ PyObject ACIS_GEOMETRIC_ATOMS_EXPORT *_ACIS_new_SPAmatrix();
 
 bool ACIS_GEOMETRIC_ATOMS_EXPORT _ACIS_check_SPAmatrix(PyObject *ob);
 
-// Define SPApar_pos
-typedef struct
-{
-  PyObject_HEAD
-  SPApar_pos *_acis_obj;
-} ACIS_GeometricAtoms_SPApar_pos;
-
-//PyObject ACIS_GEOMETRIC_ATOMS_EXPORT *_ACIS_new_SPApar_pos();
-
-//bool ACIS_GEOMETRIC_ATOMS_EXPORT _ACIS_check_SPApar_pos(PyObject *ob);
-
 // Define SPAtransf
 typedef struct
 {
@@ -95,6 +84,28 @@ typedef struct
 PyObject ACIS_GEOMETRIC_ATOMS_EXPORT *_ACIS_new_SPAtransf();
 
 bool ACIS_GEOMETRIC_ATOMS_EXPORT _ACIS_check_SPAtransf(PyObject *ob);
+
+// Define SPApar_pos
+typedef struct
+{
+  PyObject_HEAD
+  SPApar_pos *_acis_obj;
+} ACIS_GeometricAtoms_SPApar_pos;
+
+PyObject ACIS_GEOMETRIC_ATOMS_EXPORT *_ACIS_new_SPApar_pos();
+
+bool ACIS_GEOMETRIC_ATOMS_EXPORT _ACIS_check_SPApar_pos(PyObject *ob);
+
+// Define SPApar_vec
+typedef struct
+{
+  PyObject_HEAD
+  SPApar_vec *_acis_obj;
+} ACIS_GeometricAtoms_SPApar_vec;
+
+PyObject ACIS_GEOMETRIC_ATOMS_EXPORT *_ACIS_new_SPApar_vec();
+
+bool ACIS_GEOMETRIC_ATOMS_EXPORT _ACIS_check_SPApar_vec(PyObject *ob);
 
 #ifdef __cplusplus
 }

@@ -58,6 +58,8 @@
 * SPAmatrix
 * SPAvector
 * SPAunit_vector
+* SPApar_pos
+* SPApar_vec
 
 ### Functions
 

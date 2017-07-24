@@ -1554,6 +1554,293 @@ static PyTypeObject
 
 
 /**
+ * SPApar_pos wrapper
+ */
+
+static void
+ACIS_GeometricAtoms_dealloc_SPApar_pos(ACIS_GeometricAtoms_SPApar_pos *self)
+{
+  // Delete ACIS object
+  ACIS_DELETE self->_acis_obj;
+
+  // Delete the python object
+  Py_TYPE(self)->tp_free((PyObject *) self);
+}
+
+static PyObject *
+ACIS_GeometricAtoms_new_SPApar_pos(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+{
+  ACIS_GeometricAtoms_SPApar_pos *self;
+
+  self = (ACIS_GeometricAtoms_SPApar_pos *) type->tp_alloc(type, 0);
+  if (self != NULL)
+  {
+    // Just getting rid of the dangling pointer
+    self->_acis_obj = NULL;
+  }
+
+  return (PyObject *) self;
+}
+
+static int
+ACIS_GeometricAtoms_init_SPApar_pos(ACIS_GeometricAtoms_SPApar_pos *self, PyObject *args, PyObject *kwargs)
+{
+  // Initialize the ACIS object
+  self->_acis_obj = ACIS_NEW SPApar_pos();
+
+  return 0;
+}
+
+static PyObject *
+ACIS_GeometricAtoms_repr_SPApar_pos(ACIS_GeometricAtoms_SPApar_pos *self)
+{
+  double u = self->_acis_obj->u; double v = self->_acis_obj->v;
+
+  char *_u = PyOS_double_to_string(u, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
+  if (!_u)
+    return PyErr_NoMemory();
+
+  char *_v = PyOS_double_to_string(v, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
+  if (!_v)
+    return PyErr_NoMemory();
+
+  return PyUnicode_FromFormat("SPApar_pos object (%s, %s)", _u, _v);
+}
+
+static PyObject *
+ACIS_GeometricAtoms_method_SPApar_pos_u_getter(ACIS_GeometricAtoms_SPApar_pos *self, PyObject *value, void *closure)
+{
+  return PyFloat_FromDouble(self->_acis_obj->u);
+}
+
+static int
+ACIS_GeometricAtoms_method_SPApar_pos_u_setter(ACIS_GeometricAtoms_SPApar_pos *self, PyObject *value, void *closure)
+{
+  self->_acis_obj->u = PyFloat_AsDouble(value);
+  return 0;
+}
+
+static PyObject *
+ACIS_GeometricAtoms_method_SPApar_pos_v_getter(ACIS_GeometricAtoms_SPApar_pos *self, PyObject *value, void *closure)
+{
+  return PyFloat_FromDouble(self->_acis_obj->v);
+}
+
+static int
+ACIS_GeometricAtoms_method_SPApar_pos_v_setter(ACIS_GeometricAtoms_SPApar_pos *self, PyObject *value, void *closure)
+{
+  self->_acis_obj->v = PyFloat_AsDouble(value);
+  return 0;
+}
+
+static PyGetSetDef
+  ACIS_GeometricAtoms_getseters_SPApar_pos[] =
+  {
+    { (char *) "u", (getter) ACIS_GeometricAtoms_method_SPApar_pos_u_getter, (setter) ACIS_GeometricAtoms_method_SPApar_pos_u_setter, (char *) "value of the u parameter", NULL },
+    { (char *) "v", (getter) ACIS_GeometricAtoms_method_SPApar_pos_v_getter, (setter) ACIS_GeometricAtoms_method_SPApar_pos_v_setter, (char *) "value of the v parameter", NULL },
+    { NULL }  /* Sentinel */
+  };
+
+static PyMemberDef
+  ACIS_GeometricAtoms_members_SPApar_pos[] =
+  {
+    { NULL }  /* Sentinel */
+  };
+
+static PyMethodDef
+  ACIS_GeometricAtoms_methods_SPApar_pos[] =
+  {
+    { NULL }  /* Sentinel */
+  };
+
+static PyTypeObject
+  ACIS_GeometricAtoms_type_SPApar_pos =
+  {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    "ACIS.SPAtransf",             /* tp_name */
+    sizeof(ACIS_GeometricAtoms_SPApar_pos), /* tp_basicsize */
+    0,                         /* tp_itemsize */
+    (destructor) ACIS_GeometricAtoms_dealloc_SPApar_pos, /* tp_dealloc */
+    0,                         /* tp_print */
+    0,                         /* tp_getattr */
+    0,                         /* tp_setattr */
+    0,                         /* tp_reserved */
+    (reprfunc) ACIS_GeometricAtoms_repr_SPApar_pos,                         /* tp_repr */
+    0,                         /* tp_as_number */
+    0,                         /* tp_as_sequence */
+    0,                         /* tp_as_mapping */
+    0,                         /* tp_hash  */
+    0,                         /* tp_call */
+    (reprfunc) ACIS_GeometricAtoms_repr_SPApar_pos,                         /* tp_str */
+    0,                         /* tp_getattro */
+    0,                         /* tp_setattro */
+    0,                         /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT,   /* tp_flags */
+    "SPApar_pos defines a parameter position in the parameter-space of a surface", /* tp_doc */
+    0,                         /* tp_traverse */
+    0,                         /* tp_clear */
+    0,                         /* tp_richcompare */
+    0,                         /* tp_weaklistoffset */
+    0,                         /* tp_iter */
+    0,                         /* tp_iternext */
+    ACIS_GeometricAtoms_methods_SPApar_pos, /* tp_methods */
+    ACIS_GeometricAtoms_members_SPApar_pos, /* tp_members */
+    ACIS_GeometricAtoms_getseters_SPApar_pos, /* tp_getset */
+    0,                         /* tp_base */
+    0,                         /* tp_dict */
+    0,                         /* tp_descr_get */
+    0,                         /* tp_descr_set */
+    0,                         /* tp_dictoffset */
+    (initproc) ACIS_GeometricAtoms_init_SPApar_pos, /* tp_init */
+    0,                         /* tp_alloc */
+    ACIS_GeometricAtoms_new_SPApar_pos, /* tp_new */
+  };
+
+
+/**
+ * SPApar_vec wrapper
+ */
+
+static void
+ACIS_GeometricAtoms_dealloc_SPApar_vec(ACIS_GeometricAtoms_SPApar_vec *self)
+{
+  // Delete ACIS object
+  ACIS_DELETE self->_acis_obj;
+
+  // Delete the python object
+  Py_TYPE(self)->tp_free((PyObject *) self);
+}
+
+static PyObject *
+ACIS_GeometricAtoms_new_SPApar_vec(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+{
+  ACIS_GeometricAtoms_SPApar_vec *self;
+
+  self = (ACIS_GeometricAtoms_SPApar_vec *) type->tp_alloc(type, 0);
+  if (self != NULL)
+  {
+    // Just getting rid of the dangling pointer
+    self->_acis_obj = NULL;
+  }
+
+  return (PyObject *) self;
+}
+
+static int
+ACIS_GeometricAtoms_init_SPApar_vec(ACIS_GeometricAtoms_SPApar_vec *self, PyObject *args, PyObject *kwargs)
+{
+  // Initialize the ACIS object
+  self->_acis_obj = ACIS_NEW SPApar_vec();
+
+  return 0;
+}
+
+static PyObject *
+ACIS_GeometricAtoms_repr_SPApar_vec(ACIS_GeometricAtoms_SPApar_vec *self)
+{
+  double du = self->_acis_obj->du; double dv = self->_acis_obj->dv;
+
+  char *_du = PyOS_double_to_string(du, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
+  if (!_du)
+    return PyErr_NoMemory();
+
+  char *_dv = PyOS_double_to_string(dv, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
+  if (!_dv)
+    return PyErr_NoMemory();
+
+  return PyUnicode_FromFormat("SPApar_vec object (%s, %s)", _du, _dv);
+}
+
+static PyObject *
+ACIS_GeometricAtoms_method_SPApar_vec_du_getter(ACIS_GeometricAtoms_SPApar_vec *self, PyObject *value, void *closure)
+{
+  return PyFloat_FromDouble(self->_acis_obj->du);
+}
+
+static int
+ACIS_GeometricAtoms_method_SPApar_vec_du_setter(ACIS_GeometricAtoms_SPApar_vec *self, PyObject *value, void *closure)
+{
+  self->_acis_obj->du = PyFloat_AsDouble(value);
+  return 0;
+}
+
+static PyObject *
+ACIS_GeometricAtoms_method_SPApar_vec_dv_getter(ACIS_GeometricAtoms_SPApar_vec *self, PyObject *value, void *closure)
+{
+  return PyFloat_FromDouble(self->_acis_obj->dv);
+}
+
+static int
+ACIS_GeometricAtoms_method_SPApar_vec_dv_setter(ACIS_GeometricAtoms_SPApar_vec *self, PyObject *value, void *closure)
+{
+  self->_acis_obj->dv = PyFloat_AsDouble(value);
+  return 0;
+}
+
+static PyGetSetDef
+  ACIS_GeometricAtoms_getseters_SPApar_vec[] =
+  {
+    { (char *) "du", (getter) ACIS_GeometricAtoms_method_SPApar_vec_du_getter, (setter) ACIS_GeometricAtoms_method_SPApar_vec_du_setter, (char *) "value of the u parameter", NULL },
+    { (char *) "dv", (getter) ACIS_GeometricAtoms_method_SPApar_vec_dv_getter, (setter) ACIS_GeometricAtoms_method_SPApar_vec_dv_setter, (char *) "value of the v parameter", NULL },
+    { NULL }  /* Sentinel */
+  };
+
+static PyMemberDef
+  ACIS_GeometricAtoms_members_SPApar_vec[] =
+  {
+    { NULL }  /* Sentinel */
+  };
+
+static PyMethodDef
+  ACIS_GeometricAtoms_methods_SPApar_vec[] =
+  {
+    { NULL }  /* Sentinel */
+  };
+
+static PyTypeObject
+  ACIS_GeometricAtoms_type_SPApar_vec =
+  {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    "ACIS.SPAtransf",             /* tp_name */
+    sizeof(ACIS_GeometricAtoms_SPApar_vec), /* tp_basicsize */
+    0,                         /* tp_itemsize */
+    (destructor) ACIS_GeometricAtoms_dealloc_SPApar_vec, /* tp_dealloc */
+    0,                         /* tp_print */
+    0,                         /* tp_getattr */
+    0,                         /* tp_setattr */
+    0,                         /* tp_reserved */
+    (reprfunc) ACIS_GeometricAtoms_repr_SPApar_vec,                         /* tp_repr */
+    0,                         /* tp_as_number */
+    0,                         /* tp_as_sequence */
+    0,                         /* tp_as_mapping */
+    0,                         /* tp_hash  */
+    0,                         /* tp_call */
+    (reprfunc) ACIS_GeometricAtoms_repr_SPApar_vec,                         /* tp_str */
+    0,                         /* tp_getattro */
+    0,                         /* tp_setattro */
+    0,                         /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT,   /* tp_flags */
+    "SPApar_vec defines a vector (du, dv) in 2D parameter-space", /* tp_doc */
+    0,                         /* tp_traverse */
+    0,                         /* tp_clear */
+    0,                         /* tp_richcompare */
+    0,                         /* tp_weaklistoffset */
+    0,                         /* tp_iter */
+    0,                         /* tp_iternext */
+    ACIS_GeometricAtoms_methods_SPApar_vec, /* tp_methods */
+    ACIS_GeometricAtoms_members_SPApar_vec, /* tp_members */
+    ACIS_GeometricAtoms_getseters_SPApar_vec, /* tp_getset */
+    0,                         /* tp_base */
+    0,                         /* tp_dict */
+    0,                         /* tp_descr_get */
+    0,                         /* tp_descr_set */
+    0,                         /* tp_dictoffset */
+    (initproc) ACIS_GeometricAtoms_init_SPApar_vec, /* tp_init */
+    0,                         /* tp_alloc */
+    ACIS_GeometricAtoms_new_SPApar_vec, /* tp_new */
+  };
+
+/**
  * Python module definitions
  */
 
@@ -2435,6 +2722,18 @@ PyInit_GeometricAtoms(void)
   Py_INCREF(&ACIS_GeometricAtoms_type_SPAunit_vector);
   PyModule_AddObject(m, "SPAunit_vector", (PyObject *) &ACIS_GeometricAtoms_type_SPAunit_vector);
 
+  // SPApar_pos
+  if (PyType_Ready(&ACIS_GeometricAtoms_type_SPApar_pos) < 0)
+    return NULL;
+  Py_INCREF(&ACIS_GeometricAtoms_type_SPApar_pos);
+  PyModule_AddObject(m, "SPApar_pos", (PyObject *) &ACIS_GeometricAtoms_type_SPApar_pos);
+
+  // SPApar_vec
+  if (PyType_Ready(&ACIS_GeometricAtoms_type_SPApar_vec) < 0)
+    return NULL;
+  Py_INCREF(&ACIS_GeometricAtoms_type_SPApar_vec);
+  PyModule_AddObject(m, "SPApar_vec", (PyObject *) &ACIS_GeometricAtoms_type_SPApar_vec);
+
   return m;
 }
 
@@ -2486,4 +2785,24 @@ bool _ACIS_check_SPAtransf(PyObject *ob)
 PyObject *_ACIS_new_SPAtransf()
 {
   return PyObject_CallObject((PyObject *) &ACIS_GeometricAtoms_type_SPAtransf, NULL);
+}
+
+bool _ACIS_check_SPApar_pos(PyObject *ob)
+{
+  return Py_TYPE(ob) == &ACIS_GeometricAtoms_type_SPApar_pos;
+}
+
+PyObject *_ACIS_new_SPApar_pos()
+{
+  return PyObject_CallObject((PyObject *) &ACIS_GeometricAtoms_type_SPApar_pos, NULL);
+}
+
+bool _ACIS_check_SPApar_vec(PyObject *ob)
+{
+  return Py_TYPE(ob) == &ACIS_GeometricAtoms_type_SPApar_vec;
+}
+
+PyObject *_ACIS_new_SPApar_vec()
+{
+  return PyObject_CallObject((PyObject *) &ACIS_GeometricAtoms_type_SPApar_vec, NULL);
 }
