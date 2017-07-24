@@ -5,29 +5,13 @@
  * SPAposition wrapper
  */
 
-static int
-ACIS_GeometricAtoms_traverse_SPAposition(ACIS_GeometricAtoms_SPAposition *self, visitproc visit, void *arg)
-{
-  // Use Py_VISIT macro for PyObject variables
-
-  return 0;
-}
-
-static int
-ACIS_GeometricAtoms_clear_SPAposition(ACIS_GeometricAtoms_SPAposition *self)
+static void
+ACIS_GeometricAtoms_dealloc_SPAposition(ACIS_GeometricAtoms_SPAposition *self)
 {
   // Delete ACIS object
   ACIS_DELETE self->_acis_obj;
 
-  // Use Py_CLEAR macro for PyObject variables
-
-  return 0;
-}
-
-static void
-ACIS_GeometricAtoms_dealloc_SPAposition(ACIS_GeometricAtoms_SPAposition *self)
-{
-  ACIS_GeometricAtoms_clear_SPAposition(self);
+  // Delete the python object
   Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
@@ -66,6 +50,26 @@ ACIS_GeometricAtoms_init_SPAposition(ACIS_GeometricAtoms_SPAposition *self, PyOb
   self->_acis_obj = ACIS_NEW SPAposition(input_x, input_y, input_z);
 
   return 0;
+}
+
+static PyObject *
+ACIS_GeometricAtoms_repr_SPAposition(ACIS_GeometricAtoms_SPAposition *self)
+{
+  double x = self->_acis_obj->x(); double y = self->_acis_obj->y(); double z = self->_acis_obj->z();
+
+  char *_x = PyOS_double_to_string(x, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
+  if (!_x)
+    return PyErr_NoMemory();
+
+  char *_y = PyOS_double_to_string(y, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
+  if (!_y)
+    return PyErr_NoMemory();
+
+  char *_z = PyOS_double_to_string(z, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
+  if (!_z)
+    return PyErr_NoMemory();
+
+  return PyUnicode_FromFormat("SPAposition object (%s, %s, %s)", _x, _y, _z);
 }
 
 static PyObject *
@@ -325,22 +329,20 @@ static PyTypeObject
     0,                         /* tp_getattr */
     0,                         /* tp_setattr */
     0,                         /* tp_reserved */
-    0,                         /* tp_repr */
+    (reprfunc) ACIS_GeometricAtoms_repr_SPAposition,                         /* tp_repr */
     0,                         /* tp_as_number */
     0,                         /* tp_as_sequence */
     0,                         /* tp_as_mapping */
     0,                         /* tp_hash  */
     0,                         /* tp_call */
-    0,                         /* tp_str */
+    (reprfunc) ACIS_GeometricAtoms_repr_SPAposition,                         /* tp_str */
     0,                         /* tp_getattro */
     0,                         /* tp_setattro */
     0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT |
-      Py_TPFLAGS_BASETYPE |
-      Py_TPFLAGS_HAVE_GC,   /* tp_flags */
+    Py_TPFLAGS_DEFAULT,        /* tp_flags */
     "SPAposition represents position vectors (points) in 3D Cartesian space that are subject to certain vector and transformation operations", /* tp_doc */
-    (traverseproc) ACIS_GeometricAtoms_traverse_SPAposition, /* tp_traverse */
-    (inquiry) ACIS_GeometricAtoms_clear_SPAposition, /* tp_clear */
+    0,                         /* tp_traverse */
+    0,                         /* tp_clear */
     0,                         /* tp_richcompare */
     0,                         /* tp_weaklistoffset */
     0,                         /* tp_iter */
@@ -363,29 +365,13 @@ static PyTypeObject
  * SPAvector wrapper
  */
 
-static int
-ACIS_GeometricAtoms_traverse_SPAvector(ACIS_GeometricAtoms_SPAvector *self, visitproc visit, void *arg)
-{
-  // Use Py_VISIT macro for PyObject variables
-
-  return 0;
-}
-
-static int
-ACIS_GeometricAtoms_clear_SPAvector(ACIS_GeometricAtoms_SPAvector *self)
+static void
+ACIS_GeometricAtoms_dealloc_SPAvector(ACIS_GeometricAtoms_SPAvector *self)
 {
   // Delete ACIS object
   ACIS_DELETE self->_acis_obj;
 
-  // Use Py_CLEAR macro for PyObject variables
-
-  return 0;
-}
-
-static void
-ACIS_GeometricAtoms_dealloc_SPAvector(ACIS_GeometricAtoms_SPAvector *self)
-{
-  ACIS_GeometricAtoms_clear_SPAvector(self);
+  // Delete the python object
   Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
@@ -424,6 +410,26 @@ ACIS_GeometricAtoms_init_SPAvector(ACIS_GeometricAtoms_SPAvector *self, PyObject
   self->_acis_obj = ACIS_NEW SPAvector(input_x, input_y, input_z);
 
   return 0;
+}
+
+static PyObject *
+ACIS_GeometricAtoms_repr_SPAvector(ACIS_GeometricAtoms_SPAvector *self)
+{
+  double x = self->_acis_obj->x(); double y = self->_acis_obj->y(); double z = self->_acis_obj->z();
+
+  char *_x = PyOS_double_to_string(x, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
+  if (!_x)
+    return PyErr_NoMemory();
+
+  char *_y = PyOS_double_to_string(y, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
+  if (!_y)
+    return PyErr_NoMemory();
+
+  char *_z = PyOS_double_to_string(z, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
+  if (!_z)
+    return PyErr_NoMemory();
+
+  return PyUnicode_FromFormat("SPAvector object (%s, %s, %s)", _x, _y, _z);
 }
 
 static PyObject *
@@ -683,22 +689,20 @@ static PyTypeObject
     0,                         /* tp_getattr */
     0,                         /* tp_setattr */
     0,                         /* tp_reserved */
-    0,                         /* tp_repr */
+    (reprfunc) ACIS_GeometricAtoms_repr_SPAvector,                         /* tp_repr */
     0,                         /* tp_as_number */
     0,                         /* tp_as_sequence */
     0,                         /* tp_as_mapping */
     0,                         /* tp_hash  */
     0,                         /* tp_call */
-    0,                         /* tp_str */
+    (reprfunc) ACIS_GeometricAtoms_repr_SPAvector,                         /* tp_str */
     0,                         /* tp_getattro */
     0,                         /* tp_setattro */
     0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT |
-      Py_TPFLAGS_BASETYPE |
-      Py_TPFLAGS_HAVE_GC,   /* tp_flags */
+    Py_TPFLAGS_DEFAULT,        /* tp_flags */
     "SPAvector represents a displacement vector in 3D Cartesian space", /* tp_doc */
-    (traverseproc) ACIS_GeometricAtoms_traverse_SPAvector, /* tp_traverse */
-    (inquiry) ACIS_GeometricAtoms_clear_SPAvector, /* tp_clear */
+    0,                         /* tp_traverse */
+    0,                         /* tp_clear */
     0,                         /* tp_richcompare */
     0,                         /* tp_weaklistoffset */
     0,                         /* tp_iter */
@@ -721,29 +725,13 @@ static PyTypeObject
  * SPAunit_vector wrapper
  */
 
-static int
-ACIS_GeometricAtoms_traverse_SPAunit_vector(ACIS_GeometricAtoms_SPAunit_vector *self, visitproc visit, void *arg)
-{
-  // Use Py_VISIT macro for PyObject variables
-
-  return 0;
-}
-
-static int
-ACIS_GeometricAtoms_clear_SPAunit_vector(ACIS_GeometricAtoms_SPAunit_vector *self)
+static void
+ACIS_GeometricAtoms_dealloc_SPAunit_vector(ACIS_GeometricAtoms_SPAunit_vector *self)
 {
   // Delete ACIS object
   ACIS_DELETE self->_acis_obj;
 
-  // Use Py_CLEAR macro for PyObject variables
-
-  return 0;
-}
-
-static void
-ACIS_GeometricAtoms_dealloc_SPAunit_vector(ACIS_GeometricAtoms_SPAunit_vector *self)
-{
-  ACIS_GeometricAtoms_clear_SPAunit_vector(self);
+  // Delete the python object
   Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
@@ -782,6 +770,26 @@ ACIS_GeometricAtoms_init_SPAunit_vector(ACIS_GeometricAtoms_SPAunit_vector *self
   self->_acis_obj = ACIS_NEW SPAunit_vector(input_x, input_y, input_z);
 
   return 0;
+}
+
+static PyObject *
+ACIS_GeometricAtoms_repr_SPAunit_vector(ACIS_GeometricAtoms_SPAunit_vector *self)
+{
+  double x = self->_acis_obj->x(); double y = self->_acis_obj->y(); double z = self->_acis_obj->z();
+
+  char *_x = PyOS_double_to_string(x, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
+  if (!_x)
+    return PyErr_NoMemory();
+
+  char *_y = PyOS_double_to_string(y, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
+  if (!_y)
+    return PyErr_NoMemory();
+
+  char *_z = PyOS_double_to_string(z, 'r', 0, Py_DTSF_ADD_DOT_0, NULL);
+  if (!_z)
+    return PyErr_NoMemory();
+
+  return PyUnicode_FromFormat("SPAunit_vector object (%s, %s, %s)", _x, _y, _z);
 }
 
 static PyObject *
@@ -1041,22 +1049,20 @@ static PyTypeObject
     0,                         /* tp_getattr */
     0,                         /* tp_setattr */
     0,                         /* tp_reserved */
-    0,                         /* tp_repr */
+    (reprfunc) ACIS_GeometricAtoms_repr_SPAunit_vector,                         /* tp_repr */
     0,                         /* tp_as_number */
     0,                         /* tp_as_sequence */
     0,                         /* tp_as_mapping */
     0,                         /* tp_hash  */
     0,                         /* tp_call */
-    0,                         /* tp_str */
+    (reprfunc) ACIS_GeometricAtoms_repr_SPAunit_vector,                         /* tp_str */
     0,                         /* tp_getattro */
     0,                         /* tp_setattro */
     0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT |
-      Py_TPFLAGS_BASETYPE |
-      Py_TPFLAGS_HAVE_GC,   /* tp_flags */
+    Py_TPFLAGS_DEFAULT,        /* tp_flags */
     "SPAunit_vector provides a direction in 3D Cartesian space that has unit length", /* tp_doc */
-    (traverseproc) ACIS_GeometricAtoms_traverse_SPAunit_vector, /* tp_traverse */
-    (inquiry) ACIS_GeometricAtoms_clear_SPAunit_vector, /* tp_clear */
+    0,                         /* tp_traverse */
+    0,                         /* tp_clear */
     0,                         /* tp_richcompare */
     0,                         /* tp_weaklistoffset */
     0,                         /* tp_iter */
@@ -1079,29 +1085,13 @@ static PyTypeObject
  * SPAmatrix wrapper
  */
 
-static int
-ACIS_GeometricAtoms_traverse_SPAmatrix(ACIS_GeometricAtoms_SPAmatrix *self, visitproc visit, void *arg)
-{
-  // Use Py_VISIT macro for PyObject variables
-
-  return 0;
-}
-
-static int
-ACIS_GeometricAtoms_clear_SPAmatrix(ACIS_GeometricAtoms_SPAmatrix *self)
+static void
+ACIS_GeometricAtoms_dealloc_SPAmatrix(ACIS_GeometricAtoms_SPAmatrix *self)
 {
   // Delete ACIS object
   ACIS_DELETE self->_acis_obj;
 
-  // Use Py_CLEAR macro for PyObject variables
-
-  return 0;
-}
-
-static void
-ACIS_GeometricAtoms_dealloc_SPAmatrix(ACIS_GeometricAtoms_SPAmatrix *self)
-{
-  ACIS_GeometricAtoms_clear_SPAmatrix(self);
+  // Delete the python object
   Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
@@ -1323,12 +1313,10 @@ static PyTypeObject
     0,                         /* tp_getattro */
     0,                         /* tp_setattro */
     0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT |
-      Py_TPFLAGS_BASETYPE |
-      Py_TPFLAGS_HAVE_GC,   /* tp_flags */
+    Py_TPFLAGS_DEFAULT,        /* tp_flags */
     "SPAmatrix defines a 3x3 affine transformation acting on vectors and positions", /* tp_doc */
-    (traverseproc) ACIS_GeometricAtoms_traverse_SPAmatrix, /* tp_traverse */
-    (inquiry) ACIS_GeometricAtoms_clear_SPAmatrix, /* tp_clear */
+    0,                         /* tp_traverse */
+    0,                         /* tp_clear */
     0,                         /* tp_richcompare */
     0,                         /* tp_weaklistoffset */
     0,                         /* tp_iter */
@@ -1351,29 +1339,13 @@ static PyTypeObject
  * SPAtransf wrapper
  */
 
-static int
-ACIS_GeometricAtoms_traverse_SPAtransf(ACIS_GeometricAtoms_SPAtransf *self, visitproc visit, void *arg)
-{
-  // Use Py_VISIT macro for PyObject variables
-
-  return 0;
-}
-
-static int
-ACIS_GeometricAtoms_clear_SPAtransf(ACIS_GeometricAtoms_SPAtransf *self)
+static void
+ACIS_GeometricAtoms_dealloc_SPAtransf(ACIS_GeometricAtoms_SPAtransf *self)
 {
   // Delete ACIS object
   ACIS_DELETE self->_acis_obj;
 
-  // Use Py_CLEAR macro for PyObject variables
-
-  return 0;
-}
-
-static void
-ACIS_GeometricAtoms_dealloc_SPAtransf(ACIS_GeometricAtoms_SPAtransf *self)
-{
-  ACIS_GeometricAtoms_clear_SPAtransf(self);
+  // Delete the python object
   Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
@@ -1529,12 +1501,10 @@ static PyTypeObject
     0,                         /* tp_getattro */
     0,                         /* tp_setattro */
     0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT |
-      Py_TPFLAGS_BASETYPE |
-      Py_TPFLAGS_HAVE_GC,   /* tp_flags */
+    Py_TPFLAGS_DEFAULT,   /* tp_flags */
     "SPAtransf represents a general 3D affine transformation", /* tp_doc */
-    (traverseproc) ACIS_GeometricAtoms_traverse_SPAtransf, /* tp_traverse */
-    (inquiry) ACIS_GeometricAtoms_clear_SPAtransf, /* tp_clear */
+    0,                         /* tp_traverse */
+    0,                         /* tp_clear */
     0,                         /* tp_richcompare */
     0,                         /* tp_weaklistoffset */
     0,                         /* tp_iter */
