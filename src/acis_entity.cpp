@@ -188,6 +188,13 @@ ACIS_Entity_method_ENTITY_set_attrib_name(ACIS_Entity_ENTITY *self, PyObject *va
 }
 
 PyObject *
+ACIS_Entity_method_ENTITY_type_name(PyObject *self)
+{
+	const char *_retval = ((ACIS_Entity_ENTITY *)self)->_acis_obj->type_name();
+	return PyUnicode_FromString(_retval);
+}
+
+PyObject *
 ACIS_Entity_method_ENTITY_get_attrib_obj_id(ACIS_Entity_ENTITY *self, PyObject *value, void *closure)
 {
   Py_INCREF(self->attrib_object_id);
@@ -2338,4 +2345,9 @@ void _ACIS_make_null(PyObject *ob)
   {
     ((ACIS_Entity_ENTITY *) ob)->_acis_obj = NULL;
   }
+}
+
+void _ACIS_set_entity(PyObject *ob, ENTITY *ent)
+{
+	((ACIS_Entity_ENTITY *)ob)->_acis_obj = ent;
 }
