@@ -37,6 +37,8 @@ PyObject ACIS_LISTS_EXPORT *_ACIS_new_ENTITY_LIST();
 
 bool ACIS_LISTS_EXPORT _ACIS_check_ENTITY_LIST(PyObject *ob);
 
+PyObject ACIS_LISTS_EXPORT *__convert_entity(ENTITY *ent);
+
 #ifdef __cplusplus
 }
 #endif
