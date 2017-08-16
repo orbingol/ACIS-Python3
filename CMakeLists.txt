@@ -166,7 +166,7 @@ generate_export_header( Entity
     )
 
 # Set link targets
-target_link_libraries( Entity ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} )
+target_link_libraries( Entity ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} GeometricAtoms )
 
 # Add the build location to the include directories
 target_include_directories( Entity PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
@@ -366,6 +366,51 @@ set_target_properties( Sweeping PROPERTIES PREFIX "" )
 
 
 #
+# ACIS Python Module - Booleans API
+#
+
+# Set source files
+set( ACIS_SOURCES_Booleans
+    src/acis_booleans.h
+    src/acis_booleans.cpp
+    src/utilities.cpp
+    src/utilities.h
+    ${PROJECT_BINARY_DIR}/acis_booleans_export.h
+    )
+
+# Generate Python module
+add_library( Booleans SHARED ${ACIS_SOURCES_Booleans} )
+
+# Generate export header file
+generate_export_header( Booleans
+    BASE_NAME acis_booleans
+    )
+
+# Set link targets
+target_link_libraries( Booleans ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Entity )
+
+# Add the build location to the include directories
+target_include_directories( Booleans PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
+
+# Set required C++ standard
+set_property( TARGET Booleans PROPERTY CXX_STANDARD 11 )
+set_property( TARGET Booleans PROPERTY CXX_STANDARD_REQUIRED ON )
+
+# Add suffix to debug builds
+if( WIN32 )
+  set_target_properties( Booleans PROPERTIES DEBUG_POSTFIX "_d" )
+endif()
+
+# On Windows, Python modules have .pyd filename extension
+if( WIN32 AND NOT CYGWIN )
+  set_target_properties( Booleans PROPERTIES SUFFIX ".pyd" )
+endif()
+
+# This is only needed for the python case where a modulename.so is generated
+set_target_properties( Booleans PROPERTIES PREFIX "" )
+
+
+#
 # ACIS Python Module - Query API
 #
 
@@ -455,7 +500,13 @@ set_target_properties( Modeler PROPERTIES PREFIX "" )
 
 # Install Python modules to APP_INSTALL_DIR
 install(
-    TARGETS Modeler Licensing Entity Lists SaveRestore GeometricAtoms Sweeping Query
+    TARGETS Modeler Licensing Entity Lists SaveRestore GeometricAtoms Sweeping Query Booleans
+    DESTINATION ${APP_INSTALL_DIR}/${APP_MODULE_NAME}
+)
+
+# Install helper modules
+install(
+    DIRECTORY python/
     DESTINATION ${APP_INSTALL_DIR}/${APP_MODULE_NAME}
 )
 
