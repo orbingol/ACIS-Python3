@@ -7,13 +7,14 @@
     Please see the LICENSE file for details.
 """
 
+from ACIS import utilities as utils
 from ACIS import Modeler, Licensing, SaveRestore, Entity, Lists, GeometricAtoms, Sweeping, Query
 
 # Start ACIS Modeler
 Modeler.api_start_modeller(0)
 
 # Unlock ACIS Modeler components
-unlock_key = "Your ACIS Unlock Key here"
+unlock_key = utils.read_spa_license_key("license.txt")
 Licensing.spa_unlock_products(unlock_key)
 
 # Make a cuboid

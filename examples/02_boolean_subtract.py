@@ -9,13 +9,14 @@
 
 # This example is taken from the book "Rapid Prototyping and Engineering Applications" by Frank W. Liou (Example 5.1)
 
-from ACIS import Modeler, Licensing, SaveRestore, Entity, Lists, GeometricAtoms
+from ACIS import utilities as utils
+from ACIS import Modeler, Licensing, SaveRestore, Entity, Lists, GeometricAtoms, Booleans
 
 # Start ACIS Modeler
 Modeler.api_start_modeller(0)
 
 # Unlock ACIS Modeler components
-unlock_key = "Your ACIS Unlock Key here"
+unlock_key = utils.read_spa_license_key("license.txt")
 Licensing.spa_unlock_products(unlock_key)
 
 # Make a cuboid
@@ -37,7 +38,7 @@ cylinder_transf = GeometricAtoms.translate_transf(cylinder_vector)
 Modeler.api_apply_transf(cylinder, cylinder_transf)
 
 # Subtract frustum from cuboid
-Modeler.api_subtract(cylinder, block)
+Booleans.api_subtract(cylinder, block)
 
 # Assign attributes after generation
 block.name = "Drilled Cuboid"
