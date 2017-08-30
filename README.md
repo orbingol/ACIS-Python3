@@ -10,7 +10,7 @@ I would be glad if you cite this repository using the DOI provided as a badge at
 
 ## Introduction
 
-This package wraps Spatial Corporation's 3D ACIS Modeler into a Python (v3.5.x) module with minor changes due to how Python's C interface works. _3D ACIS Modeler_ or _ACIS_, in short, is a [solid and geometric modeling kernel](https://en.wikipedia.org/wiki/Geometric_modeling_kernel). Solid modeling kernels are sometimes called as "CAD Engines" too. These systems work behind the scenes and responsible for generation of solid models or surfaces, evaluation of geometric operations on solid models or surfaces, and so.
+This package wraps Spatial Corporation's 3D ACIS Modeler into a Python (v3.5.x and v3.6.x) module with minor changes due to how Python's C interface works. _3D ACIS Modeler_ or _ACIS_, in short, is a [solid and geometric modeling kernel](https://en.wikipedia.org/wiki/Geometric_modeling_kernel). Solid modeling kernels are sometimes called as "CAD Engines" too. These systems work behind the scenes and responsible for generation of solid models or surfaces, evaluation of geometric operations on solid models or surfaces, and so.
 
 _3D ACIS Modeler_ provides a C++ API and its Scheme extension with variety of additional features. Even though it is used in a variety of commercial and research applications, it doesn't provide a Python interface which would be very useful for integration purposes. This module tries to fulfill the gap up to some point.
 

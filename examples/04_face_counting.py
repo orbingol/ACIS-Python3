@@ -8,7 +8,7 @@
 """
 
 from ACIS import utilities as utils
-from ACIS import Modeler, Licensing, SaveRestore, Entity, Lists, GeometricAtoms
+from ACIS import Modeler, Licensing, SaveRestore, Entity, Lists, GeometricAtoms, Query
 
 # Start ACIS Modeler
 Modeler.api_start_modeller(0)
@@ -17,23 +17,28 @@ Modeler.api_start_modeller(0)
 unlock_key = utils.read_spa_license_key("license.txt")
 Licensing.spa_unlock_products(unlock_key)
 
-# Generate a simple solid block
-pt1 = GeometricAtoms.SPAposition(0.0, 0.0, 0.0)
-pt2 = GeometricAtoms.SPAposition(50.0, 50.0, 25.0)
-block = Entity.BODY()
-
-Modeler.api_solid_block(pt1, pt2, block)
+# Generate a truncated cone
+frustum = Entity.BODY()
+Modeler.api_make_frustum(50, 20, 30, 10, frustum)
 
 # Assign attributes after generation
-block.name = "Solid Block"
-block.id = 1
+frustum.name = "Truncated Cone"
+frustum.id = 1
+
+# Loop through the face list and print out the name of the entity type
+face_list = Lists.ENTITY_LIST()
+Query.api_get_faces(frustum, face_list)
+
+for f in face_list.array():
+    fs = f.geometry()
+    print(fs.type_name())
 
 # Prepare for saving
 save_list = Lists.ENTITY_LIST()
-save_list.add(block)
+save_list.add(frustum)
 
 # Set file name
-filename = "ACIS_Ex01.SAT"
+filename = "ACIS_Ex04.SAT"
 
 # ACIS requires FileInfo object to be set before saving SAT files
 file_info = SaveRestore.FileInfo()

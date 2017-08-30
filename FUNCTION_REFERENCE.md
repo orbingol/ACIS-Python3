@@ -21,12 +21,7 @@
 * api_make_torus
 * api_apply_transf
 * api_remove_transf
-* api_unite
-* api_intersect
-* api_subtract
-* api_imprint
 * api_sheet_from_ff
-* api_boolean_chop_body
 
 ## Entity
 
@@ -58,6 +53,8 @@
 * SPAmatrix
 * SPAvector
 * SPAunit_vector
+* SPApar_pos
+* SPApar_vec
 
 ### Functions
 
@@ -127,3 +124,17 @@
 ### Functions
 
 * spa_unlock_products
+
+## Booleans
+
+### Enums
+
+* NDBOOL_KEEP
+
+### Functions
+
+* api_unite
+* api_intersect
+* api_subtract
+* api_imprint
+* api_boolean_chop_body

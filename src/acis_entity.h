@@ -21,6 +21,10 @@
 #include <face.hxx>
 #include <at_name.hxx>
 #include <at_int.hxx>
+#include <surface.hxx>
+#include <surdef.hxx>
+
+#include "acis_geometric_atoms.h"
 
 #include "acis_entity_export.h"
 
@@ -62,6 +66,8 @@ PyObject ACIS_ENTITY_EXPORT *ACIS_Entity_method_ENTITY_get_attrib_obj_id(ACIS_En
 
 int ACIS_ENTITY_EXPORT ACIS_Entity_method_ENTITY_set_attrib_obj_id(ACIS_Entity_ENTITY *self, PyObject *value, void *closure);
 
+PyObject ACIS_ENTITY_EXPORT *ACIS_Entity_method_ENTITY_type_name(PyObject *self);
+
 static PyGetSetDef
   ACIS_Entity_getseters_ENTITY[] =
   {
@@ -79,6 +85,7 @@ static PyMemberDef
 static PyMethodDef
   ACIS_Entity_methods_ENTITY[] =
   {
+	  { "type_name", (PyCFunction) ACIS_Entity_method_ENTITY_type_name, METH_NOARGS, "Returns a name for this ENTITY's type" },
     { NULL }  /* Sentinel */
   };
 
@@ -291,6 +298,16 @@ PyObject ACIS_ENTITY_EXPORT *_ACIS_new_TORUS();
 
 bool ACIS_ENTITY_EXPORT _ACIS_check_TORUS(PyObject *ob);
 
+// Define surface
+typedef struct
+{
+  surface* _acis_obj;
+} ACIS_Entity_surface;
+
+PyObject ACIS_ENTITY_EXPORT *_ACIS_new_surface();
+
+bool ACIS_ENTITY_EXPORT _ACIS_check_surface(PyObject *ob);
+
 
 // Additional functions
 
@@ -299,6 +316,8 @@ bool ACIS_ENTITY_EXPORT _ACIS_check_TORUS(PyObject *ob);
  * @param ob Topology object, such as ENTITY, BODY, FACE, etc.
  */
 void ACIS_ENTITY_EXPORT _ACIS_make_null(PyObject *ob);
+
+void ACIS_ENTITY_EXPORT _ACIS_set_entity(PyObject *ob, ENTITY *ent);
 
 #ifdef __cplusplus
 }

@@ -194,20 +194,20 @@ ACIS_Lists_method_ENTITY_LIST_byte_count(ACIS_Lists_ENTITY_LIST *self)
 static PyObject *
 ACIS_Lists_method_ENTITY_LIST_first(ACIS_Lists_ENTITY_LIST *self)
 {
-  PyObject *retobj = _ACIS_new_ENTITY();
   ENTITY *_elem = self->_acis_obj->first();
-  ((ACIS_Entity_ENTITY *) retobj)->_acis_obj = _elem;
+  PyObject *retobj = __convert_entity(_elem);
   return retobj;
 }
 
 static PyObject *
 ACIS_Lists_method_ENTITY_LIST_next(ACIS_Lists_ENTITY_LIST *self)
 {
-  PyObject *retobj = _ACIS_new_ENTITY();
+  PyObject *retobj;
   ENTITY *_elem = self->_acis_obj->next();
+
   if (_elem)
   {
-    ((ACIS_Entity_ENTITY *) retobj)->_acis_obj = _elem;
+	 retobj = __convert_entity(_elem);
   }
   else
   {
@@ -232,12 +232,12 @@ ACIS_Lists_method_ENTITY_LIST_next_from(ACIS_Lists_ENTITY_LIST *self, PyObject *
   int _from_index = (int) PyLong_AsLong(arg);
   Py_DECREF(arg);
 
-  PyObject *retobj = _ACIS_new_ENTITY();
+  PyObject *retobj;
   ENTITY *_elem = self->_acis_obj->next_from(_from_index);
 
   if (_elem)
   {
-    ((ACIS_Entity_ENTITY *) retobj)->_acis_obj = _elem;
+	  retobj = __convert_entity(_elem);
   }
   else
   {
@@ -411,4 +411,30 @@ bool _ACIS_check_ENTITY_LIST(PyObject *ob)
     return true;
   else
     return false;
+}
+
+PyObject *__convert_entity(ENTITY *ent)
+{
+	// Find the type name of the entity
+	const char *_type_name = ent->type_name();
+
+	// We could use a hashing function here...
+	PyObject *_retobj;
+	if (strcmp("body", _type_name) == 0)
+	{
+		_retobj = _ACIS_new_BODY();
+		_ACIS_set_entity(_retobj, ent);
+	}
+	else if (strcmp("face", _type_name) == 0)
+	{
+		_retobj = _ACIS_new_FACE();
+		_ACIS_set_entity(_retobj, ent);
+	}
+	else if (strcmp("surface", _type_name) == 0)
+	{
+		_retobj = _ACIS_new_SURFACE();
+		_ACIS_set_entity(_retobj, ent);
+	}
+
+	return _retobj;
 }

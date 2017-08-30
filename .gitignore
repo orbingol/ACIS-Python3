@@ -4,3 +4,6 @@
 # Ignore everything in the build directory except .gitkeep
 build/*
 !build/.gitkeep
+
+# Ignore all txt files in the examples directory
+examples/*.txt
