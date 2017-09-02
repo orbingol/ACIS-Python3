@@ -601,3 +601,11 @@ set_property(
     APPEND PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
     "__init__.py"
 )
+
+#
+# Create a custom install target for calling inside Jetbrains CLion
+#
+add_custom_target( install_${PROJECT_NAME}
+    $(CMAKE_COMMAND) --build . --target install
+    COMMENT "Installing ${PROJECT_NAME}..."
+    )
