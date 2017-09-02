@@ -1,5 +1,5 @@
 cmake_minimum_required( VERSION 2.8 )
-project( ACIS_Py3Module CXX )
+project( ACISPython3 CXX )
 
 #
 # Application Configuration
