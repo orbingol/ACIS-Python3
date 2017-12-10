@@ -128,8 +128,6 @@ set( ACIS_SOURCES_Modeler
     src/acis_enums.h
     src/acis_operators.cpp
     src/acis_operators.h
-    src/acis_spa.cpp
-    src/acis_spa.h
     src/utilities.cpp
     src/utilities.h
     )

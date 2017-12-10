@@ -20,7 +20,6 @@
 #include "acis_operators.h"
 #include "acis_classes.h"
 #include "acis_enums.h"
-#include "acis_spa.h"
 #include "utilities.h"
 
 #ifdef __cplusplus
@@ -30,6 +29,7 @@ extern "C" {
 PyObject *a3dp_api_start_modeller(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_stop_modeller(PyObject *self);
 PyObject *a3dp_is_modeler_started(PyObject *self);
+PyObject *a3dp_spa_unlock_products(PyObject *self, PyObject *arg);
 PyObject *a3dp_api_set_dbl_option(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_set_int_option(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_set_str_option(PyObject *self, PyObject *args, PyObject *kwargs);

@@ -107,22 +107,22 @@ PyInit_Modeler(void)
   PyModule_AddObject(m, "SPAvector", (PyObject *) &a3dp_type_SPAvector);
 
   // SPAunit_vector
-  if (PyType_Ready(&a3dp_type_SPAunitvector) < 0)
+  if (PyType_Ready(&a3dp_type_SPAunit_vector) < 0)
     return NULL;
-  Py_INCREF(&a3dp_type_SPAunitvector);
-  PyModule_AddObject(m, "SPAunit_vector", (PyObject *) &a3dp_type_SPAunitvector);
+  Py_INCREF(&a3dp_type_SPAunit_vector);
+  PyModule_AddObject(m, "SPAunit_vector", (PyObject *) &a3dp_type_SPAunit_vector);
 
   // SPApar_pos
-  if (PyType_Ready(&a3dp_type_SPAparpos) < 0)
+  if (PyType_Ready(&a3dp_type_SPApar_pos) < 0)
     return NULL;
-  Py_INCREF(&a3dp_type_SPAparpos);
-  PyModule_AddObject(m, "SPApar_pos", (PyObject *) &a3dp_type_SPAparpos);
+  Py_INCREF(&a3dp_type_SPApar_pos);
+  PyModule_AddObject(m, "SPApar_pos", (PyObject *) &a3dp_type_SPApar_pos);
 
   // SPApar_vec
-  if (PyType_Ready(&a3dp_type_SPAparvec) < 0)
+  if (PyType_Ready(&a3dp_type_SPApar_vec) < 0)
     return NULL;
-  Py_INCREF(&a3dp_type_SPAparvec);
-  PyModule_AddObject(m, "SPApar_vec", (PyObject *) &a3dp_type_SPAparvec);
+  Py_INCREF(&a3dp_type_SPApar_vec);
+  PyModule_AddObject(m, "SPApar_vec", (PyObject *) &a3dp_type_SPApar_vec);
 
   if (PyType_Ready(&a3dp_type_FileInfo) < 0)
     return NULL;
@@ -142,11 +142,11 @@ PyInit_Modeler(void)
   }
 
   // NDBOOL_KEEP
-  a3dp_type_NDBOOLKEEP.tp_dict = _ndbk_dict;
-  if (PyType_Ready(&a3dp_type_NDBOOLKEEP) < 0)
+  a3dp_type_NDBOOL_KEEP.tp_dict = _ndbk_dict;
+  if (PyType_Ready(&a3dp_type_NDBOOL_KEEP) < 0)
     return NULL;
-  Py_INCREF(&a3dp_type_NDBOOLKEEP);
-  PyModule_AddObject(m, "NDBOOL_KEEP", (PyObject *) &a3dp_type_NDBOOLKEEP);
+  Py_INCREF(&a3dp_type_NDBOOL_KEEP);
+  PyModule_AddObject(m, "NDBOOL_KEEP", (PyObject *) &a3dp_type_NDBOOL_KEEP);
 
   // Create a dictionary object for sweep_bool_type enum
   PyObject *_sbt_dict;
@@ -161,11 +161,11 @@ PyInit_Modeler(void)
   }
 
   // sweep_bool_type
-  a3dp_type_sweepbooltype.tp_dict = _sbt_dict;
-  if (PyType_Ready(&a3dp_type_sweepbooltype) < 0)
+  a3dp_type_sweep_bool_type.tp_dict = _sbt_dict;
+  if (PyType_Ready(&a3dp_type_sweep_bool_type) < 0)
     return NULL;
-  Py_INCREF(&a3dp_type_sweepbooltype);
-  PyModule_AddObject(m, "sweep_bool_type", (PyObject *) &a3dp_type_sweepbooltype);
+  Py_INCREF(&a3dp_type_sweep_bool_type);
+  PyModule_AddObject(m, "sweep_bool_type", (PyObject *) &a3dp_type_sweep_bool_type);
 
   // sweep_options
   if (PyType_Ready(&a3dp_type_sweep_options) < 0)
@@ -304,10 +304,10 @@ PyInit_Modeler(void)
   PyModule_AddObject(m, "surface", (PyObject *) &a3dp_type_surface);
 
   // Initialize ACIS ENTITY_LIST class as a Python type
-  if (PyType_Ready(&a3dp_type_ENTITYLIST) < 0)
+  if (PyType_Ready(&a3dp_type_ENTITY_LIST) < 0)
     return NULL;
-  Py_INCREF(&a3dp_type_ENTITYLIST);
-  PyModule_AddObject(m, "ENTITY_LIST", (PyObject *) &a3dp_type_ENTITYLIST);
+  Py_INCREF(&a3dp_type_ENTITY_LIST);
+  PyModule_AddObject(m, "ENTITY_LIST", (PyObject *) &a3dp_type_ENTITY_LIST);
 
   return m;
 }

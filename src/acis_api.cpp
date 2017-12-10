@@ -85,6 +85,29 @@ a3dp_is_modeler_started(PyObject *self)
 }
 
 PyObject *
+a3dp_spa_unlock_products(PyObject *self, PyObject *arg)
+{
+    // Check if the input is a string
+    if (!PyUnicode_Check(arg))
+    {
+        PyErr_SetString(PyExc_ValueError, "Expecting a string");
+        return NULL;
+    }
+
+    // Convert PyObject to C-style string
+    const char *unlock_str = PyUnicode_AsUTF8(arg);
+
+    // Call ACIS Licensing API
+    spa_unlock_result out = spa_unlock_products(unlock_str);
+
+    // If license is good, then return True. Otherwise, return the licensing error message
+    if (SPA_UNLOCK_PASS == out.get_state())
+        Py_RETURN_TRUE;
+    else
+        return PyUnicode_FromString(out.get_message_text());
+}
+
+PyObject *
 a3dp_api_set_dbl_option(PyObject *self, PyObject *args, PyObject *kwargs)
 {
     const char *input_name = NULL;
@@ -706,7 +729,7 @@ a3dp_api_unite(PyObject *self, PyObject *args, PyObject *kwargs)
     else
     {
         // Boolean operations automatically delete tool bodies, but for python, we need to set reference to NULL too
-        _a3dp_make_null(input_tool);
+      __make_null(input_tool);
         // Returning none means that we have no errors
         Py_RETURN_NONE;
     }
@@ -762,7 +785,7 @@ a3dp_api_intersect(PyObject *self, PyObject *args, PyObject *kwargs)
     else
     {
         // Boolean operations automatically delete tool bodies, but for python, we need to set reference to NULL too
-        _a3dp_make_null(input_tool);
+      __make_null(input_tool);
         // Returning none means that we have no errors
         Py_RETURN_NONE;
     }
@@ -818,7 +841,7 @@ a3dp_api_subtract(PyObject *self, PyObject *args, PyObject *kwargs)
     else
     {
         // Boolean operations automatically delete tool bodies, but for python, we need to set reference to NULL too
-        _a3dp_make_null(input_tool);
+      __make_null(input_tool);
         // Returning none means that we have no errors
         Py_RETURN_NONE;
     }
@@ -874,7 +897,7 @@ a3dp_api_imprint(PyObject *self, PyObject *args, PyObject *kwargs)
     else
     {
         // Boolean operations automatically delete tool bodies, but for python, we need to set reference to NULL too
-        _a3dp_make_null(input_tool);
+      __make_null(input_tool);
         // Returning none means that we have no errors
         Py_RETURN_NONE;
     }
