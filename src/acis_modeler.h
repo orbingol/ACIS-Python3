@@ -9,19 +9,12 @@
  *
  */
 
-#ifndef ACIS_MODELER_H
-#define ACIS_MODELER_H
+#ifndef A3DPY_MODELER_H
+#define A3DPY_MODELER_H
 
 #include <Python.h>
+#include <structmember.h>
 
-#include <base.hxx>
-#include <kernapi.hxx>
-#include <cstrapi.hxx>
+#include "acis_api.h"
 
-#include "acis_entity.h"
-#include "acis_geometric_atoms.h"
-#include "acis_saverestore.h"
-#include "acis_lists.h"
-#include "utilities.h"
-
-#endif //!ACIS_MODELER_H
+#endif // !A3DPY_MODELER_H

@@ -2,11 +2,11 @@
 
 
 /**
- * 3D ACIS Modeler - ENTITY wrapper
+ * ENTITY class
  */
 
 int
-ACIS_Entity_traverse_ENTITY(ACIS_Entity_ENTITY *self, visitproc visit, void *arg)
+a3dp_ENTITY_traverse(a3dp_ENTITY *self, visitproc visit, void *arg)
 {
   // Use Py_VISIT macro for PyObject-type variables
   Py_VISIT(self->attrib_name);
@@ -16,7 +16,7 @@ ACIS_Entity_traverse_ENTITY(ACIS_Entity_ENTITY *self, visitproc visit, void *arg
 }
 
 int
-ACIS_Entity_clear_ENTITY(ACIS_Entity_ENTITY *self)
+a3dp_ENTITY_clear(a3dp_ENTITY *self)
 {
   // Set ACIS object to NULL to allow it automatically deleted by ACIS memory manager
   //self->_acis_obj = NULL;
@@ -29,14 +29,14 @@ ACIS_Entity_clear_ENTITY(ACIS_Entity_ENTITY *self)
 }
 
 void
-ACIS_Entity_dealloc_ENTITY(ACIS_Entity_ENTITY *self)
+a3dp_ENTITY_dealloc(a3dp_ENTITY *self)
 {
-  ACIS_Entity_clear_ENTITY(self);
+  a3dp_ENTITY_clear(self);
   Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
 PyObject *
-ACIS_Entity_new_ENTITY(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+a3dp_ENTITY_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
 {
   // First check if the modeler has been started
   if (!is_modeler_started())
@@ -45,9 +45,9 @@ ACIS_Entity_new_ENTITY(PyTypeObject *type, PyObject *args, PyObject *kwargs)
     return NULL;
   }
 
-  ACIS_Entity_ENTITY *self;
+  a3dp_ENTITY *self;
 
-  self = (ACIS_Entity_ENTITY *) type->tp_alloc(type, 0);
+  self = (a3dp_ENTITY *) type->tp_alloc(type, 0);
   if (self != NULL)
   {
     self->attrib_name = PyUnicode_FromString("");
@@ -72,13 +72,13 @@ ACIS_Entity_new_ENTITY(PyTypeObject *type, PyObject *args, PyObject *kwargs)
 }
 
 int
-ACIS_Entity_init_ENTITY(ACIS_Entity_ENTITY *self, PyObject *args, PyObject *kwargs)
+a3dp_ENTITY_init(a3dp_ENTITY *self, PyObject *args, PyObject *kwargs)
 {
 //  PyObject *input_name = NULL;
 //  PyObject *input_id = NULL;
 //  PyObject *tmp;
 //
-//  static char *kwlist[] =
+//  char *kwlist[] =
 //    {
 //      (char *) "name",
 //      (char *) "id",
@@ -128,7 +128,7 @@ ACIS_Entity_init_ENTITY(ACIS_Entity_ENTITY *self, PyObject *args, PyObject *kwar
 }
 
 PyObject *
-ACIS_Entity_repr_ENTITY(ACIS_Entity_ENTITY *self)
+a3dp_ENTITY_repr(a3dp_ENTITY *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->attrib_name);
   int _id = (int) PyLong_AsLong(self->attrib_object_id);
@@ -136,7 +136,7 @@ ACIS_Entity_repr_ENTITY(ACIS_Entity_ENTITY *self)
 }
 
 PyObject *
-ACIS_Entity_str_ENTITY(ACIS_Entity_ENTITY *self)
+a3dp_ENTITY_str(a3dp_ENTITY *self)
 {
   const char *acis_obj_status = NULL;
   if (self->_acis_obj == NULL)
@@ -148,14 +148,14 @@ ACIS_Entity_str_ENTITY(ACIS_Entity_ENTITY *self)
 }
 
 PyObject *
-ACIS_Entity_method_ENTITY_get_attrib_name(ACIS_Entity_ENTITY *self, PyObject *value, void *closure)
+a3dp_ENTITY_get_attrib_name(a3dp_ENTITY *self, PyObject *value, void *closure)
 {
   Py_INCREF(self->attrib_name);
   return self->attrib_name;
 }
 
 int
-ACIS_Entity_method_ENTITY_set_attrib_name(ACIS_Entity_ENTITY *self, PyObject *value, void *closure)
+a3dp_ENTITY_set_attrib_name(a3dp_ENTITY *self, PyObject *value, void *closure)
 {
   if (value == NULL)
   {
@@ -188,21 +188,21 @@ ACIS_Entity_method_ENTITY_set_attrib_name(ACIS_Entity_ENTITY *self, PyObject *va
 }
 
 PyObject *
-ACIS_Entity_method_ENTITY_type_name(PyObject *self)
+a3dp_ENTITY_type_name(PyObject *self)
 {
-	const char *_retval = ((ACIS_Entity_ENTITY *)self)->_acis_obj->type_name();
+	const char *_retval = ((a3dp_ENTITY *)self)->_acis_obj->type_name();
 	return PyUnicode_FromString(_retval);
 }
 
 PyObject *
-ACIS_Entity_method_ENTITY_get_attrib_obj_id(ACIS_Entity_ENTITY *self, PyObject *value, void *closure)
+a3dp_ENTITY_get_attrib_obj_id(a3dp_ENTITY *self, PyObject *value, void *closure)
 {
   Py_INCREF(self->attrib_object_id);
   return self->attrib_object_id;
 }
 
 int
-ACIS_Entity_method_ENTITY_set_attrib_obj_id(ACIS_Entity_ENTITY *self, PyObject *value, void *closure)
+a3dp_ENTITY_set_attrib_obj_id(a3dp_ENTITY *self, PyObject *value, void *closure)
 {
   if (value == NULL)
   {
@@ -239,29 +239,29 @@ ACIS_Entity_method_ENTITY_set_attrib_obj_id(ACIS_Entity_ENTITY *self, PyObject *
 
 
 /**
- * 3D ACIS Modeler - BODY wrapper
+ * BODY class
  */
 
-static int
-ACIS_Entity_init_BODY(ACIS_Entity_BODY *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_BODY_init(a3dp_BODY *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_BODY(ACIS_Entity_BODY *self)
+PyObject *
+a3dp_BODY_repr(a3dp_BODY *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("BODY object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_BODY(ACIS_Entity_BODY *self)
+PyObject *
+a3dp_BODY_str(a3dp_BODY *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -272,92 +272,31 @@ ACIS_Entity_str_BODY(ACIS_Entity_BODY *self)
   return PyUnicode_FromFormat("BODY object (%s)", acis_obj_status);
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_BODY[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_BODY[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_BODY[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_BODY =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.BODY",        /* tp_name */
-    sizeof(ACIS_Entity_BODY),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_BODY,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_BODY,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS BODY class",           /* tp_doc */
-    0, /* tp_traverse */
-    0, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_BODY,             /* tp_methods */
-    ACIS_Entity_members_BODY,             /* tp_members */
-    ACIS_Entity_getseters_BODY,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_BODY,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
 
 /**
- * 3D ACIS Modeler - FACE wrapper
+ * FACE class
  */
 
-static int
-ACIS_Entity_init_FACE(ACIS_Entity_FACE *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_FACE_init(a3dp_FACE *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_FACE(ACIS_Entity_FACE *self)
+PyObject *
+a3dp_FACE_repr(a3dp_FACE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("FACE object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_FACE(ACIS_Entity_FACE *self)
+PyObject *
+a3dp_FACE_str(a3dp_FACE *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -368,8 +307,8 @@ ACIS_Entity_str_FACE(ACIS_Entity_FACE *self)
   return PyUnicode_FromFormat("FACE object (%s)", acis_obj_status);
 }
 
-static PyObject *
-ACIS_Entity_method_FACE_sense(ACIS_Entity_FACE *self)
+PyObject *
+a3dp_FACE__sense(a3dp_FACE *self)
 {
   logical _revbit;
   _revbit = ((FACE *) self->base_obj._acis_obj)->sense();
@@ -381,103 +320,40 @@ ACIS_Entity_method_FACE_sense(ACIS_Entity_FACE *self)
   Py_RETURN_FALSE;
 }
 
-static PyObject *
-ACIS_Entity_method_FACE_geometry(ACIS_Entity_FACE *self)
+PyObject *
+a3dp_FACE__geometry(a3dp_FACE *self)
 {
-  PyObject *_retobj = _ACIS_new_SURFACE();
+  PyObject *_retobj = _PyNew_SURFACE();
   // Store everything as ENTITY
-  ((ACIS_Entity_SURFACE *) _retobj)->base_obj._acis_obj = (ENTITY *) ((FACE *) self->base_obj._acis_obj)->geometry();
+  ((a3dp_SURFACE *) _retobj)->base_obj._acis_obj = (ENTITY *) ((FACE *) self->base_obj._acis_obj)->geometry();
   return _retobj;
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_FACE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_FACE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_FACE[] =
-  {
-    { "sense", (PyCFunction) ACIS_Entity_method_FACE_sense, METH_NOARGS, "Returns the sense of this FACE relative to its SURFACE" },
-    { "geometry", (PyCFunction) ACIS_Entity_method_FACE_geometry, METH_NOARGS, "Returns a pointer to the underlying SURFACE defining this FACE" },
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_FACE =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.FACE",        /* tp_name */
-    sizeof(ACIS_Entity_FACE),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_FACE,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_FACE,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS FACE class",           /* tp_doc */
-    0, /* tp_traverse */
-    0, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_FACE,             /* tp_methods */
-    ACIS_Entity_members_FACE,             /* tp_members */
-    ACIS_Entity_getseters_FACE,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_FACE,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
 
 /**
- * 3D ACIS Modeler - EDGE wrapper
+ * EDGE class
  */
 
-static int
-ACIS_Entity_init_EDGE(ACIS_Entity_EDGE *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_EDGE_init(a3dp_EDGE *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_EDGE(ACIS_Entity_EDGE *self)
+PyObject *
+a3dp_EDGE_repr(a3dp_EDGE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("EDGE object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_EDGE(ACIS_Entity_EDGE *self)
+PyObject *
+a3dp_EDGE_str(a3dp_EDGE *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -488,92 +364,31 @@ ACIS_Entity_str_EDGE(ACIS_Entity_EDGE *self)
   return PyUnicode_FromFormat("EDGE object (%s)", acis_obj_status);
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_EDGE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_EDGE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_EDGE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_EDGE =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.EDGE",        /* tp_name */
-    sizeof(ACIS_Entity_EDGE),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_EDGE,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_EDGE,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS EDGE class",           /* tp_doc */
-    0, /* tp_traverse */
-    0, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_EDGE,             /* tp_methods */
-    ACIS_Entity_members_EDGE,             /* tp_members */
-    ACIS_Entity_getseters_EDGE,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_EDGE,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
 
 /**
- * 3D ACIS Modeler - WIRE wrapper
+ * WIRE class
  */
 
-static int
-ACIS_Entity_init_WIRE(ACIS_Entity_WIRE *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_WIRE_init(a3dp_WIRE *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_WIRE(ACIS_Entity_WIRE *self)
+PyObject *
+a3dp_WIRE_repr(a3dp_WIRE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("WIRE object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_WIRE(ACIS_Entity_WIRE *self)
+PyObject *
+a3dp_WIRE_str(a3dp_WIRE *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -584,92 +399,30 @@ ACIS_Entity_str_WIRE(ACIS_Entity_WIRE *self)
   return PyUnicode_FromFormat("WIRE object (%s)", acis_obj_status);
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_WIRE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_WIRE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_WIRE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_WIRE =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.WIRE",        /* tp_name */
-    sizeof(ACIS_Entity_WIRE),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_WIRE,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_WIRE,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS WIRE class",           /* tp_doc */
-    0, /* tp_traverse */
-    0, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_WIRE,             /* tp_methods */
-    ACIS_Entity_members_WIRE,             /* tp_members */
-    ACIS_Entity_getseters_WIRE,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_WIRE,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
-
 /**
- * 3D ACIS Modeler - LUMP wrapper
+ * LUMP class
  */
 
-static int
-ACIS_Entity_init_LUMP(ACIS_Entity_LUMP *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_LUMP_init(a3dp_LUMP *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_LUMP(ACIS_Entity_LUMP *self)
+PyObject *
+a3dp_LUMP_repr(a3dp_LUMP *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("LUMP object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_LUMP(ACIS_Entity_LUMP *self)
+PyObject *
+a3dp_LUMP_str(a3dp_LUMP *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -680,92 +433,30 @@ ACIS_Entity_str_LUMP(ACIS_Entity_LUMP *self)
   return PyUnicode_FromFormat("LUMP object (%s)", acis_obj_status);
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_LUMP[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_LUMP[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_LUMP[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_LUMP =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.LUMP",        /* tp_name */
-    sizeof(ACIS_Entity_LUMP),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_LUMP,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_LUMP,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS LUMP class",           /* tp_doc */
-    0, /* tp_traverse */
-    0, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_LUMP,             /* tp_methods */
-    ACIS_Entity_members_LUMP,             /* tp_members */
-    ACIS_Entity_getseters_LUMP,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_LUMP,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
-
 /**
- * 3D ACIS Modeler - SHELL wrapper
+ * SHELL class
  */
 
-static int
-ACIS_Entity_init_SHELL(ACIS_Entity_SHELL *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_SHELL_init(a3dp_SHELL *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_SHELL(ACIS_Entity_SHELL *self)
+PyObject *
+a3dp_SHELL_repr(a3dp_SHELL *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("SHELL object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_SHELL(ACIS_Entity_SHELL *self)
+PyObject *
+a3dp_SHELL_str(a3dp_SHELL *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -776,92 +467,30 @@ ACIS_Entity_str_SHELL(ACIS_Entity_SHELL *self)
   return PyUnicode_FromFormat("SHELL object (%s)", acis_obj_status);
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_SHELL[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_SHELL[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_SHELL[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_SHELL =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.SHELL",        /* tp_name */
-    sizeof(ACIS_Entity_SHELL),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_SHELL,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_SHELL,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS SHELL class",           /* tp_doc */
-    0, /* tp_traverse */
-    0, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_SHELL,             /* tp_methods */
-    ACIS_Entity_members_SHELL,             /* tp_members */
-    ACIS_Entity_getseters_SHELL,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_SHELL,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
-
 /**
- * 3D ACIS Modeler - SUBSHELL wrapper
+ * SUBSHELL class
  */
 
-static int
-ACIS_Entity_init_SUBSHELL(ACIS_Entity_SUBSHELL *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_SUBSHELL_init(a3dp_SUBSHELL *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_SUBSHELL(ACIS_Entity_SUBSHELL *self)
+PyObject *
+a3dp_SUBSHELL_repr(a3dp_SUBSHELL *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("SUBSHELL object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_SUBSHELL(ACIS_Entity_SUBSHELL *self)
+PyObject *
+a3dp_SUBSHELL_str(a3dp_SUBSHELL *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -872,92 +501,30 @@ ACIS_Entity_str_SUBSHELL(ACIS_Entity_SUBSHELL *self)
   return PyUnicode_FromFormat("SUBSHELL object (%s)", acis_obj_status);
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_SUBSHELL[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_SUBSHELL[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_SUBSHELL[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_SUBSHELL =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.SUBSHELL",        /* tp_name */
-    sizeof(ACIS_Entity_SUBSHELL),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_SUBSHELL,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_SUBSHELL,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS SUBSHELL class",           /* tp_doc */
-    0, /* tp_traverse */
-    0, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_SUBSHELL,             /* tp_methods */
-    ACIS_Entity_members_SUBSHELL,             /* tp_members */
-    ACIS_Entity_getseters_SUBSHELL,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_SUBSHELL,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
-
 /**
- * 3D ACIS Modeler - COEDGE wrapper
+ * COEDGE class
  */
 
-static int
-ACIS_Entity_init_COEDGE(ACIS_Entity_COEDGE *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_COEDGE_init(a3dp_COEDGE *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_COEDGE(ACIS_Entity_COEDGE *self)
+PyObject *
+a3dp_COEDGE_repr(a3dp_COEDGE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("COEDGE object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_COEDGE(ACIS_Entity_COEDGE *self)
+PyObject *
+a3dp_COEDGE_str(a3dp_COEDGE *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -968,92 +535,31 @@ ACIS_Entity_str_COEDGE(ACIS_Entity_COEDGE *self)
   return PyUnicode_FromFormat("COEDGE object (%s)", acis_obj_status);
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_COEDGE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_COEDGE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_COEDGE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_COEDGE =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.COEDGE",        /* tp_name */
-    sizeof(ACIS_Entity_COEDGE),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_COEDGE,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_COEDGE,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS COEDGE class",           /* tp_doc */
-    0, /* tp_traverse */
-    0, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_COEDGE,             /* tp_methods */
-    ACIS_Entity_members_COEDGE,             /* tp_members */
-    ACIS_Entity_getseters_COEDGE,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_COEDGE,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
 
 /**
- * 3D ACIS Modeler - LOOP wrapper
+ * LOOP class
  */
 
-static int
-ACIS_Entity_init_LOOP(ACIS_Entity_LOOP *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_LOOP_init(a3dp_LOOP *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_LOOP(ACIS_Entity_LOOP *self)
+PyObject *
+a3dp_LOOP_repr(a3dp_LOOP *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("LOOP object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_LOOP(ACIS_Entity_LOOP *self)
+PyObject *
+a3dp_LOOP_str(a3dp_LOOP *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -1064,92 +570,30 @@ ACIS_Entity_str_LOOP(ACIS_Entity_LOOP *self)
   return PyUnicode_FromFormat("LOOP object (%s)", acis_obj_status);
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_LOOP[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_LOOP[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_LOOP[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_LOOP =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.LOOP",        /* tp_name */
-    sizeof(ACIS_Entity_LOOP),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_LOOP,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_LOOP,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS LOOP class",           /* tp_doc */
-    0, /* tp_traverse */
-    0, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_LOOP,             /* tp_methods */
-    ACIS_Entity_members_LOOP,             /* tp_members */
-    ACIS_Entity_getseters_LOOP,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_LOOP,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
-
 /**
- * 3D ACIS Modeler - VERTEX wrapper
+ * VERTEX class
  */
 
-static int
-ACIS_Entity_init_VERTEX(ACIS_Entity_VERTEX *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_VERTEX_init(a3dp_VERTEX *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_VERTEX(ACIS_Entity_VERTEX *self)
+PyObject *
+a3dp_VERTEX_repr(a3dp_VERTEX *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("VERTEX object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_VERTEX(ACIS_Entity_VERTEX *self)
+PyObject *
+a3dp_VERTEX_str(a3dp_VERTEX *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -1160,92 +604,30 @@ ACIS_Entity_str_VERTEX(ACIS_Entity_VERTEX *self)
   return PyUnicode_FromFormat("VERTEX object (%s)", acis_obj_status);
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_VERTEX[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_VERTEX[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_VERTEX[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_VERTEX =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.VERTEX",        /* tp_name */
-    sizeof(ACIS_Entity_VERTEX),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_VERTEX,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_VERTEX,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS VERTEX class",           /* tp_doc */
-    0, /* tp_traverse */
-    0, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_VERTEX,             /* tp_methods */
-    ACIS_Entity_members_VERTEX,             /* tp_members */
-    ACIS_Entity_getseters_VERTEX,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_VERTEX,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
-
 /**
- * 3D ACIS Modeler - SURFACE wrapper
+ * SURFACE class
  */
 
-static int
-ACIS_Entity_init_SURFACE(ACIS_Entity_SURFACE *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_SURFACE_init(a3dp_SURFACE *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_SURFACE(ACIS_Entity_SURFACE *self)
+PyObject *
+a3dp_SURFACE_repr(a3dp_SURFACE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("SURFACE object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_SURFACE(ACIS_Entity_SURFACE *self)
+PyObject *
+a3dp_SURFACE_str(a3dp_SURFACE *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -1256,21 +638,21 @@ ACIS_Entity_str_SURFACE(ACIS_Entity_SURFACE *self)
   return PyUnicode_FromFormat("SURFACE object (%s)", acis_obj_status);
 }
 
-static PyObject *
-ACIS_Entity_method_SURFACE_equation(ACIS_Entity_SURFACE *self)
+PyObject *
+a3dp_SURFACE__equation(a3dp_SURFACE *self)
 {
-  PyObject *_retobj = _ACIS_new_surface();
-  *((ACIS_Entity_surface *) _retobj)->_acis_obj = ((SURFACE *)(self->base_obj._acis_obj))->equation();
+  PyObject *_retobj = _PyNew_surface();
+  *((a3dp_surface *) _retobj)->_acis_obj = ((SURFACE *)(self->base_obj._acis_obj))->equation();
   return _retobj;
 }
 
-static PyObject *
-ACIS_Entity_method_SURFACE_trans_surface(ACIS_Entity_SURFACE *self, PyObject *args, PyObject *kwargs)
+PyObject *
+a3dp_SURFACE__trans_surface(a3dp_SURFACE *self, PyObject *args, PyObject *kwargs)
 {
   PyObject *input_t = NULL, *input_reverse = NULL;
 
   // List of keyword arguments that this function can take
-  static char *kwlist[] =
+  char *kwlist[] =
     {
       (char *) "t",
       (char *) "reverse",
@@ -1285,13 +667,13 @@ ACIS_Entity_method_SURFACE_trans_surface(ACIS_Entity_SURFACE *self, PyObject *ar
   if (input_t != NULL)
   {
     // Validate input
-    if (!_ACIS_check_SPAtransf(input_t))
+    if (!_PyCheck_SPAtransf(input_t))
     {
       PyErr_SetString(PyExc_TypeError, "The first argument (t) must be a SPAtransf object");
       return NULL;
     }
 
-    _t = *((ACIS_GeometricAtoms_SPAtransf *) input_t)->_acis_obj;
+    _t = *((a3dp_SPAtransf *) input_t)->_acis_obj;
   }
 
   logical _reverse = FALSE;
@@ -1301,99 +683,35 @@ ACIS_Entity_method_SURFACE_trans_surface(ACIS_Entity_SURFACE *self, PyObject *ar
     _reverse = (_py_inp_reverse == 0) ? FALSE : TRUE;
   }
 
-  PyObject *_retobj = _ACIS_new_surface();
-  ((ACIS_Entity_surface *) _retobj)->_acis_obj = ((SURFACE *)(self->base_obj._acis_obj))->trans_surface(_t, _reverse);
+  PyObject *_retobj = _PyNew_surface();
+  ((a3dp_surface *) _retobj)->_acis_obj = ((SURFACE *)(self->base_obj._acis_obj))->trans_surface(_t, _reverse);
   return _retobj;
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_SURFACE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_SURFACE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_SURFACE[] =
-  {
-    { "equation", (PyCFunction) ACIS_Entity_method_SURFACE_equation, METH_NOARGS, "Returns the equation of this SURFACE" },
-    { "trans_surface", (PyCFunction) ACIS_Entity_method_SURFACE_trans_surface, METH_VARARGS | METH_KEYWORDS, "Returns the transformed surface" },
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_SURFACE =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.SURFACE",        /* tp_name */
-    sizeof(ACIS_Entity_SURFACE),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_SURFACE,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_SURFACE,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS SURFACE class",           /* tp_doc */
-    0, /* tp_traverse */
-    0, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_SURFACE,             /* tp_methods */
-    ACIS_Entity_members_SURFACE,             /* tp_members */
-    ACIS_Entity_getseters_SURFACE,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_SURFACE,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
-
 /**
- * 3D ACIS Modeler - CONE wrapper
+ * CONE class
  */
 
-static int
-ACIS_Entity_init_CONE(ACIS_Entity_CONE *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_CONE_init(a3dp_CONE *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_CONE(ACIS_Entity_CONE *self)
+PyObject *
+a3dp_CONE_repr(a3dp_CONE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("CONE object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_CONE(ACIS_Entity_CONE *self)
+PyObject *
+a3dp_CONE_str(a3dp_CONE *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -1404,92 +722,30 @@ ACIS_Entity_str_CONE(ACIS_Entity_CONE *self)
   return PyUnicode_FromFormat("CONE object (%s)", acis_obj_status);
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_CONE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_CONE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_CONE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_CONE =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.CONE",        /* tp_name */
-    sizeof(ACIS_Entity_CONE),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_CONE,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_CONE,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS CONE class",           /* tp_doc */
-    0,                         /* tp_traverse */
-    0,                         /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_CONE,             /* tp_methods */
-    ACIS_Entity_members_CONE,             /* tp_members */
-    ACIS_Entity_getseters_CONE,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_CONE,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
-
 /**
- * 3D ACIS Modeler - PLANE wrapper
+ * PLANE class
  */
 
-static int
-ACIS_Entity_init_PLANE(ACIS_Entity_PLANE *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_PLANE_init(a3dp_PLANE *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_PLANE(ACIS_Entity_PLANE *self)
+PyObject *
+a3dp_PLANE_repr(a3dp_PLANE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("PLANE object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_PLANE(ACIS_Entity_PLANE *self)
+PyObject *
+a3dp_PLANE_str(a3dp_PLANE *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -1500,92 +756,30 @@ ACIS_Entity_str_PLANE(ACIS_Entity_PLANE *self)
   return PyUnicode_FromFormat("PLANE object (%s)", acis_obj_status);
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_PLANE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_PLANE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_PLANE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_PLANE =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.PLANE",        /* tp_name */
-    sizeof(ACIS_Entity_PLANE),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_PLANE,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_PLANE,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,        /* tp_flags */
-    "ACIS PLANE class",           /* tp_doc */
-    0,                         /* tp_traverse */
-    0,                         /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_PLANE,             /* tp_methods */
-    ACIS_Entity_members_PLANE,             /* tp_members */
-    ACIS_Entity_getseters_PLANE,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_PLANE,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
-
 /**
- * 3D ACIS Modeler - SPHERE wrapper
+ * SPHERE class
  */
 
-static int
-ACIS_Entity_init_SPHERE(ACIS_Entity_SPHERE *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_SPHERE_init(a3dp_SPHERE *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_SPHERE(ACIS_Entity_SPHERE *self)
+PyObject *
+a3dp_SPHERE_repr(a3dp_SPHERE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("SPHERE object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_SPHERE(ACIS_Entity_SPHERE *self)
+PyObject *
+a3dp_SPHERE_str(a3dp_SPHERE *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -1596,92 +790,30 @@ ACIS_Entity_str_SPHERE(ACIS_Entity_SPHERE *self)
   return PyUnicode_FromFormat("SPHERE object (%s)", acis_obj_status);
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_SPHERE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_SPHERE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_SPHERE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_SPHERE =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.SPHERE",        /* tp_name */
-    sizeof(ACIS_Entity_SPHERE),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_SPHERE,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_SPHERE,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS SPHERE class",           /* tp_doc */
-    0, /* tp_traverse */
-    0, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_SPHERE,             /* tp_methods */
-    ACIS_Entity_members_SPHERE,             /* tp_members */
-    ACIS_Entity_getseters_SPHERE,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_SPHERE,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
-
 /**
- * 3D ACIS Modeler - SPLINE wrapper
+ * SPLINE class
  */
 
-static int
-ACIS_Entity_init_SPLINE(ACIS_Entity_SPLINE *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_SPLINE_init(a3dp_SPLINE *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_SPLINE(ACIS_Entity_SPLINE *self)
+PyObject *
+a3dp_SPLINE_repr(a3dp_SPLINE *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("SPLINE object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_SPLINE(ACIS_Entity_SPLINE *self)
+PyObject *
+a3dp_SPLINE_str(a3dp_SPLINE *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -1692,92 +824,30 @@ ACIS_Entity_str_SPLINE(ACIS_Entity_SPLINE *self)
   return PyUnicode_FromFormat("SPLINE object (%s)", acis_obj_status);
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_SPLINE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_SPLINE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_SPLINE[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_SPLINE =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.SPLINE",        /* tp_name */
-    sizeof(ACIS_Entity_SPLINE),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_SPLINE,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_SPLINE,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS SPLINE class",           /* tp_doc */
-    0, /* tp_traverse */
-    0, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_SPLINE,             /* tp_methods */
-    ACIS_Entity_members_SPLINE,             /* tp_members */
-    ACIS_Entity_getseters_SPLINE,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_SPLINE,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
-
 /**
- * 3D ACIS Modeler - TORUS wrapper
+ * TORUS class
  */
 
-static int
-ACIS_Entity_init_TORUS(ACIS_Entity_TORUS *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_TORUS_init(a3dp_TORUS *self, PyObject *args, PyObject *kwargs)
 {
   // Initialize the base class
-  if (ACIS_Entity_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
+  if (a3dp_type_ENTITY.tp_init((PyObject *) self, args, kwargs) < 0)
     return -1;
 
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_repr_TORUS(ACIS_Entity_TORUS *self)
+PyObject *
+a3dp_TORUS_repr(a3dp_TORUS *self)
 {
   const char *_name = PyUnicode_AsUTF8(self->base_obj.attrib_name);
   int _id = (int) PyLong_AsLong(self->base_obj.attrib_object_id);
   return PyUnicode_FromFormat("TORUS object with name '%s' and ID '%i'", _name, _id);
 }
 
-static PyObject *
-ACIS_Entity_str_TORUS(ACIS_Entity_TORUS *self)
+PyObject *
+a3dp_TORUS_str(a3dp_TORUS *self)
 {
   const char *acis_obj_status = NULL;
   if (self->base_obj._acis_obj == NULL)
@@ -1788,80 +858,18 @@ ACIS_Entity_str_TORUS(ACIS_Entity_TORUS *self)
   return PyUnicode_FromFormat("TORUS object (%s)", acis_obj_status);
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_TORUS[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_TORUS[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_TORUS[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_TORUS =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.TORUS",        /* tp_name */
-    sizeof(ACIS_Entity_TORUS),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    0,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_TORUS,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_TORUS,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,   /* tp_flags */
-    "ACIS TORUS class",           /* tp_doc */
-    0, /* tp_traverse */
-    0, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_TORUS,             /* tp_methods */
-    ACIS_Entity_members_TORUS,             /* tp_members */
-    ACIS_Entity_getseters_TORUS,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_TORUS,      /* tp_init */
-    0,                         /* tp_alloc */
-    0,                 /* tp_new */
-  };
-
-
 /**
- * 3D ACIS Modeler - surface wrapper
+ * surface class
  */
 
-static void
-ACIS_Entity_dealloc_surface(ACIS_Entity_surface *self)
+void
+a3dp_surface_dealloc(a3dp_surface *self)
 {
   Py_TYPE(self)->tp_free((PyObject *) self);
 }
 
-static PyObject *
-ACIS_Entity_new_surface(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+PyObject *
+a3dp_surface_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
 {
   // First check if the modeler has been started
   if (!is_modeler_started())
@@ -1870,9 +878,9 @@ ACIS_Entity_new_surface(PyTypeObject *type, PyObject *args, PyObject *kwargs)
     return NULL;
   }
 
-  ACIS_Entity_surface *self;
+  a3dp_surface *self;
 
-  self = (ACIS_Entity_surface *) type->tp_alloc(type, 0);
+  self = (a3dp_surface *) type->tp_alloc(type, 0);
   if (self != NULL)
   {
     // Just getting rid of the dangling pointer
@@ -1882,16 +890,16 @@ ACIS_Entity_new_surface(PyTypeObject *type, PyObject *args, PyObject *kwargs)
   return (PyObject *) self;
 }
 
-static int
-ACIS_Entity_init_surface(ACIS_Entity_surface *self, PyObject *args, PyObject *kwargs)
+int
+a3dp_surface_init(a3dp_surface *self, PyObject *args, PyObject *kwargs)
 {
   return 0;
 }
 
-static PyObject *
-ACIS_Entity_method_surface_eval_normal(ACIS_Entity_surface *self, PyObject *arg)
+PyObject *
+a3dp_surface__eval_normal(a3dp_surface *self, PyObject *arg)
 {
-  if (!_ACIS_check_SPApar_pos(arg))
+  if (!_PyCheck_SPApar_pos(arg))
   {
     PyErr_SetString(PyExc_TypeError, "Expecting a SPApar_pos object");
     return NULL;
@@ -1899,22 +907,22 @@ ACIS_Entity_method_surface_eval_normal(ACIS_Entity_surface *self, PyObject *arg)
 
   Py_INCREF(arg);
 
-  SPApar_pos *&_pos = ((ACIS_GeometricAtoms_SPApar_pos *) arg)->_acis_obj;
+  SPApar_pos *&_pos = ((a3dp_SPApar_pos *) arg)->_acis_obj;
 
   SPAunit_vector _retval = self->_acis_obj->eval_normal(*_pos);
 
-  PyObject *_retobj = _ACIS_new_SPAunit_vector();
-  *((ACIS_GeometricAtoms_SPAunit_vector *) _retobj)->_acis_obj = _retval;
+  PyObject *_retobj = _PyNew_SPAunit_vector();
+  *((a3dp_SPAunit_vector *) _retobj)->_acis_obj = _retval;
 
   Py_DECREF(arg);
 
   return _retobj;
 }
 
-static PyObject *
-ACIS_Entity_method_surface_eval_position(ACIS_Entity_surface *self, PyObject *arg)
+PyObject *
+a3dp_surface__eval_position(a3dp_surface *self, PyObject *arg)
 {
-  if (!_ACIS_check_SPApar_pos(arg))
+  if (!_PyCheck_SPApar_pos(arg))
   {
     PyErr_SetString(PyExc_TypeError, "Expecting a SPApar_pos object");
     return NULL;
@@ -1922,245 +930,26 @@ ACIS_Entity_method_surface_eval_position(ACIS_Entity_surface *self, PyObject *ar
 
   Py_INCREF(arg);
 
-  SPApar_pos *&_pos = ((ACIS_GeometricAtoms_SPApar_pos *) arg)->_acis_obj;
+  SPApar_pos *&_pos = ((a3dp_SPApar_pos *) arg)->_acis_obj;
 
   SPAposition _retval = self->_acis_obj->eval_position(*_pos);
 
-  PyObject *_retobj = _ACIS_new_SPAposition();
-  *((ACIS_GeometricAtoms_SPAposition *) _retobj)->_acis_obj = _retval;
+  PyObject *_retobj = _PyNew_SPAposition();
+  *((a3dp_SPAposition *) _retobj)->_acis_obj = _retval;
 
   Py_DECREF(arg);
 
   return _retobj;
 }
 
-static PyGetSetDef
-  ACIS_Entity_getseters_surface[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_surface[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_surface[] =
-  {
-    { "eval_normal", (PyCFunction) ACIS_Entity_method_surface_eval_normal, METH_O, "Finds the normal to a parametric surface at the point with the given parameter position" },
-    { "eval_position", (PyCFunction) ACIS_Entity_method_surface_eval_position, METH_O, "Finds the point on a parametric surface with the given parameter position" },
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_surface =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.surface",        /* tp_name */
-    sizeof(ACIS_Entity_surface),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    (destructor) ACIS_Entity_dealloc_surface,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    0,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    0,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT,        /* tp_flags */
-    "ACIS surface class",           /* tp_doc */
-    0,                         /* tp_traverse */
-    0,                         /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_surface,             /* tp_methods */
-    ACIS_Entity_members_surface,             /* tp_members */
-    ACIS_Entity_getseters_surface,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_surface,      /* tp_init */
-    0,                         /* tp_alloc */
-    ACIS_Entity_new_surface,                 /* tp_new */
-  };
-
-
-/*
- * Python Module Definitions
- */
-
-// Module documentation can be accessible via __doc__
-const char *module_name = "Entity";
-const char *module_documentation = "Contains 3D ACIS Modeler entities, such as BODY, FACE, WIRE, etc.";
-
-static PyModuleDef
-  ACIS_Entity_module =
-  {
-    PyModuleDef_HEAD_INIT,
-    module_name,
-    module_documentation,
-    -1,
-    NULL, NULL, NULL, NULL, NULL
-  };
-
-PyMODINIT_FUNC
-PyInit_Entity(void)
+PyObject *_PyNew_ENTITY()
 {
-  // Create a Python module, ACIS.Topology
-  PyObject *m;
-  m = PyModule_Create(&ACIS_Entity_module);
-  if (m == NULL)
-    return NULL;
-
-  // Add ENTITY to the module
-  if (PyType_Ready(&ACIS_Entity_type_ENTITY) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_ENTITY);
-  PyModule_AddObject(m, "ENTITY", (PyObject *) &ACIS_Entity_type_ENTITY);
-
-  // Add BODY to the module
-  ACIS_Entity_type_BODY.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_BODY) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_BODY);
-  PyModule_AddObject(m, "BODY", (PyObject *) &ACIS_Entity_type_BODY);
-
-  // Add FACE to the module
-  ACIS_Entity_type_FACE.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_FACE) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_FACE);
-  PyModule_AddObject(m, "FACE", (PyObject *) &ACIS_Entity_type_FACE);
-
-  // Add EDGE to the module
-  ACIS_Entity_type_EDGE.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_EDGE) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_EDGE);
-  PyModule_AddObject(m, "EDGE", (PyObject *) &ACIS_Entity_type_EDGE);
-
-  // Add WIRE to the module
-  ACIS_Entity_type_WIRE.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_WIRE) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_WIRE);
-  PyModule_AddObject(m, "WIRE", (PyObject *) &ACIS_Entity_type_WIRE);
-
-  // Add LUMP to the module
-  ACIS_Entity_type_LUMP.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_LUMP) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_LUMP);
-  PyModule_AddObject(m, "LUMP", (PyObject *) &ACIS_Entity_type_LUMP);
-
-  // Add SHELL to the module
-  ACIS_Entity_type_SHELL.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_SHELL) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_SHELL);
-  PyModule_AddObject(m, "SHELL", (PyObject *) &ACIS_Entity_type_SHELL);
-
-  // Add SUBSHELL to the module
-  ACIS_Entity_type_SUBSHELL.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_SUBSHELL) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_SUBSHELL);
-  PyModule_AddObject(m, "SUBSHELL", (PyObject *) &ACIS_Entity_type_SUBSHELL);
-
-  // Add COEDGE to the module
-  ACIS_Entity_type_COEDGE.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_COEDGE) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_COEDGE);
-  PyModule_AddObject(m, "COEDGE", (PyObject *) &ACIS_Entity_type_COEDGE);
-
-  // Add LOOP to the module
-  ACIS_Entity_type_LOOP.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_LOOP) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_LOOP);
-  PyModule_AddObject(m, "LOOP", (PyObject *) &ACIS_Entity_type_LOOP);
-
-  // Add VERTEX to the module
-  ACIS_Entity_type_VERTEX.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_VERTEX) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_VERTEX);
-  PyModule_AddObject(m, "VERTEX", (PyObject *) &ACIS_Entity_type_VERTEX);
-
-  // Add SURFACE to the module
-  ACIS_Entity_type_SURFACE.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_SURFACE) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_SURFACE);
-  PyModule_AddObject(m, "SURFACE", (PyObject *) &ACIS_Entity_type_SURFACE);
-
-  // Add CONE to the module
-  ACIS_Entity_type_CONE.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_CONE) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_CONE);
-  PyModule_AddObject(m, "CONE", (PyObject *) &ACIS_Entity_type_CONE);
-
-  // Add PLANE to the module
-  ACIS_Entity_type_PLANE.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_PLANE) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_PLANE);
-  PyModule_AddObject(m, "PLANE", (PyObject *) &ACIS_Entity_type_PLANE);
-
-  // Add SPHERE to the module
-  ACIS_Entity_type_SPHERE.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_SPHERE) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_SPHERE);
-  PyModule_AddObject(m, "SPHERE", (PyObject *) &ACIS_Entity_type_SPHERE);
-
-  // Add SPLINE to the module
-  ACIS_Entity_type_SPLINE.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_SPLINE) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_SPLINE);
-  PyModule_AddObject(m, "SPLINE", (PyObject *) &ACIS_Entity_type_SPLINE);
-
-  // Add TORUS to the module
-  ACIS_Entity_type_TORUS.tp_base = &ACIS_Entity_type_ENTITY;
-  if (PyType_Ready(&ACIS_Entity_type_TORUS) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_TORUS);
-  PyModule_AddObject(m, "TORUS", (PyObject *) &ACIS_Entity_type_TORUS);
-
-  // Add surface to the module
-  if (PyType_Ready(&ACIS_Entity_type_surface) < 0)
-    return NULL;
-  Py_INCREF(&ACIS_Entity_type_surface);
-  PyModule_AddObject(m, "surface", (PyObject *) &ACIS_Entity_type_surface);
-
-  // Return the module and all included objects
-  return m;
+  return PyObject_CallObject((PyObject *) &a3dp_type_ENTITY, NULL);
 }
 
-PyObject *_ACIS_new_ENTITY()
+bool _PyCheck_ENTITY(PyObject *ob)
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_ENTITY, NULL);
-}
-
-bool _ACIS_check_ENTITY(PyObject *ob)
-{
-  int retval = PyObject_IsInstance(ob, (PyObject *) &ACIS_Entity_type_ENTITY);
+  int retval = PyObject_IsInstance(ob, (PyObject *) &a3dp_type_ENTITY);
   if (retval < 0)
   {
     PyErr_SetString(PyExc_TypeError, "Problem with ENTITY type cheking");
@@ -2169,185 +958,512 @@ bool _ACIS_check_ENTITY(PyObject *ob)
   return retval != 0;
 }
 
-PyObject *_ACIS_new_BODY()
+PyObject *_PyNew_BODY()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_BODY, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_BODY, NULL);
 }
 
-bool _ACIS_check_BODY(PyObject *ob)
+bool _PyCheck_BODY(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_BODY;
+  return Py_TYPE(ob) == &a3dp_type_BODY;
 }
 
-PyObject *_ACIS_new_FACE()
+PyObject *_PyNew_FACE()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_FACE, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_FACE, NULL);
 }
 
-bool _ACIS_check_FACE(PyObject *ob)
+bool _PyCheck_FACE(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_FACE;
+  return Py_TYPE(ob) == &a3dp_type_FACE;
 }
 
-PyObject *_ACIS_new_EDGE()
+PyObject *_PyNew_EDGE()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_EDGE, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_EDGE, NULL);
 }
 
-bool _ACIS_check_EDGE(PyObject *ob)
+bool _PyCheck_EDGE(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_EDGE;
+  return Py_TYPE(ob) == &a3dp_type_EDGE;
 }
 
-PyObject *_ACIS_new_WIRE()
+PyObject *_PyNew_WIRE()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_WIRE, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_WIRE, NULL);
 }
 
-bool _ACIS_check_WIRE(PyObject *ob)
+bool _PyCheck_WIRE(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_WIRE;
+  return Py_TYPE(ob) == &a3dp_type_WIRE;
 }
 
-PyObject *_ACIS_new_LUMP()
+PyObject *_PyNew_LUMP()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_LUMP, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_LUMP, NULL);
 }
 
-bool _ACIS_check_LUMP(PyObject *ob)
+bool _PyCheck_LUMP(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_LUMP;
+  return Py_TYPE(ob) == &a3dp_type_LUMP;
 }
 
-PyObject *_ACIS_new_SHELL()
+PyObject *_PyNew_SHELL()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_SHELL, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_SHELL, NULL);
 }
 
-bool _ACIS_check_SHELL(PyObject *ob)
+bool _PyCheck_SHELL(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_SHELL;
+  return Py_TYPE(ob) == &a3dp_type_SHELL;
 }
 
-PyObject *_ACIS_new_SUBSHELL()
+PyObject *_PyNew_SUBSHELL()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_SUBSHELL, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_SUBSHELL, NULL);
 }
 
-bool _ACIS_check_SUBSHELL(PyObject *ob)
+bool _PyCheck_SUBSHELL(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_SUBSHELL;
+  return Py_TYPE(ob) == &a3dp_type_SUBSHELL;
 }
 
-PyObject *_ACIS_new_COEDGE()
+PyObject *_PyNew_COEDGE()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_COEDGE, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_COEDGE, NULL);
 }
 
-bool _ACIS_check_COEDGE(PyObject *ob)
+bool _PyCheck_COEDGE(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_COEDGE;
+  return Py_TYPE(ob) == &a3dp_type_COEDGE;
 }
 
-PyObject *_ACIS_new_LOOP()
+PyObject *_PyNew_LOOP()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_LOOP, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_LOOP, NULL);
 }
 
-bool _ACIS_check_LOOP(PyObject *ob)
+bool _PyCheck_LOOP(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_LOOP;
+  return Py_TYPE(ob) == &a3dp_type_LOOP;
 }
 
-PyObject *_ACIS_new_VERTEX()
+PyObject *_PyNew_VERTEX()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_VERTEX, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_VERTEX, NULL);
 }
 
-bool _ACIS_check_VERTEX(PyObject *ob)
+bool _PyCheck_VERTEX(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_VERTEX;
+  return Py_TYPE(ob) == &a3dp_type_VERTEX;
 }
 
-PyObject *_ACIS_new_SURFACE()
+PyObject *_PyNew_SURFACE()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_SURFACE, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_SURFACE, NULL);
 }
 
-bool _ACIS_check_SURFACE(PyObject *ob)
+bool _PyCheck_SURFACE(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_SURFACE;
+  return Py_TYPE(ob) == &a3dp_type_SURFACE;
 }
 
-PyObject *_ACIS_new_CONE()
+PyObject *_PyNew_CONE()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_CONE, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_CONE, NULL);
 }
 
-bool _ACIS_check_CONE(PyObject *ob)
+bool _PyCheck_CONE(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_CONE;
+  return Py_TYPE(ob) == &a3dp_type_CONE;
 }
 
-PyObject *_ACIS_new_PLANE()
+PyObject *_PyNew_PLANE()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_PLANE, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_PLANE, NULL);
 }
 
-bool _ACIS_check_PLANE(PyObject *ob)
+bool _PyCheck_PLANE(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_PLANE;
+  return Py_TYPE(ob) == &a3dp_type_PLANE;
 }
 
-PyObject *_ACIS_new_SPHERE()
+PyObject *_PyNew_SPHERE()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_SPHERE, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_SPHERE, NULL);
 }
 
-bool _ACIS_check_SPHERE(PyObject *ob)
+bool _PyCheck_SPHERE(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_SPHERE;
+  return Py_TYPE(ob) == &a3dp_type_SPHERE;
 }
 
-PyObject *_ACIS_new_SPLINE()
+PyObject *_PyNew_SPLINE()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_SPLINE, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_SPLINE, NULL);
 }
 
-bool _ACIS_check_SPLINE(PyObject *ob)
+bool _PyCheck_SPLINE(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_SPLINE;
+  return Py_TYPE(ob) == &a3dp_type_SPLINE;
 }
 
-PyObject *_ACIS_new_TORUS()
+PyObject *_PyNew_TORUS()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_TORUS, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_TORUS, NULL);
 }
 
-bool _ACIS_check_TORUS(PyObject *ob)
+bool _PyCheck_TORUS(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_TORUS;
+  return Py_TYPE(ob) == &a3dp_type_TORUS;
 }
 
-PyObject *_ACIS_new_surface()
+PyObject *_PyNew_surface()
 {
-  return PyObject_CallObject((PyObject *) &ACIS_Entity_type_surface, NULL);
+  return PyObject_CallObject((PyObject *) &a3dp_type_surface, NULL);
 }
 
-bool _ACIS_check_surface(PyObject *ob)
+bool _PyCheck_surface(PyObject *ob)
 {
-  return Py_TYPE(ob) == &ACIS_Entity_type_surface;
+  return Py_TYPE(ob) == &a3dp_type_surface;
 }
 
-void _ACIS_make_null(PyObject *ob)
+void _a3dp_make_null(PyObject *ob)
 {
-  if (_ACIS_check_ENTITY(ob))
+  if (_PyCheck_ENTITY(ob))
   {
-    ((ACIS_Entity_ENTITY *) ob)->_acis_obj = NULL;
+    ((a3dp_ENTITY *) ob)->_acis_obj = NULL;
   }
 }
 
-void _ACIS_set_entity(PyObject *ob, ENTITY *ent)
+void _a3dp_set_entity(PyObject *ob, ENTITY *ent)
 {
-	((ACIS_Entity_ENTITY *)ob)->_acis_obj = ent;
+	((a3dp_ENTITY *)ob)->_acis_obj = ent;
+}
+
+/**
+ * ENTITY_LIST class
+ */
+
+void
+a3dp_ENTITYLIST_dealloc(a3dp_ENTITY_LIST *self)
+{
+  // First, clear the contents of the ENTITY_LIST instance
+  self->_acis_obj->clear();
+
+  // Use ACIS_DELETE macro for ENTITY_LIST
+  ACIS_DELETE self->_acis_obj;
+
+  // Delete the python object itself
+  Py_TYPE(self)->tp_free((PyObject *) self);
+}
+
+PyObject *
+a3dp_ENTITYLIST_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+{
+  a3dp_ENTITY_LIST *self;
+
+  self = (a3dp_ENTITY_LIST *) type->tp_alloc(type, 0);
+  if (self != NULL)
+  {
+    // Just getting rid of the dangling pointer
+    self->_acis_obj = NULL;
+  }
+
+  return (PyObject *) self;
+}
+
+int
+a3dp_ENTITYLIST_init(a3dp_ENTITY_LIST *self)
+{
+  // ENTITY_LIST takes no arguments, so parsing is necessary
+  self->_acis_obj = ACIS_NEW ENTITY_LIST();
+  return 0;
+}
+
+PyObject *
+a3dp_ENTITYLIST__init(a3dp_ENTITY_LIST *self)
+{
+  self->_acis_obj->init();
+  Py_RETURN_NONE;
+}
+
+PyObject *
+a3dp_ENTITYLIST__clear(a3dp_ENTITY_LIST *self)
+{
+  self->_acis_obj->clear();
+  Py_RETURN_NONE;
+}
+
+PyObject *
+a3dp_ENTITYLIST__add(a3dp_ENTITY_LIST *self, PyObject *arg)
+{
+  // Treat arg as a borrowed reference
+  Py_INCREF(arg);
+
+  int index = -1;
+
+  if (!_PyCheck_ENTITY(arg))
+  {
+    if (!_PyCheck_ENTITY_LIST(arg))
+    {
+      PyErr_SetString(PyExc_TypeError, "Expecting an ENTITY or ENTITY_LIST object");
+      return NULL;
+    }
+    else
+    {
+      // This function returns void
+      self->_acis_obj->add(*((a3dp_ENTITY_LIST *) arg)->_acis_obj);
+    }
+  }
+  else
+  {
+    // This function returns the added ENTITY's index number
+    index = self->_acis_obj->add(((a3dp_ENTITY *) arg)->_acis_obj);
+  }
+
+  // Treat arg as a borrowed reference
+  Py_DECREF(arg);
+
+  // Prepare return values
+  if (index != -1)
+  {
+    return PyLong_FromLong(index);
+  }
+  else
+  {
+    Py_RETURN_NONE;
+  }
+}
+
+PyObject *
+a3dp_ENTITYLIST__remove(a3dp_ENTITY_LIST *self, PyObject *arg)
+{
+  // Treat arg as a borrowed reference
+  Py_INCREF(arg);
+
+  int index = -1;
+
+  if (!_PyCheck_ENTITY(arg))
+  {
+    if (!_PyCheck_ENTITY_LIST(arg))
+    {
+      if (!PyLong_Check(arg))
+      {
+        PyErr_SetString(PyExc_TypeError, "Expecting an ENTITY, an ENTITY_LIST or an integer object");
+        return NULL;
+      }
+      else
+      {
+        // This function returns the index number
+        index = self->_acis_obj->remove((int) PyLong_AsLong(arg));
+      }
+    }
+    else
+    {
+      // This function returns void
+      self->_acis_obj->remove(*((a3dp_ENTITY_LIST *) arg)->_acis_obj);
+    }
+  }
+  else
+  {
+    // This function returns the removed ENTITY's index number
+    index = self->_acis_obj->remove(((a3dp_ENTITY *) arg)->_acis_obj);
+  }
+
+  // Treat arg as a borrowed reference
+  Py_DECREF(arg);
+
+  // Prepare return values
+  if (index != -1)
+  {
+    return PyLong_FromLong(index);
+  }
+  else
+  {
+    Py_RETURN_NONE;
+  }
+}
+
+PyObject *
+a3dp_ENTITYLIST__count(a3dp_ENTITY_LIST *self)
+{
+  return PyLong_FromLong(self->_acis_obj->count());
+}
+
+PyObject *
+a3dp_ENTITYLIST__iteration_count(a3dp_ENTITY_LIST *self)
+{
+  return PyLong_FromLong(self->_acis_obj->iteration_count());
+}
+
+PyObject *
+a3dp_ENTITYLIST__reverse(a3dp_ENTITY_LIST *self)
+{
+  self->_acis_obj->reverse();
+  Py_RETURN_NONE;
+}
+
+PyObject *
+a3dp_ENTITYLIST__lookup(a3dp_ENTITY_LIST *self, PyObject *arg)
+{
+  // Treat arg as a borrowed reference
+  Py_INCREF(arg);
+
+  if (!_PyCheck_ENTITY(arg))
+  {
+    PyErr_SetString(PyExc_TypeError, "Expecting an ENTITY object");
+    return NULL;
+  }
+
+  int index = self->_acis_obj->lookup(((a3dp_ENTITY *) arg)->_acis_obj);
+
+  // Treat arg as a borrowed reference
+  Py_DECREF(arg);
+
+  // Prepare return values
+  return PyLong_FromLong(index);
+}
+
+PyObject *
+a3dp_ENTITYLIST__byte_count(a3dp_ENTITY_LIST *self)
+{
+  return PyLong_FromLong(self->_acis_obj->byte_count());
+}
+
+PyObject *
+a3dp_ENTITYLIST__first(a3dp_ENTITY_LIST *self)
+{
+  ENTITY *_elem = self->_acis_obj->first();
+  PyObject *retobj = __convert_entity(_elem);
+  return retobj;
+}
+
+PyObject *
+a3dp_ENTITYLIST__next(a3dp_ENTITY_LIST *self)
+{
+  PyObject *retobj;
+  ENTITY *_elem = self->_acis_obj->next();
+
+  if (_elem)
+  {
+    retobj = __convert_entity(_elem);
+  }
+  else
+  {
+    // This is a requirement for iterator/generator to stop. Otherwise, you will observe an infinite loop.
+    PyErr_SetNone(PyExc_StopIteration);
+    return NULL;
+  }
+
+  return retobj;
+}
+
+PyObject *
+a3dp_ENTITYLIST__next_from(a3dp_ENTITY_LIST *self, PyObject *arg)
+{
+  if (!PyLong_Check(arg))
+  {
+    PyErr_SetString(PyExc_TypeError, "Expecting an integer object");
+    return NULL;
+  }
+
+  Py_INCREF(arg);
+  int _from_index = (int) PyLong_AsLong(arg);
+  Py_DECREF(arg);
+
+  PyObject *retobj;
+  ENTITY *_elem = self->_acis_obj->next_from(_from_index);
+
+  if (_elem)
+  {
+    retobj = __convert_entity(_elem);
+  }
+  else
+  {
+    // This is a requirement for iterator/generator to stop. Otherwise, you will observe an infinite loop.
+    PyErr_SetNone(PyExc_StopIteration);
+    return NULL;
+  }
+
+  return retobj;
+}
+
+PyObject *
+a3dp_ENTITYLIST__array(a3dp_ENTITY_LIST *self)
+{
+  /* This function will create a Python generator/iterator */
+
+  // Reference increment is necessary, otherwise this ENTITY_LIST will be garbage collected
+  Py_INCREF(self);
+
+  // Iterator/Generator creation functions always return self!
+  return (PyObject *) self;
+}
+
+PyObject *
+a3dp_ENTITYLIST_iter(PyObject *self)
+{
+  /* Must have the same signature as PyObject_GetIter() */
+
+  // Move the ENTITY_LIST pointer to the beginning
+  a3dp_ENTITYLIST__init((a3dp_ENTITY_LIST *) self);
+
+  Py_INCREF(self);
+  return self;
+}
+
+PyObject *
+a3dp_ENTITYLIST_iter_next(PyObject *self)
+{
+  /* Must have the same signature as PyIter_Next() */
+
+  // Convert the input argument to a ENTITY_LIST object
+  a3dp_ENTITY_LIST *_ent_list = (a3dp_ENTITY_LIST *) self;
+
+  // Return the next element
+  return a3dp_ENTITYLIST__next(_ent_list);
+}
+
+
+PyObject *
+_PyNew_ENTITY_LIST()
+{
+  return PyObject_CallObject((PyObject *) &a3dp_type_ENTITYLIST, NULL);
+}
+
+bool
+_PyCheck_ENTITY_LIST(PyObject *ob)
+{
+  if (Py_TYPE(ob) == &a3dp_type_ENTITYLIST)
+    return true;
+  else
+    return false;
+}
+
+PyObject *
+__convert_entity(ENTITY *ent)
+{
+  // Find the type name of the entity
+  const char *_type_name = ent->type_name();
+
+  // We could use a hashing function here...
+  PyObject *_retobj;
+  if (strcmp("body", _type_name) == 0)
+  {
+    _retobj = _PyNew_BODY();
+    _a3dp_set_entity(_retobj, ent);
+  }
+  else if (strcmp("face", _type_name) == 0)
+  {
+    _retobj = _PyNew_FACE();
+    _a3dp_set_entity(_retobj, ent);
+  }
+  else if (strcmp("surface", _type_name) == 0)
+  {
+    _retobj = _PyNew_SURFACE();
+    _a3dp_set_entity(_retobj, ent);
+  }
+
+  return _retobj;
 }
