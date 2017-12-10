@@ -9,31 +9,15 @@
  *
  */
 
-#ifndef ACIS_ENTITY_H
-#define ACIS_ENTITY_H
+#ifndef A3DPY_ENTITY_H
+#define A3DPY_ENTITY_H
 
 #include <Python.h>
 #include <structmember.h>
 
-#include "kernapi.hxx"
-#include <entity.hxx>
-#include <body.hxx>
-#include <face.hxx>
-#include <at_name.hxx>
-#include <at_int.hxx>
-#include <surface.hxx>
-#include <surdef.hxx>
+#include "acis_includes.h"
+#include "acis_operators.h"
 
-#include "acis_geometric_atoms.h"
-
-#include "acis_entity_export.h"
-
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-// Types and their functions
 
 // Define ENTITY as a base class
 typedef struct
@@ -42,272 +26,197 @@ typedef struct
   ENTITY *_acis_obj;
   PyObject *attrib_name;
   PyObject *attrib_object_id;
-} ACIS_Entity_ENTITY;
-
-int ACIS_ENTITY_EXPORT ACIS_Entity_traverse_ENTITY(ACIS_Entity_ENTITY *self, visitproc visit, void *arg);
-
-int ACIS_ENTITY_EXPORT ACIS_Entity_clear_ENTITY(ACIS_Entity_ENTITY *self);
-
-void ACIS_ENTITY_EXPORT ACIS_Entity_dealloc_ENTITY(ACIS_Entity_ENTITY *self);
-
-PyObject ACIS_ENTITY_EXPORT *ACIS_Entity_new_ENTITY(PyTypeObject *type, PyObject *args, PyObject *kwargs);
-
-int ACIS_ENTITY_EXPORT ACIS_Entity_init_ENTITY(ACIS_Entity_ENTITY *self, PyObject *args, PyObject *kwargs);
-
-PyObject ACIS_ENTITY_EXPORT *ACIS_Entity_repr_ENTITY(ACIS_Entity_ENTITY *self);
-
-PyObject ACIS_ENTITY_EXPORT *ACIS_Entity_str_ENTITY(ACIS_Entity_ENTITY *self);
-
-PyObject ACIS_ENTITY_EXPORT *ACIS_Entity_method_ENTITY_get_attrib_name(ACIS_Entity_ENTITY *self, PyObject *value, void *closure);
-
-int ACIS_ENTITY_EXPORT ACIS_Entity_method_ENTITY_set_attrib_name(ACIS_Entity_ENTITY *self, PyObject *value, void *closure);
-
-PyObject ACIS_ENTITY_EXPORT *ACIS_Entity_method_ENTITY_get_attrib_obj_id(ACIS_Entity_ENTITY *self, PyObject *value, void *closure);
-
-int ACIS_ENTITY_EXPORT ACIS_Entity_method_ENTITY_set_attrib_obj_id(ACIS_Entity_ENTITY *self, PyObject *value, void *closure);
-
-PyObject ACIS_ENTITY_EXPORT *ACIS_Entity_method_ENTITY_type_name(PyObject *self);
-
-static PyGetSetDef
-  ACIS_Entity_getseters_ENTITY[] =
-  {
-    { (char *) "name", (getter) ACIS_Entity_method_ENTITY_get_attrib_name, (setter) ACIS_Entity_method_ENTITY_set_attrib_name, (char *) "object name", NULL },
-    { (char *) "id", (getter) ACIS_Entity_method_ENTITY_get_attrib_obj_id, (setter) ACIS_Entity_method_ENTITY_set_attrib_obj_id, (char *) "object id", NULL },
-    { NULL }  /* Sentinel */
-  };
-
-static PyMemberDef
-  ACIS_Entity_members_ENTITY[] =
-  {
-    { NULL }  /* Sentinel */
-  };
-
-static PyMethodDef
-  ACIS_Entity_methods_ENTITY[] =
-  {
-	  { "type_name", (PyCFunction) ACIS_Entity_method_ENTITY_type_name, METH_NOARGS, "Returns a name for this ENTITY's type" },
-    { NULL }  /* Sentinel */
-  };
-
-static PyTypeObject
-  ACIS_Entity_type_ENTITY =
-  {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    "ACIS.ENTITY",        /* tp_name */
-    sizeof(ACIS_Entity_ENTITY),    /* tp_basicsize */
-    0,                         /* tp_itemsize */
-    (destructor) ACIS_Entity_dealloc_ENTITY,                         /* tp_dealloc */
-    0,                         /* tp_print */
-    0,                         /* tp_getattr */
-    0,                         /* tp_setattr */
-    0,                         /* tp_reserved */
-    (reprfunc) ACIS_Entity_repr_ENTITY,                         /* tp_repr */
-    0,                         /* tp_as_number */
-    0,                         /* tp_as_sequence */
-    0,                         /* tp_as_mapping */
-    0,                         /* tp_hash  */
-    0,                         /* tp_call */
-    (reprfunc) ACIS_Entity_str_ENTITY,                         /* tp_str */
-    0,                         /* tp_getattro */
-    0,                         /* tp_setattro */
-    0,                         /* tp_as_buffer */
-    Py_TPFLAGS_DEFAULT |
-      Py_TPFLAGS_BASETYPE |
-      Py_TPFLAGS_HAVE_GC,   /* tp_flags */
-    "ACIS ENTITY class",           /* tp_doc */
-    (traverseproc) ACIS_Entity_traverse_ENTITY, /* tp_traverse */
-    (inquiry) ACIS_Entity_clear_ENTITY, /* tp_clear */
-    0,                         /* tp_richcompare */
-    0,                         /* tp_weaklistoffset */
-    0,                         /* tp_iter */
-    0,                         /* tp_iternext */
-    ACIS_Entity_methods_ENTITY,             /* tp_methods */
-    ACIS_Entity_members_ENTITY,             /* tp_members */
-    ACIS_Entity_getseters_ENTITY,                         /* tp_getset */
-    0,                         /* tp_base */
-    0,                         /* tp_dict */
-    0,                         /* tp_descr_get */
-    0,                         /* tp_descr_set */
-    0,                         /* tp_dictoffset */
-    (initproc) ACIS_Entity_init_ENTITY,      /* tp_init */
-    0,                         /* tp_alloc */
-    ACIS_Entity_new_ENTITY,                 /* tp_new */
-  };
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_ENTITY();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_ENTITY(PyObject *ob);
+} a3dp_ENTITY;
 
 // Define BODY
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_BODY;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_BODY();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_BODY(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_BODY;
 
 // Define FACE
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_FACE;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_FACE();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_FACE(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_FACE;
 
 // Define EDGE
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_EDGE;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_EDGE();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_EDGE(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_EDGE;
 
 // Define WIRE
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_WIRE;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_WIRE();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_WIRE(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_WIRE;
 
 // Define LUMP
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_LUMP;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_LUMP();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_LUMP(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_LUMP;
 
 // Define SHELL
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_SHELL;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_SHELL();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_SHELL(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_SHELL;
 
 // Define SUBSHELL
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_SUBSHELL;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_SUBSHELL();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_SUBSHELL(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_SUBSHELL;
 
 // Define COEDGE
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_COEDGE;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_COEDGE();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_COEDGE(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_COEDGE;
 
 // Define LOOP
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_LOOP;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_LOOP();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_LOOP(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_LOOP;
 
 // Define VERTEX
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_VERTEX;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_VERTEX();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_VERTEX(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_VERTEX;
 
 // Define SURFACE
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_SURFACE;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_SURFACE();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_SURFACE(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_SURFACE;
 
 // Define CONE
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_CONE;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_CONE();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_CONE(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_CONE;
 
 // Define PLANE
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_PLANE;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_PLANE();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_PLANE(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_PLANE;
 
 // Define SPHERE
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_SPHERE;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_SPHERE();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_SPHERE(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_SPHERE;
 
 // Define SPLINE
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_SPLINE;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_SPLINE();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_SPLINE(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_SPLINE;
 
 // Define TORUS
 typedef struct
 {
-  ACIS_Entity_ENTITY base_obj;
-} ACIS_Entity_TORUS;
-
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_TORUS();
-
-bool ACIS_ENTITY_EXPORT _ACIS_check_TORUS(PyObject *ob);
+  a3dp_ENTITY base_obj;
+} a3dp_TORUS;
 
 // Define surface
 typedef struct
 {
   surface* _acis_obj;
-} ACIS_Entity_surface;
+} a3dp_surface;
 
-PyObject ACIS_ENTITY_EXPORT *_ACIS_new_surface();
+// Define ENTITY_LIST
+typedef struct
+{
+  PyObject_HEAD
+  ENTITY_LIST *_acis_obj;
+} a3dp_ENTITY_LIST;
 
-bool ACIS_ENTITY_EXPORT _ACIS_check_surface(PyObject *ob);
+extern PyTypeObject a3dp_type_ENTITY;
+extern PyTypeObject a3dp_type_BODY;
+extern PyTypeObject a3dp_type_FACE;
+extern PyTypeObject a3dp_type_EDGE;
+extern PyTypeObject a3dp_type_WIRE;
+extern PyTypeObject a3dp_type_LUMP;
+extern PyTypeObject a3dp_type_SHELL;
+extern PyTypeObject a3dp_type_SUBSHELL;
+extern PyTypeObject a3dp_type_COEDGE;
+extern PyTypeObject a3dp_type_LOOP;
+extern PyTypeObject a3dp_type_VERTEX;
+extern PyTypeObject a3dp_type_SURFACE;
+extern PyTypeObject a3dp_type_CONE;
+extern PyTypeObject a3dp_type_PLANE;
+extern PyTypeObject a3dp_type_SPHERE;
+extern PyTypeObject a3dp_type_SPLINE;
+extern PyTypeObject a3dp_type_TORUS;
+extern PyTypeObject a3dp_type_surface;
+extern PyTypeObject a3dp_type_ENTITY_LIST;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+PyObject *_PyNew_ENTITY();
+bool _PyCheck_ENTITY(PyObject *ob);
+
+PyObject *_PyNew_BODY();
+bool _PyCheck_BODY(PyObject *ob);
+
+PyObject *_PyNew_FACE();
+bool _PyCheck_FACE(PyObject *ob);
+
+PyObject *_PyNew_EDGE();
+bool _PyCheck_EDGE(PyObject *ob);
+
+PyObject *_PyNew_WIRE();
+bool _PyCheck_WIRE(PyObject *ob);
+
+PyObject *_PyNew_LUMP();
+bool _PyCheck_LUMP(PyObject *ob);
+
+PyObject *_PyNew_SHELL();
+bool _PyCheck_SHELL(PyObject *ob);
+
+PyObject *_PyNew_SUBSHELL();
+bool _PyCheck_SUBSHELL(PyObject *ob);
+
+PyObject *_PyNew_COEDGE();
+bool _PyCheck_COEDGE(PyObject *ob);
+
+PyObject *_PyNew_LOOP();
+bool _PyCheck_LOOP(PyObject *ob);
+
+PyObject *_PyNew_VERTEX();
+bool _PyCheck_VERTEX(PyObject *ob);
+
+PyObject *_PyNew_SURFACE();
+bool _PyCheck_SURFACE(PyObject *ob);
+
+PyObject *_PyNew_CONE();
+bool _PyCheck_CONE(PyObject *ob);
+
+PyObject *_PyNew_PLANE();
+bool _PyCheck_PLANE(PyObject *ob);
+
+PyObject *_PyNew_SPHERE();
+bool _PyCheck_SPHERE(PyObject *ob);
+
+PyObject *_PyNew_SPLINE();
+bool _PyCheck_SPLINE(PyObject *ob);
+
+PyObject *_PyNew_TORUS();
+bool _PyCheck_TORUS(PyObject *ob);
+
+PyObject *_PyNew_surface();
+bool _PyCheck_surface(PyObject *ob);
+
+PyObject *_PyNew_ENTITY_LIST();
+bool _PyCheck_ENTITY_LIST(PyObject *ob);
 
 // Additional functions
 
@@ -315,12 +224,14 @@ bool ACIS_ENTITY_EXPORT _ACIS_check_surface(PyObject *ob);
  * Sets the internal ocis_obj variable to NULL
  * @param ob Topology object, such as ENTITY, BODY, FACE, etc.
  */
-void ACIS_ENTITY_EXPORT _ACIS_make_null(PyObject *ob);
+void __make_null(PyObject *ob);
 
-void ACIS_ENTITY_EXPORT _ACIS_set_entity(PyObject *ob, ENTITY *ent);
+void __set_entity(PyObject *ob, ENTITY *ent);
+
+PyObject *__convert_entity(ENTITY *ent);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif // !ACIS_ENTITY_H
+#endif // !A3DPY_ENTITY_H

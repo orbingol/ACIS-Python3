@@ -27,12 +27,9 @@ I would like to introduce some rules on contributing to this module.
 
 #### Naming conventions in the Python module
 
-* Python objects are defined as `ACIS_{ModuleName}_{ACISName}` and located in the header files
-* Type functions are defined as `ACIS_{ModuleName}_{function_name}_{ACISName}`, e.g. _ACIS_GeometricAtoms_init_SPAposition_
-* Methods for types are defined as `ACIS_{ModuleName}_method_{ACISName}_{MethodName}`, e.g. _ACIS_Lists_method_ENTITY_LIST_add_ which corresponds to _ENTITY_LIST::add()_ on the C++ side
-* Module variables are defined as `ACIS_{ModuleName}_{function_name}`, e.g. _ACIS_Topology_module_
-* Module init functions are defined as `PyInit_{ModuleName}`
-* ACIS API calls are defined as `ACIS_{API Call}`, e.g. _ACIS_api_start_modeller_ which corresponds to _api_start_modeller()_ on the C++ side
+* Type functions: `a3dp_{ACISName}_{function_name}`, e.g. _a3dp_SPAposition_init_ which corresponds to Python's _tp_init_ function.
+* Methods for types: `a3dp_{ACISName}__{MethodName}`, e.g. _a3dp_ENTITY_LIST__add_ which corresponds to _ENTITY_LIST::add()_ on the C++ side
+* ACIS API calls: `a3dp_{API-Call}`, e.g. _a3dp_api_start_modeller_ which corresponds to _api_start_modeller()_ on the C++ side
 
 ### Contribution in general
 
