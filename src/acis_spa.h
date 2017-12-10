@@ -9,18 +9,21 @@
  *
  */
 
-#ifndef ACIS_GEOMETRIC_OPERATORS_H
-#define ACIS_GEOMETRIC_OPERATORS_H
+#ifndef A3D_SPA_H
+#define A3D_SPA_H
 
 #include <Python.h>
 
-#include <getowner.hxx>
+#include "acis_includes.h"
 
-#include "acis_entity.h"
-#include "acis_geometric_atoms.h"
-#include "acis_lists.h"
-#include "utilities.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#include "acis_query_export.h"
+PyObject *a3dp_spa_unlock_products(PyObject *self, PyObject *arg);
 
-#endif // !ACIS_GEOMETRIC_OPERATORS_H
+#ifdef __cplusplus
+}
+#endif
+
+#endif // !A3D_SPA_H

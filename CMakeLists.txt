@@ -1,5 +1,5 @@
 cmake_minimum_required( VERSION 2.8 )
-project( ACISPython3 CXX )
+project( ACIS-Python3 CXX )
 
 #
 # Application Configuration
@@ -109,360 +109,27 @@ else()
   message( FATAL_ERROR "A valid Python interpreter is required for finding Python's site-packages directory!" )
 endif()
 
-
 #
-# ACIS Python Module - Licensing 
-#
-
-# Set source files
-set( ACIS_SOURCES_Licensing
-    src/acis_licensing.cpp
-    )
-
-# Generate Python module
-add_library( Licensing SHARED ${ACIS_SOURCES_Licensing} )
-
-# Set link targets
-target_link_libraries( Licensing ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} )
-
-# Add the build location to the include directories
-target_include_directories( Licensing PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
-
-# Set required C++ standard
-set_property( TARGET Licensing PROPERTY CXX_STANDARD 11 )
-set_property( TARGET Licensing PROPERTY CXX_STANDARD_REQUIRED ON )
-
-# Add suffix to debug builds
-if( WIN32 )
-  set_target_properties( Licensing PROPERTIES DEBUG_POSTFIX "_d" )
-endif()
-
-# On Windows, Python modules have .pyd filename extension
-if( WIN32 AND NOT CYGWIN )
-  set_target_properties( Licensing PROPERTIES SUFFIX ".pyd" )
-endif()
-
-# This is only needed for the python case where a modulename.so is generated
-set_target_properties( Licensing PROPERTIES PREFIX "" )
-
-
-#
-# ACIS Python Module - Entity (ENTITY, BODY, FACE, etc.)
-#
-
-# Set source files
-set( ACIS_SOURCES_Entity
-    src/acis_entity.h
-    src/acis_entity.cpp
-    ${PROJECT_BINARY_DIR}/acis_entity_export.h
-    )
-
-# Generate Python module
-add_library( Entity SHARED ${ACIS_SOURCES_Entity} )
-
-# Generate export header file
-generate_export_header( Entity
-    BASE_NAME acis_entity
-    )
-
-# Set link targets
-target_link_libraries( Entity ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} GeometricAtoms )
-
-# Add the build location to the include directories
-target_include_directories( Entity PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
-
-# Set required C++ standard
-set_property( TARGET Entity PROPERTY CXX_STANDARD 11 )
-set_property( TARGET Entity PROPERTY CXX_STANDARD_REQUIRED ON )
-
-# Add suffix to debug builds
-if( WIN32 )
-  set_target_properties( Entity PROPERTIES DEBUG_POSTFIX "_d" )
-endif()
-
-# On Windows, Python modules have .pyd filename extension
-if( WIN32 AND NOT CYGWIN )
-  set_target_properties( Entity PROPERTIES SUFFIX ".pyd" )
-endif()
-
-# This is only needed for the python case where a modulename.so is generated
-set_target_properties( Entity PROPERTIES PREFIX "" )
-
-
-#
-# ACIS Python Module - Geometric Atoms (SPAposition, SPApar_pos, etc.)
-#
-
-# Set source files
-set( ACIS_SOURCES_GeometricAtoms
-    src/acis_geometric_atoms.h
-    src/acis_geometric_atoms.cpp
-    ${PROJECT_BINARY_DIR}/acis_geometric_atoms_export.h
-    )
-
-# Generate Python module
-add_library( GeometricAtoms SHARED ${ACIS_SOURCES_GeometricAtoms} )
-
-# Generate export header file
-generate_export_header( GeometricAtoms
-    BASE_NAME acis_geometric_atoms
-    )
-
-# Set link targets
-target_link_libraries( GeometricAtoms ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} )
-
-# Add the build location to the include directories
-target_include_directories( GeometricAtoms PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
-
-# Set required C++ standard
-set_property( TARGET GeometricAtoms PROPERTY CXX_STANDARD 11 )
-set_property( TARGET GeometricAtoms PROPERTY CXX_STANDARD_REQUIRED ON )
-
-# Add suffix to debug builds
-if( WIN32 )
-  set_target_properties( GeometricAtoms PROPERTIES DEBUG_POSTFIX "_d" )
-endif()
-
-# On Windows, Python modules have .pyd filename extension
-if( WIN32 AND NOT CYGWIN )
-  set_target_properties( GeometricAtoms PROPERTIES SUFFIX ".pyd" )
-endif()
-
-# This is only needed for the python case where a modulename.so is generated
-set_target_properties( GeometricAtoms PROPERTIES PREFIX "" )
-
-
-#
-# ACIS Python Module - Save & Restore (FileInfo, etc.)
-#
-
-# Set source files
-set( ACIS_SOURCES_SaveRestore
-    src/acis_saverestore.h
-    src/acis_saverestore.cpp
-    src/utilities.cpp
-    src/utilities.h
-    ${PROJECT_BINARY_DIR}/acis_saverestore_export.h
-    )
-
-# Generate Python module
-add_library( SaveRestore SHARED ${ACIS_SOURCES_SaveRestore} )
-
-# Generate export header file
-generate_export_header( SaveRestore
-    BASE_NAME acis_saverestore
-    )
-
-# Set link targets
-target_link_libraries( SaveRestore ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Lists )
-
-# Add the build location to the include directories
-target_include_directories( SaveRestore PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
-
-# Set required C++ standard
-set_property( TARGET SaveRestore PROPERTY CXX_STANDARD 11 )
-set_property( TARGET SaveRestore PROPERTY CXX_STANDARD_REQUIRED ON )
-
-# Add suffix to debug builds
-if( WIN32 )
-  set_target_properties( SaveRestore PROPERTIES DEBUG_POSTFIX "_d" )
-endif()
-
-# On Windows, Python modules have .pyd filename extension
-if( WIN32 AND NOT CYGWIN )
-  set_target_properties( SaveRestore PROPERTIES SUFFIX ".pyd" )
-endif()
-
-# This is only needed for the python case where a modulename.so is generated
-set_target_properties( SaveRestore PROPERTIES PREFIX "" )
-
-
-#
-# ACIS Python Module - Lists (ENTITY_LIST, etc.)
-#
-
-# Set source files
-set( ACIS_SOURCES_Lists
-    src/acis_lists.h
-    src/acis_lists.cpp
-    ${PROJECT_BINARY_DIR}/acis_lists_export.h
-    )
-
-# Generate Python module
-add_library( Lists SHARED ${ACIS_SOURCES_Lists} )
-
-# Generate export header file
-generate_export_header( Lists
-    BASE_NAME acis_lists
-    )
-
-# Set link targets
-target_link_libraries( Lists ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Entity )
-
-# Add the build location to the include directories
-target_include_directories( Lists PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
-
-# Set required C++ standard
-set_property( TARGET Lists PROPERTY CXX_STANDARD 11 )
-set_property( TARGET Lists PROPERTY CXX_STANDARD_REQUIRED ON )
-
-# Add suffix to debug builds
-if( WIN32 )
-  set_target_properties( Lists PROPERTIES DEBUG_POSTFIX "_d" )
-endif()
-
-# On Windows, Python modules have .pyd filename extension
-if( WIN32 AND NOT CYGWIN )
-  set_target_properties( Lists PROPERTIES SUFFIX ".pyd" )
-endif()
-
-# This is only needed for the python case where a modulename.so is generated
-set_target_properties( Lists PROPERTIES PREFIX "" )
-
-
-#
-# ACIS Python Module - Sweeping API
-#
-
-# Set source files
-set( ACIS_SOURCES_Sweeping
-    src/acis_sweeping.cpp
-    src/acis_sweeping.h
-    src/utilities.cpp
-    src/utilities.h
-    ${PROJECT_BINARY_DIR}/acis_sweeping_export.h
-    )
-
-# Generate Python module
-add_library( Sweeping SHARED ${ACIS_SOURCES_Sweeping} )
-
-# Generate export header file
-generate_export_header( Sweeping
-    BASE_NAME acis_sweeping
-    )
-
-# Set link targets. Note that Modeler has dependencies towards most helper modules.
-target_link_libraries( Sweeping ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Entity GeometricAtoms )
-
-# Add the build location to the include directories
-target_include_directories( Sweeping PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
-
-# Set required C++ standard
-set_property( TARGET Sweeping PROPERTY CXX_STANDARD 11 )
-set_property( TARGET Sweeping PROPERTY CXX_STANDARD_REQUIRED ON )
-
-# Add suffix to debug builds
-if( WIN32 )
-  set_target_properties( Sweeping PROPERTIES DEBUG_POSTFIX "_d" )
-endif()
-
-# On Windows, Python modules have .pyd filename extension
-if( WIN32 AND NOT CYGWIN )
-  set_target_properties( Sweeping PROPERTIES SUFFIX ".pyd" )
-endif()
-
-# This is only needed for the python case where a modulename.so is generated
-set_target_properties( Sweeping PROPERTIES PREFIX "" )
-
-
-#
-# ACIS Python Module - Booleans API
-#
-
-# Set source files
-set( ACIS_SOURCES_Booleans
-    src/acis_booleans.h
-    src/acis_booleans.cpp
-    src/utilities.cpp
-    src/utilities.h
-    ${PROJECT_BINARY_DIR}/acis_booleans_export.h
-    )
-
-# Generate Python module
-add_library( Booleans SHARED ${ACIS_SOURCES_Booleans} )
-
-# Generate export header file
-generate_export_header( Booleans
-    BASE_NAME acis_booleans
-    )
-
-# Set link targets
-target_link_libraries( Booleans ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Entity )
-
-# Add the build location to the include directories
-target_include_directories( Booleans PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
-
-# Set required C++ standard
-set_property( TARGET Booleans PROPERTY CXX_STANDARD 11 )
-set_property( TARGET Booleans PROPERTY CXX_STANDARD_REQUIRED ON )
-
-# Add suffix to debug builds
-if( WIN32 )
-  set_target_properties( Booleans PROPERTIES DEBUG_POSTFIX "_d" )
-endif()
-
-# On Windows, Python modules have .pyd filename extension
-if( WIN32 AND NOT CYGWIN )
-  set_target_properties( Booleans PROPERTIES SUFFIX ".pyd" )
-endif()
-
-# This is only needed for the python case where a modulename.so is generated
-set_target_properties( Booleans PROPERTIES PREFIX "" )
-
-
-#
-# ACIS Python Module - Query API
-#
-
-# Set source files
-set( ACIS_SOURCES_Query
-    src/acis_query.cpp
-    src/acis_query.h
-    src/utilities.cpp
-    src/utilities.h
-    ${PROJECT_BINARY_DIR}/acis_query_export.h
-    )
-
-# Generate Python module
-add_library( Query SHARED ${ACIS_SOURCES_Query} )
-
-# Generate export header file
-generate_export_header( Query
-    BASE_NAME acis_query
-    )
-
-# Set link targets. Note that Modeler has dependencies towards most helper modules.
-target_link_libraries( Query ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Entity GeometricAtoms Lists )
-
-# Add the build location to the include directories
-target_include_directories( Query PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
-
-# Set required C++ standard
-set_property( TARGET Query PROPERTY CXX_STANDARD 11 )
-set_property( TARGET Query PROPERTY CXX_STANDARD_REQUIRED ON )
-
-# Add suffix to debug builds
-if( WIN32 )
-  set_target_properties( Query PROPERTIES DEBUG_POSTFIX "_d" )
-endif()
-
-# On Windows, Python modules have .pyd filename extension
-if( WIN32 AND NOT CYGWIN )
-  set_target_properties( Query PROPERTIES SUFFIX ".pyd" )
-endif()
-
-# This is only needed for the python case where a modulename.so is generated
-set_target_properties( Query PROPERTIES PREFIX "" )
-
-
-#
-# ACIS Python Module - Modeler Core
+# ACIS Python Module
 #
 
 # Set source files
 set( ACIS_SOURCES_Modeler
+    src/acis_includes.h
     src/acis_modeler.cpp
     src/acis_modeler.h
+    src/acis_api.cpp
+    src/acis_api.h
+    src/acis_classes.cpp
+    src/acis_classes.h
+    src/acis_entity.cpp
+    src/acis_entity.h
+    src/acis_enums.cpp
+    src/acis_enums.h
+    src/acis_operators.cpp
+    src/acis_operators.h
+    src/acis_spa.cpp
+    src/acis_spa.h
     src/utilities.cpp
     src/utilities.h
     )
@@ -471,7 +138,7 @@ set( ACIS_SOURCES_Modeler
 add_library( Modeler SHARED ${ACIS_SOURCES_Modeler} )
 
 # Set link targets. Note that Modeler has dependencies towards most helper modules.
-target_link_libraries( Modeler ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} Entity Lists SaveRestore GeometricAtoms )
+target_link_libraries( Modeler ${ACIS_LINK_LIBRARIES} ${PYTHON_LIBRARIES} )
 
 # Add the build location to the include directories
 target_include_directories( Modeler PUBLIC ${PROJECT_SOURCE_DIR} ${PROJECT_BINARY_DIR} )
@@ -500,7 +167,7 @@ set_target_properties( Modeler PROPERTIES PREFIX "" )
 
 # Install Python modules to APP_INSTALL_DIR
 install(
-    TARGETS Modeler Licensing Entity Lists SaveRestore GeometricAtoms Sweeping Query Booleans
+    TARGETS Modeler
     DESTINATION ${APP_INSTALL_DIR}/${APP_MODULE_NAME}
 )
 
