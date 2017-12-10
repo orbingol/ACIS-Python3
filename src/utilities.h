@@ -9,21 +9,14 @@
  *
  */
 
-#ifndef A3DPY_UTILITIES_H
-#define A3DPY_UTILITIES_H
+#ifndef ACIS_UTILITIES_H
+#define ACIS_UTILITIES_H
 
 #include <Python.h>
 
-#include "acis_includes.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <api.hxx>
+#include <err_info.hxx>
 
 bool check_outcome(outcome &_retval);
 
-#ifdef __cplusplus
-}
-#endif
-
-#endif // !A3DPY_UTILITIES_H
+#endif //ACIS_UTILITIES_H
