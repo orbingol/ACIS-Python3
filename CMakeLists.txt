@@ -270,7 +270,7 @@ set_property(
 #
 # Create a custom install target for calling inside Jetbrains CLion
 #
-add_custom_target( install_${PROJECT_NAME}
+add_custom_target( install_project
     $(CMAKE_COMMAND) --build . --target install
     COMMENT "Installing ${PROJECT_NAME}..."
     )
