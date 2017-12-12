@@ -120,6 +120,8 @@ set( ACIS_SOURCES_Modeler
     src/acis_modeler.h
     src/acis_api.cpp
     src/acis_api.h
+    src/acis_api2.cpp
+    src/acis_api2.h
     src/acis_classes.cpp
     src/acis_classes.h
     src/acis_entity.cpp

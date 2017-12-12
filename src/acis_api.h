@@ -28,8 +28,6 @@ extern "C" {
 
 PyObject *a3dp_api_start_modeller(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_stop_modeller(PyObject *self);
-PyObject *a3dp_is_modeler_started(PyObject *self);
-PyObject *a3dp_spa_unlock_products(PyObject *self, PyObject *arg);
 PyObject *a3dp_api_set_dbl_option(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_set_int_option(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_set_str_option(PyObject *self, PyObject *args, PyObject *kwargs);
@@ -54,7 +52,6 @@ PyObject *a3dp_api_get_file_info(PyObject *self, PyObject *args, PyObject *kwarg
 PyObject *a3dp_api_save_version(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_make_sweep_path(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_sweep_with_options(PyObject *self, PyObject *args, PyObject *kwargs);
-PyObject *a3dp_get_owner_transf(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_get_faces(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_get_edges(PyObject *self, PyObject *args, PyObject *kwargs);
 

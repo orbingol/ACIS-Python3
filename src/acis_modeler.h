@@ -16,5 +16,6 @@
 #include <structmember.h>
 
 #include "acis_api.h"
+#include "acis_api2.h"
 
 #endif // !A3DPY_MODELER_H
