@@ -31,6 +31,7 @@
 #include <surdef.hxx>
 #include <lists.hxx>
 #include <boolapi.hxx>
+#include <bool_api_options.hxx>
 
 
 #endif // !A3DPY_INCLUDES_H

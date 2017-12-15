@@ -2283,3 +2283,96 @@ _PyCheck_sweep_options(PyObject *ob)
 {
   return PyObject_TypeCheck(ob, &a3dp_type_sweep_options);
 }
+
+
+/**
+ * BoolOptions
+ */
+
+static void
+a3dp_BoolOptions_dealloc(a3dp_BoolOptions *self)
+{
+  // Delete ACIS object
+  ACIS_DELETE self->_acis_obj;
+
+  Py_TYPE(self)->tp_free((PyObject *) self);
+}
+
+static PyObject *
+a3dp_BoolOptions_new(PyTypeObject *type, PyObject *args, PyObject *kwargs)
+{
+  a3dp_BoolOptions *self;
+
+  self = (a3dp_BoolOptions *) type->tp_alloc(type, 0);
+  if (self != NULL)
+  {
+    // Just getting rid of the dangling pointer
+    self->_acis_obj = NULL;
+  }
+
+  return (PyObject *) self;
+}
+
+static int
+a3dp_BoolOptions_init(a3dp_BoolOptions *self, PyObject *args, PyObject *kwargs)
+{
+  // Initialize the ACIS object
+  self->_acis_obj = ACIS_NEW BoolOptions();
+
+  return 0;
+}
+
+PyTypeObject
+  a3dp_type_BoolOptions =
+  {
+    PyVarObject_HEAD_INIT(NULL, 0)
+    "ACIS.BoolOptions", /* tp_name */
+    sizeof(a3dp_BoolOptions), /* tp_basicsize */
+    0, /* tp_itemsize */
+    (destructor) a3dp_BoolOptions_dealloc, /* tp_dealloc */
+    0, /* tp_print */
+    0, /* tp_getattr */
+    0, /* tp_setattr */
+    0, /* tp_reserved */
+    0, /* tp_repr */
+    0, /* tp_as_number */
+    0, /* tp_as_sequence */
+    0, /* tp_as_mapping */
+    0, /* tp_hash  */
+    0, /* tp_call */
+    0, /* tp_str */
+    0, /* tp_getattro */
+    0, /* tp_setattro */
+    0, /* tp_as_buffer */
+    Py_TPFLAGS_DEFAULT, /* tp_flags */
+    "BoolOptions class holds information and options for a Boolean operation", /* tp_doc */
+    0, /* tp_traverse */
+    0, /* tp_clear */
+    0, /* tp_richcompare */
+    0, /* tp_weaklistoffset */
+    0, /* tp_iter */
+    0, /* tp_iternext */
+    0, /* tp_methods */
+    0, /* tp_members */
+    0, /* tp_getset */
+    0, /* tp_base */
+    0, /* tp_dict */
+    0, /* tp_descr_get */
+    0, /* tp_descr_set */
+    0, /* tp_dictoffset */
+    (initproc) a3dp_BoolOptions_init, /* tp_init */
+    0, /* tp_alloc */
+    a3dp_BoolOptions_new, /* tp_new */
+  };
+
+PyObject *
+_PyNew_BoolOptions()
+{
+  return PyObject_CallObject((PyObject *) &a3dp_type_BoolOptions, NULL);
+}
+
+bool
+_PyCheck_BoolOptions(PyObject *ob)
+{
+  return PyObject_TypeCheck(ob, &a3dp_type_BoolOptions);
+}

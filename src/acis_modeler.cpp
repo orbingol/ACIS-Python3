@@ -303,11 +303,17 @@ PyInit_Modeler(void)
   Py_INCREF(&a3dp_type_surface);
   PyModule_AddObject(m, "surface", (PyObject *) &a3dp_type_surface);
 
-  // Initialize ACIS ENTITY_LIST class as a Python type
+  // ENTITY_LIST
   if (PyType_Ready(&a3dp_type_ENTITY_LIST) < 0)
     return NULL;
   Py_INCREF(&a3dp_type_ENTITY_LIST);
   PyModule_AddObject(m, "ENTITY_LIST", (PyObject *) &a3dp_type_ENTITY_LIST);
+
+  // BoolOptions
+  if (PyType_Ready(&a3dp_type_BoolOptions) < 0)
+    return NULL;
+  Py_INCREF(&a3dp_type_BoolOptions);
+  PyModule_AddObject(m, "BoolOptions", (PyObject *) &a3dp_type_BoolOptions);
 
   return m;
 }
