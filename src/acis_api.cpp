@@ -1511,3 +1511,132 @@ a3dp_api_logging(PyObject *self, PyObject *args, PyObject *kwargs)
   else
     Py_RETURN_NONE;
 }
+
+PyObject *
+a3dp_api_body_to_1d(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  PyObject *input_body = NULL, *input_ref_faces = NULL;
+  int input_fix_normals;
+
+  // List of keyword arguments that this function can take
+  char *kwlist[] =
+    {
+      (char *) "body",
+      (char *) "fix_normals",
+      (char *) "ref_faces",
+      NULL
+    };
+
+  // Try to parse input arguments and/or keywords
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "Oi|O", kwlist, &input_body, &input_fix_normals, &input_ref_faces))
+    return NULL;
+
+  if (!_PyCheck_BODY(input_body))
+  {
+    PyErr_SetString(PyExc_TypeError, "Input body must be a BODY object");
+    return NULL;
+  }
+
+  BODY *&_body = (BODY *&) ((a3dp_BODY *) input_body)->base_obj._acis_obj;
+  logical _fix_normals = (input_fix_normals == 0) ? FALSE : TRUE;
+  ENTITY_LIST _ref_faces = *(ENTITY_LIST *) NULL_REF;
+
+  if (input_ref_faces != NULL)
+  {
+    if (!_PyCheck_BODY(input_body))
+    {
+      PyErr_SetString(PyExc_TypeError, "Input body must be a BODY object");
+      return NULL;
+    }
+
+    _ref_faces = *((a3dp_ENTITY_LIST *) input_ref_faces)->_acis_obj;
+  }
+
+  API_BEGIN
+
+  result = api_body_to_1d(_body, _fix_normals, _ref_faces);
+
+  API_END
+
+  // Check outcome
+  if (!check_outcome(result))
+    return NULL;
+  else
+    Py_RETURN_NONE;
+}
+
+PyObject *
+a3dp_api_body_to_2d(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  PyObject *input_body = NULL;
+
+  // List of keyword arguments that this function can take
+  char *kwlist[] =
+    {
+      (char *) "body",
+      NULL
+    };
+
+  // Try to parse input arguments and/or keywords
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O", kwlist, &input_body))
+    return NULL;
+
+  if (!_PyCheck_BODY(input_body))
+  {
+    PyErr_SetString(PyExc_TypeError, "Input body must be a BODY object");
+    return NULL;
+  }
+
+  BODY *&_body = (BODY *&) ((a3dp_BODY *) input_body)->base_obj._acis_obj;
+
+  API_BEGIN
+
+  result = api_body_to_2d(_body);
+
+  API_END
+
+  // Check outcome
+  if (!check_outcome(result))
+    return NULL;
+  else
+    Py_RETURN_NONE;
+}
+
+PyObject *
+a3dp_api_get_entity_id(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  PyObject *input_ent = NULL;
+
+  // List of keyword arguments that this function can take
+  char *kwlist[] =
+    {
+      (char *) "ent",
+      NULL
+    };
+
+  // Try to parse input arguments and/or keywords
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O", kwlist, &input_ent))
+    return NULL;
+
+  if (!_PyCheck_ENTITY(input_ent))
+  {
+    PyErr_SetString(PyExc_TypeError, "Expecting an ENTITY object");
+    return NULL;
+  }
+
+  ENTITY *_ent = ((a3dp_ENTITY *) input_ent)->_acis_obj;
+  // tag_id_type is a typedef'd int
+  tag_id_type _id;
+
+  API_BEGIN
+
+  result = api_get_entity_id(_ent, _id);
+
+  API_END
+
+  // Check outcome
+  if (!check_outcome(result))
+    return NULL;
+  else
+    return PyLong_FromLong((long) _id);
+}
