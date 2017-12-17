@@ -932,6 +932,7 @@ a3dp_api_boolean_chop_body(PyObject *self, PyObject *args, PyObject *kwargs)
   BODY *&_leftovers = (BODY *&) ((a3dp_BODY *) input_leftovers)->base_obj._acis_obj;
   BODY *&_result_body = (BODY *&) ((a3dp_BODY *) input_result_body)->base_obj._acis_obj;
   NDBOOL_KEEP _ndbool_keep = NDBOOL_KEEP(input_ndbool_keep);
+  logical _nonreg = (input_nonreg == 0) ? FALSE : TRUE;
 
   if (input_boolopts != NULL)
   {
@@ -943,11 +944,11 @@ a3dp_api_boolean_chop_body(PyObject *self, PyObject *args, PyObject *kwargs)
 
     BoolOptions *&_boolopts = (BoolOptions *&) ((a3dp_BoolOptions *) input_boolopts)->_acis_obj;
 
-    result = api_boolean_chop_body(_tool, _blank, input_nonreg, _outside, _leftovers, _ndbool_keep, _result_body, _boolopts);
+    result = api_boolean_chop_body(_tool, _blank, _nonreg, _outside, _leftovers, _ndbool_keep, _result_body, _boolopts);
   }
   else
   {
-    result = api_boolean_chop_body(_tool, _blank, input_nonreg, _outside, _leftovers, _ndbool_keep, _result_body);
+    result = api_boolean_chop_body(_tool, _blank, _nonreg, _outside, _leftovers, _ndbool_keep, _result_body);
   }
 
   API_END
