@@ -126,7 +126,6 @@ PyInit_Modeler(void)
 
   if (PyType_Ready(&a3dp_type_FileInfo) < 0)
     return NULL;
-
   Py_INCREF(&a3dp_type_FileInfo);
   PyModule_AddObject(m, "FileInfo", (PyObject *) &a3dp_type_FileInfo);
 

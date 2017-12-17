@@ -867,8 +867,96 @@ a3dp_api_imprint(PyObject *self, PyObject *args, PyObject *kwargs)
 PyObject *
 a3dp_api_boolean_chop_body(PyObject *self, PyObject *args, PyObject *kwargs)
 {
-    /* TO-DO: Implement api_boolean_chop_body */
+  PyObject *input_tool = NULL, *input_blank = NULL;
+  PyObject *input_outside = NULL, *input_leftovers = NULL, *input_result_body = NULL;
+  PyObject *input_boolopts = NULL;
+  int input_nonreg, input_ndbool_keep;
+
+  // List of keyword arguments that this function can take
+  char *kwlist[] =
+    {
+      (char *) "tool",
+      (char *) "blank",
+      (char *) "nonreg",
+      (char *) "outside",
+      (char *) "leftovers",
+      (char *) "result_body",
+      (char *) "ndbool_keep",
+      (char *) "boolopts",
+      NULL
+    };
+
+  // Try to parse input arguments and/or keywords
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OOiOOiO|O", kwlist,
+                                   &input_tool, &input_blank, &input_nonreg, &input_outside, &input_leftovers, &input_ndbool_keep,
+                                   &input_result_body, &input_boolopts))
     return NULL;
+
+  // Type checks
+  if (!_PyCheck_BODY(input_tool))
+  {
+    PyErr_SetString(PyExc_TypeError, "Tool must be a BODY object");
+    return NULL;
+  }
+
+  if (!_PyCheck_BODY(input_blank))
+  {
+    PyErr_SetString(PyExc_TypeError, "Blank must be a BODY object");
+    return NULL;
+  }
+
+  if (!_PyCheck_BODY(input_outside))
+  {
+    PyErr_SetString(PyExc_TypeError, "Outisde must be a BODY object");
+    return NULL;
+  }
+
+  if (!_PyCheck_BODY(input_leftovers))
+  {
+    PyErr_SetString(PyExc_TypeError, "Leftovers must be a BODY object");
+    return NULL;
+  }
+
+  if (!_PyCheck_BODY(input_result_body))
+  {
+    PyErr_SetString(PyExc_TypeError, "Result body must be a BODY object");
+    return NULL;
+  }
+
+  API_BEGIN
+
+  // Convert PyObject to ACIS objects
+  BODY *&_tool = (BODY *&) ((a3dp_BODY *) input_tool)->base_obj._acis_obj;
+  BODY *&_blank = (BODY *&) ((a3dp_BODY *) input_blank)->base_obj._acis_obj;
+  BODY *&_outside = (BODY *&) ((a3dp_BODY *) input_outside)->base_obj._acis_obj;
+  BODY *&_leftovers = (BODY *&) ((a3dp_BODY *) input_leftovers)->base_obj._acis_obj;
+  BODY *&_result_body = (BODY *&) ((a3dp_BODY *) input_result_body)->base_obj._acis_obj;
+  NDBOOL_KEEP _ndbool_keep = NDBOOL_KEEP(input_ndbool_keep);
+
+  if (input_boolopts != NULL)
+  {
+    if (!_PyCheck_NDBOOL_KEEP(input_boolopts))
+    {
+      PyErr_SetString(PyExc_TypeError, "boolopts variable must be a BoolOptions object");
+      return NULL;
+    }
+
+    BoolOptions *&_boolopts = (BoolOptions *&) ((a3dp_BoolOptions *) input_boolopts)->_acis_obj;
+
+    result = api_boolean_chop_body(_tool, _blank, input_nonreg, _outside, _leftovers, _ndbool_keep, _result_body, _boolopts);
+  }
+  else
+  {
+    result = api_boolean_chop_body(_tool, _blank, input_nonreg, _outside, _leftovers, _ndbool_keep, _result_body);
+  }
+
+  API_END
+
+  // Check outcome
+  if (!check_outcome(result))
+    return NULL;
+  else
+    Py_RETURN_NONE;
 }
 
 PyObject *
@@ -924,7 +1012,7 @@ a3dp_api_save_entity_list(PyObject *self, PyObject *args, PyObject *kwargs)
     API_NOP_END
 
     // Don't forget to close the file handle
-      fclose(_file_handle);
+    fclose(_file_handle);
 
     // Check outcome
     if (!check_outcome(result))
