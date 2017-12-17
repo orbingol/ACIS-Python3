@@ -1480,3 +1480,34 @@ a3dp_api_get_edges(PyObject *self, PyObject *args, PyObject *kwargs)
   }
 
 }
+
+PyObject *
+a3dp_api_logging(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  int input_on_off;
+
+  // List of keyword arguments that this function can take
+  char *kwlist[] =
+    {
+      (char *) "on_off",
+      NULL
+    };
+
+  // Try to parse input arguments and/or keywords
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "i", kwlist, &input_on_off))
+    return NULL;
+
+  logical _on_off = (input_on_off == 0) ? FALSE : TRUE;
+
+  API_BEGIN
+
+  result = api_logging(_on_off);
+
+  API_END
+
+  // Check outcome
+  if (!check_outcome(result))
+    return NULL;
+  else
+    Py_RETURN_NONE;
+}

@@ -59,7 +59,8 @@ static PyMethodDef
         { "get_resmch", (PyCFunction) a3dp_get_resmch, METH_NOARGS, "Gets the resmch resolution" },
         { "get_resnor", (PyCFunction) a3dp_get_resnor, METH_NOARGS, "Gets the SPAresnor resolution" },
         { "distance_to_point", (PyCFunction) a3dp_distance_to_point, METH_VARARGS | METH_KEYWORDS, "Determines the distance between two points" },
-        { "distance_to_point_squared", (PyCFunction) a3dp_distance_to_point_squared, METH_VARARGS | METH_KEYWORDS, "\tComputes the squared distance between two positions" },
+        { "distance_to_point_squared", (PyCFunction) a3dp_distance_to_point_squared, METH_VARARGS | METH_KEYWORDS, "Computes the squared distance between two positions" },
+        { "api_logging", (PyCFunction) a3dp_api_logging, METH_VARARGS | METH_KEYWORDS, "Sets logging of entity modifications on or off for roll back purposes" },
         { NULL, NULL, 0, NULL }
     };
 
