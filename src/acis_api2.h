@@ -29,6 +29,7 @@ extern "C" {
 PyObject *a3dp_is_modeler_started(PyObject *self);
 PyObject *a3dp_spa_unlock_products(PyObject *self, PyObject *arg);
 PyObject *a3dp_get_owner_transf(PyObject *self, PyObject *args, PyObject *kwargs);
+PyObject *a3dp_get_face_box(PyObject *self, PyObject *args, PyObject *kwargs);
 
 #ifdef __cplusplus
 }

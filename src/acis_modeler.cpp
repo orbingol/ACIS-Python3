@@ -68,6 +68,7 @@ static PyMethodDef
         { "api_get_entity_id", (PyCFunction) a3dp_api_get_entity_id, METH_VARARGS | METH_KEYWORDS, "Returns a unique integer identifier for a given ENTITY" },
         { "api_get_entity_box", (PyCFunction) a3dp_api_get_entity_box, METH_VARARGS | METH_KEYWORDS, "Computes a bounding box containing the entity" },
         { "api_closed_wire", (PyCFunction) a3dp_api_closed_wire, METH_VARARGS | METH_KEYWORDS, "Determines if a wire or a single-wire body is closed" },
+        { "get_face_box", (PyCFunction) a3dp_get_face_box, METH_VARARGS | METH_KEYWORDS, "Returns the bounding box for the given face" },
         { NULL, NULL, 0, NULL }
     };
 

@@ -63,6 +63,7 @@
 * api_body_to_2d
 * api_get_entity_box (ENTITY overload)
 * api_closed_wire
+* get_face_box
 
 ## Classes
 

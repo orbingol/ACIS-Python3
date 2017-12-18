@@ -75,3 +75,9 @@ a3dp_get_owner_transf(PyObject *self, PyObject *args, PyObject *kwargs)
   // Return SPAtransf python object
   return retobj;
 }
+
+PyObject *
+a3dp_get_face_box(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  return NULL;
+}
