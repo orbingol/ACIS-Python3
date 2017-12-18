@@ -33,6 +33,7 @@
 #include <boolapi.hxx>
 #include <bool_api_options.hxx>
 #include <box_opts.hxx>
+#include <intrapi.hxx>
 
 
 #endif // !A3DPY_INCLUDES_H

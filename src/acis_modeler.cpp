@@ -65,6 +65,7 @@ static PyMethodDef
         { "api_body_to_1d", (PyCFunction) a3dp_api_body_to_1d, METH_VARARGS | METH_KEYWORDS, "Converts a double-sided body to a single-sided body" },
         { "api_body_to_2d", (PyCFunction) a3dp_api_body_to_2d, METH_VARARGS | METH_KEYWORDS, "Converts single-sided faces to double-sided faces" },
         { "api_get_entity_id", (PyCFunction) a3dp_api_get_entity_id, METH_VARARGS | METH_KEYWORDS, "Returns a unique integer identifier for a given ENTITY" },
+        { "api_get_entity_box", (PyCFunction) a3dp_api_get_entity_box, METH_VARARGS | METH_KEYWORDS, "Computes a bounding box containing the entity" },
         { NULL, NULL, 0, NULL }
     };
 

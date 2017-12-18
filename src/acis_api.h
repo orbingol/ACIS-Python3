@@ -59,6 +59,7 @@ PyObject *a3dp_api_logging(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_body_to_1d(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_body_to_2d(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_get_entity_id(PyObject *self, PyObject *args, PyObject *kwargs);
+PyObject *a3dp_api_get_entity_box(PyObject *self, PyObject *args, PyObject *kwargs);
 
 #ifdef __cplusplus
 }

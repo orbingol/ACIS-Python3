@@ -1770,3 +1770,71 @@ a3dp_api_get_entity_id(PyObject *self, PyObject *args, PyObject *kwargs)
   else
     return PyLong_FromLong((long) _id);
 }
+
+PyObject *
+a3dp_api_get_entity_box(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  PyObject *input_ent = NULL;
+  PyObject *input_max_pt = NULL, *input_min_pt = NULL;
+  PyObject *input_box_options = NULL;
+
+  // List of keyword arguments that this function can take
+  char *kwlist[] =
+    {
+      (char *) "entity",
+      (char *) "min_pt",
+      (char *) "max_pt",
+      (char *) "box_options",
+      NULL
+    };
+
+  // Try to parse input arguments and/or keywords
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OOO|O", kwlist, &input_ent, &input_min_pt, &input_max_pt, &input_box_options))
+    return NULL;
+
+  if (!_PyCheck_ENTITY(input_ent))
+  {
+    PyErr_SetString(PyExc_TypeError, "Expecting an ENTITY object");
+    return NULL;
+  }
+
+  if (!_PyCheck_SPAposition(input_max_pt))
+  {
+    PyErr_SetString(PyExc_TypeError, "max_pt should be a SPAposition object");
+    return NULL;
+  }
+
+  if (!_PyCheck_SPAposition(input_min_pt))
+  {
+    PyErr_SetString(PyExc_TypeError, "min_pt should be a SPAposition object");
+    return NULL;
+  }
+
+  if (input_box_options != NULL)
+  {
+    if (!_PyCheck_SPAboxing_options(input_box_options))
+    {
+      PyErr_SetString(PyExc_TypeError, "boxing_options should be a SPAboxing_options object");
+      return NULL;
+    }
+  }
+
+  API_BEGIN
+
+            SPAposition &_min_pt = *((a3dp_SPAposition *) input_min_pt)->_acis_obj;
+            SPAposition &_max_pt = *((a3dp_SPAposition *) input_max_pt)->_acis_obj;
+            SPAboxing_options *_box_opts = NULL;
+            if (input_box_options)
+              _box_opts = ((a3dp_SPAboxing_options *) input_box_options)->_acis_obj;
+            ENTITY * _ent = ((a3dp_ENTITY *) input_ent)->_acis_obj;
+            // Execute ENTITY overload
+            result = api_get_entity_box(_ent, _min_pt, _min_pt, _box_opts);
+
+  API_END
+
+  // Check outcome
+  if (!check_outcome(result))
+    return NULL;
+  else
+    Py_RETURN_NONE;
+}
