@@ -47,6 +47,7 @@ PyObject *a3dp_api_subtract(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_imprint(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_boolean_chop_body(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_save_entity_list(PyObject *self, PyObject *args, PyObject *kwargs);
+PyObject *a3dp_api_restore_entity_list(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_set_file_info(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_get_file_info(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_save_version(PyObject *self, PyObject *args, PyObject *kwargs);

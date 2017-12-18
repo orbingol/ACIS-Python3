@@ -14,6 +14,7 @@ static PyMethodDef
         { "api_start_modeler", (PyCFunction) a3dp_api_start_modeller, METH_VARARGS | METH_KEYWORDS, "Alternative way to call api_start_modeller()" },
         { "api_stop_modeler", (PyCFunction) a3dp_api_stop_modeller, METH_NOARGS, "Alternative way to call api_stop_modeller()" },
         { "api_save_entity_list", (PyCFunction) a3dp_api_save_entity_list, METH_VARARGS | METH_KEYWORDS, "Writes entities to a file in text or binary format" },
+        { "api_restore_entity_list", (PyCFunction) a3dp_api_restore_entity_list, METH_VARARGS | METH_KEYWORDS, "Restores entities from file in text or binary format" },
         { "api_set_file_info", (PyCFunction) a3dp_api_set_file_info, METH_VARARGS | METH_KEYWORDS, "Sets required header info to be written to ACIS save files" },
         { "api_get_file_info", (PyCFunction) a3dp_api_get_file_info, METH_O | METH_KEYWORDS, "Gets header info from the last restored file" },
         { "api_save_version", (PyCFunction) a3dp_api_save_version, METH_VARARGS | METH_KEYWORDS, "Sets the save file format" },

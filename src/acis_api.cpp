@@ -1023,6 +1023,68 @@ a3dp_api_save_entity_list(PyObject *self, PyObject *args, PyObject *kwargs)
 }
 
 PyObject *
+a3dp_api_restore_entity_list(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  // According to the documentation, Python 3 doesn't do good with FILE* objects, so we take "file name" as an input
+  const char *input_filename = NULL;
+  int input_savemode;
+  PyObject *input_entitylist = NULL;
+
+  // List of keyword arguments that this function can take
+  char *kwlist[] =
+    {
+      (char *) "file_name",
+      (char *) "text_mode",
+      (char *) "entities",
+      NULL
+    };
+
+  // Try to parse input arguments and/or keywords
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "siO", kwlist, &input_filename, &input_savemode, &input_entitylist))
+    return NULL;
+
+  // Check if the input is an ENTITY_LIST
+  if (!_PyCheck_ENTITY_LIST(input_entitylist))
+  {
+    PyErr_SetString(PyExc_TypeError, "Expecting ENTITY_LIST object");
+    return NULL;
+  }
+
+  // Using the file name input as a string, create a file handle
+  FILE *_file_handle = fopen(input_filename, "r");
+
+  // Check if the file has been opened correctly
+  if (_file_handle == NULL)
+  {
+    PyErr_SetString(PyExc_IOError, "Cannot open file for writing!");
+    return NULL;
+  }
+
+  // Set file writing mode
+  logical _text_mode = (input_savemode == 0) ? FALSE : TRUE;
+
+  API_NOP_BEGIN
+
+  // Convert PyObject to ENTITY_LIST
+  ENTITY_LIST *_save_list = ((a3dp_ENTITY_LIST *) input_entitylist)->_acis_obj;
+
+
+  // Call ACIS API and check outcome
+  result = api_restore_entity_list(_file_handle, _text_mode, *_save_list);
+
+  API_NOP_END
+
+  // Don't forget to close the file handle
+  fclose(_file_handle);
+
+  // Check outcome
+  if (!check_outcome(result))
+    return NULL;
+  else
+    Py_RETURN_NONE;
+}
+
+PyObject *
 a3dp_api_set_file_info(PyObject *self, PyObject *args, PyObject *kwargs)
 {
     int input_product_id = 0;
