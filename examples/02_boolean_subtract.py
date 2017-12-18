@@ -38,7 +38,7 @@ cylinder_transf = Modeler.translate_transf(cylinder_vector)
 Modeler.api_apply_transf(cylinder, cylinder_transf)
 
 # Subtract frustum from cuboid
-Booleans.api_subtract(cylinder, block)
+Modeler.api_subtract(cylinder, block)
 
 # Assign attributes after generation
 block.name = "Drilled Cuboid"
