@@ -89,6 +89,20 @@ typedef struct
   make_sweep_path_options *_acis_obj;
 } a3dp_make_sweep_path_options;
 
+// Define BoolOptions
+typedef struct
+{
+  PyObject_HEAD
+  BoolOptions *_acis_obj;
+} a3dp_BoolOptions;
+
+// Define BoolOptions
+typedef struct
+{
+  PyObject_HEAD
+  SPAboxing_options *_acis_obj;
+} a3dp_SPAboxing_options;
+
 extern PyTypeObject a3dp_type_SPAposition;
 extern PyTypeObject a3dp_type_SPAvector;
 extern PyTypeObject a3dp_type_SPAunit_vector;
@@ -99,6 +113,8 @@ extern PyTypeObject a3dp_type_SPApar_vec;
 extern PyTypeObject a3dp_type_FileInfo;
 extern PyTypeObject a3dp_type_sweep_options;
 extern PyTypeObject a3dp_type_make_sweep_path_options;
+extern PyTypeObject a3dp_type_BoolOptions;
+extern PyTypeObject a3dp_type_SPAboxing_options;
 
 #ifdef __cplusplus
 extern "C" {
@@ -132,6 +148,12 @@ bool _PyCheck_sweep_options(PyObject *ob);
 
 PyObject *_PyNew_make_sweep_path_options();
 bool _PyCheck_make_sweep_path_options(PyObject *ob);
+
+PyObject *_PyNew_BoolOptions();
+bool _PyCheck_BoolOptions(PyObject *ob);
+
+PyObject *_PyNew_SPAboxing_options();
+bool _PyCheck_SPAboxing_options(PyObject *ob);
 
 #ifdef __cplusplus
 }

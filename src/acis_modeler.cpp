@@ -14,6 +14,7 @@ static PyMethodDef
         { "api_start_modeler", (PyCFunction) a3dp_api_start_modeller, METH_VARARGS | METH_KEYWORDS, "Alternative way to call api_start_modeller()" },
         { "api_stop_modeler", (PyCFunction) a3dp_api_stop_modeller, METH_NOARGS, "Alternative way to call api_stop_modeller()" },
         { "api_save_entity_list", (PyCFunction) a3dp_api_save_entity_list, METH_VARARGS | METH_KEYWORDS, "Writes entities to a file in text or binary format" },
+        { "api_restore_entity_list", (PyCFunction) a3dp_api_restore_entity_list, METH_VARARGS | METH_KEYWORDS, "Restores entities from file in text or binary format" },
         { "api_set_file_info", (PyCFunction) a3dp_api_set_file_info, METH_VARARGS | METH_KEYWORDS, "Sets required header info to be written to ACIS save files" },
         { "api_get_file_info", (PyCFunction) a3dp_api_get_file_info, METH_O | METH_KEYWORDS, "Gets header info from the last restored file" },
         { "api_save_version", (PyCFunction) a3dp_api_save_version, METH_VARARGS | METH_KEYWORDS, "Sets the save file format" },
@@ -39,7 +40,8 @@ static PyMethodDef
         { "api_sweep_with_options", (PyCFunction) a3dp_api_sweep_with_options, METH_VARARGS | METH_KEYWORDS, "Sweeps the given profile along an edge, a distance, a vector or an axis" },
         { "get_owner_transf", (PyCFunction) a3dp_get_owner_transf, METH_VARARGS | METH_KEYWORDS, "Gets a copy of the SPAtransf from the owner of an ENTITY" },
         { "api_get_faces", (PyCFunction) a3dp_api_get_faces, METH_VARARGS | METH_KEYWORDS, "Gets all faces related to an entity" },
-        { "api_get_edges", (PyCFunction) a3dp_api_get_edges, METH_VARARGS | METH_KEYWORDS, "Gets all the edges related to an entity" },
+        { "api_get_edges", (PyCFunction) a3dp_api_get_edges, METH_VARARGS | METH_KEYWORDS, "Gets all edges related to an entity" },
+        { "api_get_loops", (PyCFunction) a3dp_api_get_loops, METH_VARARGS | METH_KEYWORDS, "Gets all loops related to an entity" },
         { "coordinate_transf", (PyCFunction) a3dp_coordinate_transf, METH_VARARGS | METH_KEYWORDS, "Constructs a coordinate transformation" },
         { "make_transf", (PyCFunction) a3dp_make_transf, METH_VARARGS | METH_KEYWORDS, "Constructs a transformation retrieving the needed information from the provided transformation matrix and the scaling vector" },
         { "reflect_transf", (PyCFunction) a3dp_reflect_transf, METH_VARARGS | METH_KEYWORDS, "Constructs a transformation corresponding to a reflection through a plane, specified by its normal" },
@@ -59,7 +61,14 @@ static PyMethodDef
         { "get_resmch", (PyCFunction) a3dp_get_resmch, METH_NOARGS, "Gets the resmch resolution" },
         { "get_resnor", (PyCFunction) a3dp_get_resnor, METH_NOARGS, "Gets the SPAresnor resolution" },
         { "distance_to_point", (PyCFunction) a3dp_distance_to_point, METH_VARARGS | METH_KEYWORDS, "Determines the distance between two points" },
-        { "distance_to_point_squared", (PyCFunction) a3dp_distance_to_point_squared, METH_VARARGS | METH_KEYWORDS, "\tComputes the squared distance between two positions" },
+        { "distance_to_point_squared", (PyCFunction) a3dp_distance_to_point_squared, METH_VARARGS | METH_KEYWORDS, "Computes the squared distance between two positions" },
+        { "api_logging", (PyCFunction) a3dp_api_logging, METH_VARARGS | METH_KEYWORDS, "Sets logging of entity modifications on or off for roll back purposes" },
+        { "api_body_to_1d", (PyCFunction) a3dp_api_body_to_1d, METH_VARARGS | METH_KEYWORDS, "Converts a double-sided body to a single-sided body" },
+        { "api_body_to_2d", (PyCFunction) a3dp_api_body_to_2d, METH_VARARGS | METH_KEYWORDS, "Converts single-sided faces to double-sided faces" },
+        { "api_get_entity_id", (PyCFunction) a3dp_api_get_entity_id, METH_VARARGS | METH_KEYWORDS, "Returns a unique integer identifier for a given ENTITY" },
+        { "api_get_entity_box", (PyCFunction) a3dp_api_get_entity_box, METH_VARARGS | METH_KEYWORDS, "Computes a bounding box containing the entity" },
+        { "api_closed_wire", (PyCFunction) a3dp_api_closed_wire, METH_VARARGS | METH_KEYWORDS, "Determines if a wire or a single-wire body is closed" },
+        { "get_face_box", (PyCFunction) a3dp_get_face_box, METH_VARARGS | METH_KEYWORDS, "Returns the bounding box for the given face" },
         { NULL, NULL, 0, NULL }
     };
 
@@ -126,7 +135,6 @@ PyInit_Modeler(void)
 
   if (PyType_Ready(&a3dp_type_FileInfo) < 0)
     return NULL;
-
   Py_INCREF(&a3dp_type_FileInfo);
   PyModule_AddObject(m, "FileInfo", (PyObject *) &a3dp_type_FileInfo);
 
@@ -303,11 +311,23 @@ PyInit_Modeler(void)
   Py_INCREF(&a3dp_type_surface);
   PyModule_AddObject(m, "surface", (PyObject *) &a3dp_type_surface);
 
-  // Initialize ACIS ENTITY_LIST class as a Python type
+  // ENTITY_LIST
   if (PyType_Ready(&a3dp_type_ENTITY_LIST) < 0)
     return NULL;
   Py_INCREF(&a3dp_type_ENTITY_LIST);
   PyModule_AddObject(m, "ENTITY_LIST", (PyObject *) &a3dp_type_ENTITY_LIST);
+
+  // BoolOptions
+  if (PyType_Ready(&a3dp_type_BoolOptions) < 0)
+    return NULL;
+  Py_INCREF(&a3dp_type_BoolOptions);
+  PyModule_AddObject(m, "BoolOptions", (PyObject *) &a3dp_type_BoolOptions);
+
+  // SPAboxing_options
+  if (PyType_Ready(&a3dp_type_SPAboxing_options) < 0)
+    return NULL;
+  Py_INCREF(&a3dp_type_SPAboxing_options);
+  PyModule_AddObject(m, "SPAboxing_options", (PyObject *) &a3dp_type_SPAboxing_options);
 
   return m;
 }
