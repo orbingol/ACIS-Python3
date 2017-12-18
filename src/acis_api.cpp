@@ -1612,6 +1612,53 @@ a3dp_api_get_edges(PyObject *self, PyObject *args, PyObject *kwargs)
 }
 
 PyObject *
+a3dp_api_get_loops(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  PyObject *input_ent = NULL, *input_ent_list = NULL;
+
+  // List of keyword arguments that this function can take
+  char *kwlist[] =
+    {
+      (char *) "ent",
+      (char *) "loop_list",
+      NULL
+    };
+
+  // Try to parse input arguments and/or keywords
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO", kwlist, &input_ent, &input_ent_list))
+    return NULL;
+
+  if (!_PyCheck_ENTITY(input_ent))
+  {
+    PyErr_SetString(PyExc_TypeError, "Expecting ENTITY object");
+    return NULL;
+  }
+
+  if (!_PyCheck_ENTITY_LIST(input_ent_list))
+  {
+    PyErr_SetString(PyExc_TypeError, "Expecting ENTITY_LIST object");
+    return NULL;
+  }
+
+  API_BEGIN
+
+            // Get the ACIS objects from the user input
+            ENTITY * _ent = ((a3dp_ENTITY *) input_ent)->_acis_obj;
+            ENTITY_LIST &_face_list = *((a3dp_ENTITY_LIST *) input_ent_list)->_acis_obj;
+
+            // Call ACIS function
+            result = api_get_loops(_ent, _face_list);
+
+  API_END
+
+  // Check outcome
+  if (!check_outcome(result))
+    return NULL;
+  else
+    Py_RETURN_NONE;
+}
+
+PyObject *
 a3dp_api_logging(PyObject *self, PyObject *args, PyObject *kwargs)
 {
   int input_on_off;
@@ -1837,4 +1884,54 @@ a3dp_api_get_entity_box(PyObject *self, PyObject *args, PyObject *kwargs)
     return NULL;
   else
     Py_RETURN_NONE;
+}
+
+PyObject *
+a3dp_api_closed_wire(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+  PyObject *input_body = NULL;
+
+  // List of keyword arguments that this function can take
+  char *kwlist[] =
+    {
+      (char *) "wire_body",
+      NULL
+    };
+
+  // Try to parse input arguments and/or keywords
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O", kwlist, &input_body))
+    return NULL;
+
+  bool wire_obj = false;
+  if (!_PyCheck_BODY(input_body))
+  {
+    if (!_PyCheck_WIRE(input_body))
+    {
+      PyErr_SetString(PyExc_TypeError, "Expecting a WIRE or BODY object");
+      return NULL;
+    }
+    wire_obj = true;
+  }
+
+  API_BEGIN
+
+            if (wire_obj)
+            {
+              // Execute WIRE overload
+              WIRE * _body = (WIRE *)((a3dp_WIRE *) input_body)->base_obj._acis_obj;
+              result = api_closed_wire(_body);
+            }
+            else
+            {
+              // Execute BODY overload
+              BODY * _body = (BODY *)((a3dp_BODY *) input_body)->base_obj._acis_obj;
+              result = api_closed_wire(_body);
+            }
+
+  API_END
+
+  // Check outcome
+  if (result.ok())
+    Py_RETURN_TRUE;
+  Py_RETURN_FALSE;
 }

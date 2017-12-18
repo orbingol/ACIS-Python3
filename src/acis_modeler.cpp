@@ -40,7 +40,8 @@ static PyMethodDef
         { "api_sweep_with_options", (PyCFunction) a3dp_api_sweep_with_options, METH_VARARGS | METH_KEYWORDS, "Sweeps the given profile along an edge, a distance, a vector or an axis" },
         { "get_owner_transf", (PyCFunction) a3dp_get_owner_transf, METH_VARARGS | METH_KEYWORDS, "Gets a copy of the SPAtransf from the owner of an ENTITY" },
         { "api_get_faces", (PyCFunction) a3dp_api_get_faces, METH_VARARGS | METH_KEYWORDS, "Gets all faces related to an entity" },
-        { "api_get_edges", (PyCFunction) a3dp_api_get_edges, METH_VARARGS | METH_KEYWORDS, "Gets all the edges related to an entity" },
+        { "api_get_edges", (PyCFunction) a3dp_api_get_edges, METH_VARARGS | METH_KEYWORDS, "Gets all edges related to an entity" },
+        { "api_get_loops", (PyCFunction) a3dp_api_get_loops, METH_VARARGS | METH_KEYWORDS, "Gets all loops related to an entity" },
         { "coordinate_transf", (PyCFunction) a3dp_coordinate_transf, METH_VARARGS | METH_KEYWORDS, "Constructs a coordinate transformation" },
         { "make_transf", (PyCFunction) a3dp_make_transf, METH_VARARGS | METH_KEYWORDS, "Constructs a transformation retrieving the needed information from the provided transformation matrix and the scaling vector" },
         { "reflect_transf", (PyCFunction) a3dp_reflect_transf, METH_VARARGS | METH_KEYWORDS, "Constructs a transformation corresponding to a reflection through a plane, specified by its normal" },
@@ -66,6 +67,7 @@ static PyMethodDef
         { "api_body_to_2d", (PyCFunction) a3dp_api_body_to_2d, METH_VARARGS | METH_KEYWORDS, "Converts single-sided faces to double-sided faces" },
         { "api_get_entity_id", (PyCFunction) a3dp_api_get_entity_id, METH_VARARGS | METH_KEYWORDS, "Returns a unique integer identifier for a given ENTITY" },
         { "api_get_entity_box", (PyCFunction) a3dp_api_get_entity_box, METH_VARARGS | METH_KEYWORDS, "Computes a bounding box containing the entity" },
+        { "api_closed_wire", (PyCFunction) a3dp_api_closed_wire, METH_VARARGS | METH_KEYWORDS, "Determines if a wire or a single-wire body is closed" },
         { NULL, NULL, 0, NULL }
     };
 

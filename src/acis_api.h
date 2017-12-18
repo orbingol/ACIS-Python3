@@ -55,11 +55,13 @@ PyObject *a3dp_api_make_sweep_path(PyObject *self, PyObject *args, PyObject *kwa
 PyObject *a3dp_api_sweep_with_options(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_get_faces(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_get_edges(PyObject *self, PyObject *args, PyObject *kwargs);
+PyObject *a3dp_api_get_loops(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_logging(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_body_to_1d(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_body_to_2d(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_get_entity_id(PyObject *self, PyObject *args, PyObject *kwargs);
 PyObject *a3dp_api_get_entity_box(PyObject *self, PyObject *args, PyObject *kwargs);
+PyObject *a3dp_api_closed_wire(PyObject *self, PyObject *args, PyObject *kwargs);
 
 #ifdef __cplusplus
 }
