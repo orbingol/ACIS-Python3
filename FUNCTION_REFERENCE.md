@@ -44,7 +44,9 @@
 * get_owner_transf
 * api_get_faces
 * api_get_edges
+* api_get_loops
 * api_save_entity_list
+* api_restore_entity_list
 * api_set_file_info
 * api_get_file_info
 * api_save_version
@@ -55,7 +57,12 @@
 * api_boolean_chop_body
 * api_make_sweep_path
 * api_sweep_with_options
-
+* api_logging
+* api_get_entity_id
+* api_body_to_1d
+* api_body_to_2d
+* api_get_entity_box (ENTITY overload)
+* api_closed_wire
 
 ## Classes
 
@@ -86,6 +93,8 @@
 * FileInfo
 * sweep_options
 * make_sweep_path_options
+* BoolOptions
+* SPAboxing_options
 
 ## Enums
 
