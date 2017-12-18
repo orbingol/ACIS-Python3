@@ -319,5 +319,11 @@ PyInit_Modeler(void)
   Py_INCREF(&a3dp_type_BoolOptions);
   PyModule_AddObject(m, "BoolOptions", (PyObject *) &a3dp_type_BoolOptions);
 
+  // SPAboxing_options
+  if (PyType_Ready(&a3dp_type_SPAboxing_options) < 0)
+    return NULL;
+  Py_INCREF(&a3dp_type_SPAboxing_options);
+  PyModule_AddObject(m, "SPAboxing_options", (PyObject *) &a3dp_type_SPAboxing_options);
+
   return m;
 }
