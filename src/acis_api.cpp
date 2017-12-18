@@ -643,13 +643,14 @@ a3dp_api_sheet_from_ff(PyObject *self, PyObject *args, PyObject *kwargs)
 PyObject *
 a3dp_api_unite(PyObject *self, PyObject *args, PyObject *kwargs)
 {
-  PyObject *input_tool = NULL, *input_blank = NULL;
+  PyObject *input_tool = NULL, *input_blank = NULL, *input_boolopts = NULL;
 
   // List of keyword arguments that this function can take
   char *kwlist[] =
     {
       (char *) "tool",
       (char *) "blank",
+      (char *) "boolopts",
       NULL
     };
 
@@ -670,14 +671,30 @@ a3dp_api_unite(PyObject *self, PyObject *args, PyObject *kwargs)
     return NULL;
   }
 
+  if (input_boolopts != NULL)
+  {
+    if (!_PyCheck_BoolOptions(input_boolopts))
+    {
+      PyErr_SetString(PyExc_TypeError, "boolopts must be a BoolOptions object");
+      return NULL;
+    }
+  }
+
   API_BEGIN
 
             // Convert PyObject to ACIS objects
             BODY * &_tool = (BODY *&) ((a3dp_BODY *) input_tool)->base_obj._acis_obj;
             BODY * &_blank = (BODY *&) ((a3dp_BODY *) input_blank)->base_obj._acis_obj;
 
-            // Call ACIS API
-            result = api_unite(_tool, _blank);
+            if (input_boolopts)
+            {
+              BoolOptions *_boolopts = ((a3dp_BoolOptions *) input_boolopts)->_acis_obj;
+              result = api_unite(_tool, _blank, _boolopts);
+            }
+            else
+            {
+              result = api_unite(_tool, _blank);
+            }
 
   API_END
 
@@ -699,18 +716,19 @@ a3dp_api_unite(PyObject *self, PyObject *args, PyObject *kwargs)
 PyObject *
 a3dp_api_intersect(PyObject *self, PyObject *args, PyObject *kwargs)
 {
-  PyObject *input_tool = NULL, *input_blank = NULL;
+  PyObject *input_tool = NULL, *input_blank = NULL, *input_boolopts = NULL;
 
   // List of keyword arguments that this function can take
   char *kwlist[] =
     {
       (char *) "tool",
       (char *) "blank",
+      (char *) "boolopts",
       NULL
     };
 
   // Try to parse input arguments and/or keywords
-  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO", kwlist, &input_tool, &input_blank))
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO|O", kwlist, &input_tool, &input_blank, &input_boolopts))
     return NULL;
 
   // Type checks for ACIS objects
@@ -726,14 +744,30 @@ a3dp_api_intersect(PyObject *self, PyObject *args, PyObject *kwargs)
     return NULL;
   }
 
+  if (input_boolopts != NULL)
+  {
+    if (!_PyCheck_BoolOptions(input_boolopts))
+    {
+      PyErr_SetString(PyExc_TypeError, "boolopts must be a BoolOptions object");
+      return NULL;
+    }
+  }
+
   API_BEGIN
 
             // Convert PyObject to ACIS objects
             BODY * &_tool = (BODY *&) ((a3dp_BODY *) input_tool)->base_obj._acis_obj;
             BODY * &_blank = (BODY *&) ((a3dp_BODY *) input_blank)->base_obj._acis_obj;
 
-            // Call ACIS API
-            result = api_intersect(_tool, _blank);
+            if (input_boolopts)
+            {
+              BoolOptions *_boolopts = ((a3dp_BoolOptions *) input_boolopts)->_acis_obj;
+              result = api_intersect(_tool, _blank, _boolopts);
+            }
+            else
+            {
+              result = api_intersect(_tool, _blank);
+            }
 
   API_END
 
@@ -784,11 +818,13 @@ a3dp_api_subtract(PyObject *self, PyObject *args, PyObject *kwargs)
   }
 
   if (input_boolopts != NULL)
+  {
     if (!_PyCheck_BoolOptions(input_boolopts))
     {
       PyErr_SetString(PyExc_TypeError, "boolopts must be a BoolOptions object");
       return NULL;
     }
+  }
 
   API_BEGIN
 
@@ -805,7 +841,6 @@ a3dp_api_subtract(PyObject *self, PyObject *args, PyObject *kwargs)
             {
               result = api_subtract(_tool, _blank);
             }
-
 
   API_END
 
@@ -827,18 +862,19 @@ a3dp_api_subtract(PyObject *self, PyObject *args, PyObject *kwargs)
 PyObject *
 a3dp_api_imprint(PyObject *self, PyObject *args, PyObject *kwargs)
 {
-  PyObject *input_tool = NULL, *input_blank = NULL;
+  PyObject *input_tool = NULL, *input_blank = NULL, *input_boolopts = NULL;
 
   // List of keyword arguments that this function can take
   char *kwlist[] =
     {
       (char *) "tool",
       (char *) "blank",
+      (char *) "boolopts",
       NULL
     };
 
   // Try to parse input arguments and/or keywords
-  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO", kwlist, &input_tool, &input_blank))
+  if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO|O", kwlist, &input_tool, &input_blank, &input_boolopts))
     return NULL;
 
   // Type checks for ACIS objects
@@ -854,14 +890,30 @@ a3dp_api_imprint(PyObject *self, PyObject *args, PyObject *kwargs)
     return NULL;
   }
 
+  if (input_boolopts != NULL)
+  {
+    if (!_PyCheck_BoolOptions(input_boolopts))
+    {
+      PyErr_SetString(PyExc_TypeError, "boolopts must be a BoolOptions object");
+      return NULL;
+    }
+  }
+
   API_BEGIN
 
             // Convert PyObject to ACIS objects
             BODY * &_tool = (BODY *&) ((a3dp_BODY *) input_tool)->base_obj._acis_obj;
             BODY * &_blank = (BODY *&) ((a3dp_BODY *) input_blank)->base_obj._acis_obj;
 
-            // Call ACIS API
-            result = api_imprint(_tool, _blank);
+            if (input_boolopts)
+            {
+              BoolOptions *_boolopts = ((a3dp_BoolOptions *) input_boolopts)->_acis_obj;
+              result = api_imprint(_tool, _blank, _boolopts);
+            }
+            else
+            {
+              result = api_imprint(_tool, _blank);
+            }
 
   API_END
 
