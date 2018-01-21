@@ -66,6 +66,10 @@ Please check `examples/` directory for example scripts and [the instructions](ex
 
 Please see the [Function Reference](FUNCTION_REFERENCE.md) to check which functions were implemented in this module.
 
+## Implementation Details
+
+Please see [IMPLEMENTATION](IMPLEMENTATION.md) for a discussion on the implementation details and assumptions.
+
 ## Author (Python module)
 
 * Onur Rauf Bingol (contact@onurbingol.net)
